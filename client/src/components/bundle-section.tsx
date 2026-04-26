@@ -182,23 +182,28 @@ export default function BundleSection() {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
             className="grid overflow-hidden border border-black/10 bg-brand-ivory md:grid-cols-[1.08fr_0.92fr]"
           >
-            <div className="grid grid-cols-6 gap-px bg-black/10">
-              <div className="relative col-span-2 aspect-[4/5] bg-[#f2f1f0] p-6 md:p-8">
+            <div className="relative grid gap-px bg-black/10">
+              <div className="relative aspect-[16/10] bg-[#f2f1f0] p-6 md:aspect-[16/9] md:p-10">
                 <img
                   src={makeupPen}
                   alt="4-in-1 Makeup Pen"
                   className="h-full w-full object-contain mix-blend-multiply"
                 />
               </div>
-              {lipTints.map((tint) => (
-                <div key={tint.name} className="relative aspect-[2/5] bg-[#f2f1f0] p-3 md:p-5">
-                  <img
-                    src={tint.image}
-                    alt={`${tint.name} Peptide Lip Tint`}
-                    className="h-full w-full object-contain mix-blend-multiply"
-                  />
-                </div>
-              ))}
+              <div className="absolute left-1/2 top-[56%] z-10 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-black/10 bg-brand-ivory/95 text-lg font-light text-black shadow-[0_18px_40px_rgba(0,0,0,0.08)] md:top-[58%]">
+                +
+              </div>
+              <div className="grid grid-cols-4 gap-px bg-black/10">
+                {lipTints.map((tint) => (
+                  <div key={tint.name} className="relative aspect-[3/5] bg-[#f2f1f0] p-3 md:p-5">
+                    <img
+                      src={tint.image}
+                      alt={`${tint.name} Peptide Lip Tint`}
+                      className="h-full w-full object-contain mix-blend-multiply"
+                    />
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="flex flex-col justify-between p-6 md:p-12">
