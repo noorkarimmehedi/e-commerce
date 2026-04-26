@@ -292,20 +292,43 @@ export default function BundleSection() {
             >
               <div className="relative hidden bg-[#e7e3df] p-10 md:block">
                 <div className="absolute inset-6 border border-black/10" />
-                <div className="relative z-10 grid h-full min-h-[620px] grid-cols-2 gap-px bg-black/10">
-                  {selectedBundle.images.map((image, index) => (
-                    <div
-                      key={`${image.alt}-${index}`}
-                      className={`bg-[#f2f1f0] p-5 ${selectedBundle.images.length > 2 && index === 0 ? "col-span-2" : ""}`}
-                    >
+                {selectedBundle.images.length > 2 ? (
+                  <div className="relative z-10 grid h-full min-h-[620px] gap-px bg-black/10">
+                    <div className="bg-[#f2f1f0] p-8">
                       <img
-                        src={image.src}
-                        alt={image.alt}
+                        src={selectedBundle.images[0].src}
+                        alt={selectedBundle.images[0].alt}
                         className="h-full w-full object-contain mix-blend-multiply"
                       />
                     </div>
-                  ))}
-                </div>
+                    <div className="absolute left-1/2 top-[55%] z-20 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-black/10 bg-brand-ivory/95 text-lg font-light text-black shadow-[0_18px_40px_rgba(0,0,0,0.08)]">
+                      +
+                    </div>
+                    <div className="grid grid-cols-4 gap-px bg-black/10">
+                      {selectedBundle.images.slice(1).map((image) => (
+                        <div key={image.alt} className="bg-[#f2f1f0] p-4">
+                          <img
+                            src={image.src}
+                            alt={image.alt}
+                            className="h-full w-full object-contain mix-blend-multiply"
+                          />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ) : (
+                  <div className="relative z-10 grid h-full min-h-[620px] grid-cols-2 gap-px bg-black/10">
+                    {selectedBundle.images.map((image) => (
+                      <div key={image.alt} className="bg-[#f2f1f0] p-5">
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          className="h-full w-full object-contain mix-blend-multiply"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               <div className="p-6 md:p-10">
@@ -337,33 +360,46 @@ export default function BundleSection() {
                 ) : (
                   <form onSubmit={placeOrder} className="mt-8 space-y-8">
                     <div className="grid gap-4 border border-black/10 bg-white/45 p-4 md:grid-cols-[140px_1fr] md:p-5">
-                      <div
-                        className={`relative grid gap-px bg-black/10 ${
-                          selectedBundle.images.length > 2
-                            ? "h-28 grid-cols-5 md:h-auto md:aspect-[4/5] md:grid-cols-2"
-                            : "aspect-[4/5] grid-cols-2"
-                        }`}
-                      >
-                        {selectedBundle.images.map((image, index) => (
-                          <div
-                            key={`${image.alt}-summary-${index}`}
-                            className={`bg-[#ebe8e4] p-1.5 md:p-2 ${
-                              selectedBundle.images.length > 2 && index === 0 ? "md:col-span-2" : ""
-                            }`}
-                          >
+                      {selectedBundle.images.length > 2 ? (
+                        <div className="relative grid gap-px bg-black/10">
+                          <div className="h-24 bg-[#ebe8e4] p-2 md:h-auto md:aspect-[16/10]">
                             <img
-                              src={image.src}
-                              alt={image.alt}
+                              src={selectedBundle.images[0].src}
+                              alt={selectedBundle.images[0].alt}
                               className="h-full w-full object-contain mix-blend-multiply"
                             />
                           </div>
-                        ))}
-                        {selectedBundle.images.length === 2 && (
+                          <div className="absolute left-1/2 top-[56%] z-10 flex h-7 w-7 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-black/10 bg-brand-ivory/90 text-sm font-light text-black shadow-[0_14px_30px_rgba(0,0,0,0.08)]">
+                            +
+                          </div>
+                          <div className="grid grid-cols-4 gap-px bg-black/10">
+                            {selectedBundle.images.slice(1).map((image) => (
+                              <div key={`${image.alt}-summary`} className="h-20 bg-[#ebe8e4] p-1.5 md:h-auto md:aspect-[3/5] md:p-2">
+                                <img
+                                  src={image.src}
+                                  alt={image.alt}
+                                  className="h-full w-full object-contain mix-blend-multiply"
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="relative grid aspect-[4/5] grid-cols-2 gap-px bg-black/10">
+                          {selectedBundle.images.map((image) => (
+                            <div key={`${image.alt}-summary`} className="bg-[#ebe8e4] p-1.5 md:p-2">
+                              <img
+                                src={image.src}
+                                alt={image.alt}
+                                className="h-full w-full object-contain mix-blend-multiply"
+                              />
+                            </div>
+                          ))}
                           <div className="absolute left-1/2 top-1/2 z-10 flex h-8 w-8 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-black/10 bg-brand-ivory/90 text-base font-light text-black shadow-[0_14px_30px_rgba(0,0,0,0.08)]">
                             +
                           </div>
-                        )}
-                      </div>
+                        </div>
+                      )}
                       <div className="flex flex-col justify-between gap-5">
                         <div>
                           <span className="mb-2 block text-[9px] uppercase tracking-[0.35em] font-bold text-brand-gold">
