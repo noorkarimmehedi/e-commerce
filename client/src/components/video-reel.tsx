@@ -62,7 +62,7 @@ export default function VideoReel() {
             </div>
 
             {/* Swiss Editorial Triptych */}
-            <div className="mx-auto flex w-full max-w-[430px] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 no-scrollbar md:grid md:max-w-[1040px] md:grid-cols-[minmax(150px,260px)_minmax(220px,340px)_minmax(150px,260px)] md:items-center md:gap-10 md:overflow-visible md:px-16 md:pb-12">
+            <div className="mx-auto grid w-full max-w-[430px] grid-cols-3 items-center gap-2 px-4 pb-2 md:max-w-[1040px] md:grid-cols-[minmax(150px,260px)_minmax(220px,340px)_minmax(150px,260px)] md:gap-10 md:px-16 md:pb-12">
                 {REEL_VIDEOS.map((video, idx) => (
                     <motion.div
                         key={video.id}
@@ -70,14 +70,14 @@ export default function VideoReel() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ margin: "0px -100px" }}
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className={`relative aspect-[9/16] w-[72vw] max-w-[280px] flex-none snap-center group md:w-full md:max-w-none ${idx === 1 ? "md:z-10" : "md:scale-90 md:opacity-90"}`}
+                        className="relative aspect-[9/16] w-full group"
                     >
                         <div className="mb-3 flex items-center justify-between border-t border-black/10 pt-2">
                             <span className="text-[7px] md:text-[9px] uppercase tracking-[0.25em] md:tracking-[0.45em] font-bold text-brand-gold">
                                 0{idx + 1}
                             </span>
                             <span className="hidden md:block h-px flex-1 mx-4 bg-black/10" />
-                            <span className="text-[7px] md:text-[9px] uppercase tracking-[0.18em] md:tracking-[0.35em] font-medium text-black/35">
+                            <span className="hidden md:inline text-[7px] md:text-[9px] uppercase tracking-[0.18em] md:tracking-[0.35em] font-medium text-black/35">
                                 {idx === 1 ? "Center" : idx === 0 ? "Left" : "Right"}
                             </span>
                         </div>
@@ -102,7 +102,7 @@ export default function VideoReel() {
                                 </span>
                             </div>
 
-                            <div className="translate-y-1 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+                            <div className="hidden translate-y-1 md:block md:translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
                                 <motion.div
                                     className="bg-brand-ivory/90 backdrop-blur-xl p-2 md:p-5 shadow-2xl pointer-events-auto border-l border-brand-gold"
                                 >
