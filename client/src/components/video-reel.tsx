@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { ArrowDownRight, ShoppingBag } from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 
 const REEL_VIDEOS = [
     {
@@ -27,28 +27,42 @@ const REEL_VIDEOS = [
 
 export default function VideoReel() {
     return (
-        <section className="bg-brand-ivory py-24 md:py-48 flex flex-col overflow-hidden">
-            <div className="w-full max-w-[1440px] mx-auto px-8 md:px-16 mb-16 md:mb-24">
+        <section className="bg-brand-ivory pt-24 pb-10 md:py-48 flex flex-col overflow-hidden">
+            <div className="w-full max-w-[1440px] mx-auto px-4 md:px-16 mb-16 md:mb-24">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-left"
+                    className="grid grid-cols-[1fr_auto_1fr] items-end gap-4 md:gap-10 border-y border-black/10 py-8 md:py-10"
                 >
-                    <span className="text-[10px] uppercase tracking-[0.6em] font-medium text-brand-gold mb-6 block">
-                        Editorial / SS26
-                    </span>
-                    <h2 className="text-5xl md:text-7xl font-display font-light uppercase tracking-tight text-black">
+                    <div className="flex flex-col items-start gap-3">
+                        <span className="text-[8px] md:text-[10px] uppercase tracking-[0.35em] md:tracking-[0.6em] font-bold text-brand-gold">
+                            Editorial
+                        </span>
+                        <span className="h-px w-10 md:w-20 bg-black/15" />
+                        <span className="text-[8px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] font-medium text-black/35">
+                            SS26
+                        </span>
+                    </div>
+
+                    <h2 className="text-center text-4xl md:text-7xl font-display font-light uppercase tracking-tight text-black leading-none">
                         <span className="font-bold">Cinema</span> Noir
                     </h2>
+
+                    <div className="flex flex-col items-end gap-3 text-right">
+                        <span className="text-[8px] md:text-[10px] uppercase tracking-[0.35em] md:tracking-[0.6em] font-bold text-brand-gold">
+                            Seraphine
+                        </span>
+                        <span className="h-px w-10 md:w-20 bg-black/15" />
+                        <span className="text-[8px] md:text-[10px] uppercase tracking-[0.3em] md:tracking-[0.5em] font-medium text-black/35">
+                            03 Films
+                        </span>
+                    </div>
                 </motion.div>
             </div>
 
-            {/* Horizontal Scroll Container */}
-            <div className="w-full overflow-x-auto snap-x snap-mandatory flex md:justify-center gap-8 no-scrollbar pb-12 max-w-[1440px] mx-auto">
-                {/* Centering Spacers (Mobile Only) */}
-                <div className="flex-none w-[calc(50vw-42.5vw)] md:hidden" />
-
+            {/* Swiss Editorial Triptych */}
+            <div className="mx-auto flex w-full max-w-[430px] snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-2 no-scrollbar md:grid md:max-w-[1040px] md:grid-cols-[minmax(150px,260px)_minmax(220px,340px)_minmax(150px,260px)] md:items-center md:gap-10 md:overflow-visible md:px-16 md:pb-12">
                 {REEL_VIDEOS.map((video, idx) => (
                     <motion.div
                         key={video.id}
@@ -56,10 +70,19 @@ export default function VideoReel() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ margin: "0px -100px" }}
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="relative flex-none w-[85vw] md:w-[380px] aspect-[9/16] snap-center group"
+                        className={`relative aspect-[9/16] w-[72vw] max-w-[280px] flex-none snap-center group md:w-full md:max-w-none ${idx === 1 ? "md:z-10" : "md:scale-90 md:opacity-90"}`}
                     >
-                        {/* ... video content ... */}
-                        <div className="absolute inset-0 bg-neutral-900 overflow-hidden shadow-[0_50px_100px_rgba(0,0,0,0.15)]">
+                        <div className="mb-3 flex items-center justify-between border-t border-black/10 pt-2">
+                            <span className="text-[7px] md:text-[9px] uppercase tracking-[0.25em] md:tracking-[0.45em] font-bold text-brand-gold">
+                                0{idx + 1}
+                            </span>
+                            <span className="hidden md:block h-px flex-1 mx-4 bg-black/10" />
+                            <span className="text-[7px] md:text-[9px] uppercase tracking-[0.18em] md:tracking-[0.35em] font-medium text-black/35">
+                                {idx === 1 ? "Center" : idx === 0 ? "Left" : "Right"}
+                            </span>
+                        </div>
+
+                        <div className="absolute inset-x-0 bottom-0 top-6 bg-neutral-900 overflow-hidden shadow-[0_24px_70px_rgba(0,0,0,0.12)] md:shadow-[0_40px_90px_rgba(0,0,0,0.14)]">
                             <video
                                 autoPlay
                                 muted
@@ -72,25 +95,25 @@ export default function VideoReel() {
                         </div>
 
                         {/* Luxury Overlays */}
-                        <div className="absolute inset-0 z-10 p-8 flex flex-col justify-between pointer-events-none">
-                            <div className="flex justify-between items-start opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                        <div className="absolute inset-x-0 bottom-0 top-6 z-10 p-2 md:p-6 flex flex-col justify-between pointer-events-none">
+                            <div className="hidden md:flex justify-between items-start opacity-0 group-hover:opacity-100 transition-opacity duration-700">
                                 <span className="text-[10px] text-white/60 uppercase tracking-widest bg-black/20 backdrop-blur-md px-3 py-1">
                                     Live from Atelier
                                 </span>
                             </div>
 
-                            <div className="space-y-6 translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
+                            <div className="translate-y-1 md:translate-y-4 group-hover:translate-y-0 transition-transform duration-700">
                                 <motion.div
-                                    className="bg-brand-ivory/80 backdrop-blur-xl p-6 shadow-2xl pointer-events-auto border-l-2 border-brand-gold"
+                                    className="bg-brand-ivory/90 backdrop-blur-xl p-2 md:p-5 shadow-2xl pointer-events-auto border-l border-brand-gold"
                                 >
-                                    <div className="flex justify-between items-baseline mb-2">
-                                        <h4 className="font-display text-xl uppercase tracking-tighter text-black">{video.title}</h4>
-                                        <span className="text-[10px] text-brand-gold font-bold">{video.price}</span>
+                                    <div className="flex flex-col md:flex-row md:justify-between md:items-baseline gap-1 mb-1 md:mb-2">
+                                        <h4 className="font-display text-[11px] md:text-lg uppercase tracking-tight text-black leading-none">{video.title}</h4>
+                                        <span className="text-[7px] md:text-[10px] text-brand-gold font-bold uppercase tracking-[0.2em]">{video.price}</span>
                                     </div>
-                                    <p className="text-[8px] uppercase tracking-[0.2em] text-black/40 mb-4">
+                                    <p className="hidden md:block text-[8px] uppercase tracking-[0.2em] text-black/40 mb-4">
                                         {video.category} / Studio v.01
                                     </p>
-                                    <button className="flex items-center gap-2 text-[9px] uppercase tracking-[0.3em] font-bold text-black hover:text-brand-gold transition-colors">
+                                    <button className="hidden md:flex items-center gap-2 text-[9px] uppercase tracking-[0.3em] font-bold text-black hover:text-brand-gold transition-colors">
                                         <ShoppingBag className="w-3 h-3" /> Shop Piece
                                     </button>
                                 </motion.div>
@@ -98,18 +121,9 @@ export default function VideoReel() {
                         </div>
 
                         {/* Frame Detail */}
-                        <div className="absolute inset-4 border border-white/10 pointer-events-none group-hover:inset-6 transition-all duration-700" />
+                        <div className="absolute inset-x-2 bottom-2 top-8 border border-white/10 pointer-events-none group-hover:inset-x-4 group-hover:bottom-4 group-hover:top-10 transition-all duration-700" />
                     </motion.div>
                 ))}
-
-                {/* Ending Spacer (Mobile Only) */}
-                <div className="flex-none w-[calc(50vw-42.5vw)] md:hidden" />
-            </div>
-
-            <div className="flex gap-4 mt-8 md:mt-16 items-center justify-center self-center opacity-30 md:hidden">
-                <div className="w-12 h-px bg-black" />
-                <span className="text-[8px] uppercase tracking-[0.5em] font-bold">Swipe to Explore</span>
-                <div className="w-12 h-px bg-black" />
             </div>
         </section>
     );

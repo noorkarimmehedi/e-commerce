@@ -29,7 +29,7 @@ export default function Hero() {
           className="max-w-4xl"
         >
           <span className="text-[10px] md:text-xs uppercase tracking-[0.5em] font-medium text-white/80 mb-6 block">
-            Azran Studio • Collection 2026
+            Seraphine Studio • Collection 2026
           </span>
           <h1 className="text-[12vw] md:text-[7vw] font-display font-light text-white leading-[0.9] tracking-tight uppercase mb-8">
             Majestic <span className="font-bold">Elegance</span>

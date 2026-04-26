@@ -66,7 +66,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {/* Vertical Label */}
               <div className="absolute bottom-12 left-12 z-20 hidden md:block opacity-40">
                 <div className="rotate-[-90deg] origin-left flex items-center gap-8">
-                  <span className="text-[9px] uppercase tracking-[0.6em] font-bold text-white whitespace-nowrap">Azran Studio / Atelier</span>
+                  <span className="text-[9px] uppercase tracking-[0.6em] font-bold text-white whitespace-nowrap">Seraphine Studio / Atelier</span>
                   <div className="w-12 h-px bg-white/40" />
                 </div>
               </div>

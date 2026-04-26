@@ -1,6 +1,7 @@
 import Layout from "@/components/layout";
 import Hero from "@/components/hero";
 import VideoReel from "@/components/video-reel";
+import BundleSection from "@/components/bundle-section";
 import ProductGrid from "@/components/product-grid";
 import BookingSection from "@/components/booking-section";
 import Categories from "@/components/categories";
@@ -11,9 +12,10 @@ export default function Home() {
     <Layout>
       <Hero />
       <VideoReel />
+      <BundleSection />
 
       {/* Brand Manifesto */}
-      <section className="bg-brand-ivory py-24 md:py-48 px-8 md:px-16 overflow-hidden">
+      <section className="bg-brand-ivory pt-12 pb-24 md:py-48 px-8 md:px-16 overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -29,7 +31,7 @@ export default function Home() {
           </p>
           <div className="mt-16 flex justify-center items-center gap-6">
             <div className="w-12 h-px bg-black/10" />
-            <span className="text-[10px] uppercase tracking-[0.4em] font-bold">Azran Studio Manifesto</span>
+            <span className="text-[10px] uppercase tracking-[0.4em] font-bold">Seraphine Studio Manifesto</span>
             <div className="w-12 h-px bg-black/10" />
           </div>
         </motion.div>
