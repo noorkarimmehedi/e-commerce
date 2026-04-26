@@ -183,7 +183,7 @@ export default function BundleSection() {
             className="grid overflow-hidden border border-black/10 bg-brand-ivory md:grid-cols-[1.08fr_0.92fr]"
           >
             <div className="relative grid gap-px bg-black/10">
-              <div className="relative aspect-[16/10] bg-[#f2f1f0] p-6 md:aspect-[16/9] md:p-10">
+              <div className="relative h-48 bg-[#f2f1f0] p-5 md:h-auto md:aspect-[16/9] md:p-10">
                 <img
                   src={makeupPen}
                   alt="4-in-1 Makeup Pen"
@@ -195,7 +195,7 @@ export default function BundleSection() {
               </div>
               <div className="grid grid-cols-4 gap-px bg-black/10">
                 {lipTints.map((tint) => (
-                  <div key={tint.name} className="relative aspect-[3/5] bg-[#f2f1f0] p-3 md:p-5">
+                  <div key={tint.name} className="relative h-32 bg-[#f2f1f0] p-1.5 md:h-auto md:aspect-[3/5] md:p-5">
                     <img
                       src={tint.image}
                       alt={`${tint.name} Peptide Lip Tint`}
@@ -212,8 +212,9 @@ export default function BundleSection() {
                   <span className="mb-4 block text-[9px] uppercase tracking-[0.5em] font-bold text-brand-gold">
                     The Everyday Edit - Quad
                   </span>
-                  <h3 className="text-3xl md:text-5xl font-display font-light uppercase tracking-tight leading-none">
-                    Makeup Pen + <span className="font-bold">All 4 Lip Tints</span>
+                  <h3 className="text-[2rem] md:text-5xl font-display font-light uppercase tracking-tight leading-[1.05] md:leading-none">
+                    <span className="block md:inline">Makeup Pen +</span>{" "}
+                    <span className="font-bold">All 4 Lip Tints</span>
                   </h3>
                 </div>
 
