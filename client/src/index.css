@@ -12,6 +12,7 @@
   --font-sans: 'Inter', sans-serif;
   --font-display: 'Cormorant Garamond', serif;
   --font-modern: 'Space Grotesk', sans-serif;
+  --font-garet: 'Garet', 'Space Grotesk', 'Inter', sans-serif;
 }
 
 :root {

@@ -112,8 +112,8 @@ export default function BundleSection() {
                     </h3>
                   </div>
                   <div className="text-right">
-                    <span className="block text-2xl md:text-4xl font-display font-light">৳1,499</span>
-                    <span className="mt-2 block text-[9px] uppercase tracking-[0.35em] font-bold text-black/35">
+                    <span className="block text-2xl md:text-4xl font-garet font-bold">৳1,499</span>
+                    <span className="mt-2 block text-[9px] uppercase tracking-[0.35em] font-garet font-bold text-black/35">
                       ৳300+ off
                     </span>
                   </div>
@@ -223,7 +223,7 @@ export default function BundleSection() {
                     <span className="block text-[9px] uppercase tracking-[0.35em] font-bold text-black/35">
                       Bundle Price
                     </span>
-                    <span className="mt-2 block text-3xl md:text-5xl font-display font-light">
+                    <span className="mt-2 block text-3xl md:text-5xl font-garet font-bold">
                       ৳2,499
                     </span>
                   </div>
@@ -231,7 +231,7 @@ export default function BundleSection() {
                     <span className="block text-[9px] uppercase tracking-[0.35em] font-bold text-black/35">
                       Savings
                     </span>
-                    <span className="mt-3 block text-[10px] uppercase tracking-[0.35em] font-bold text-brand-gold">
+                    <span className="mt-3 block text-[10px] uppercase tracking-[0.35em] font-garet font-bold text-brand-gold">
                       ৳700+ off
                     </span>
                   </div>
@@ -417,7 +417,7 @@ export default function BundleSection() {
                           <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/35">
                             Total
                           </span>
-                          <span className="font-display text-3xl font-light">
+                          <span className="font-garet text-3xl font-bold">
                             ৳{(selectedBundle.price + deliveryCharge).toLocaleString()}
                           </span>
                         </div>
@@ -482,7 +482,7 @@ export default function BundleSection() {
                             <span className="block text-[10px] uppercase tracking-[0.28em] font-bold">
                               {option.label}
                             </span>
-                            <span className="mt-2 block font-display text-2xl font-light">
+                            <span className="mt-2 block font-garet text-2xl font-bold">
                               ৳{option.charge}
                             </span>
                           </button>
@@ -493,11 +493,11 @@ export default function BundleSection() {
                     <div className="border-y border-black/10 py-4">
                       <div className="flex justify-between text-[10px] uppercase tracking-[0.3em] text-black/45">
                         <span>Bundle</span>
-                        <span>৳{selectedBundle.price.toLocaleString()}</span>
+                        <span className="font-garet font-bold">৳{selectedBundle.price.toLocaleString()}</span>
                       </div>
                       <div className="mt-3 flex justify-between text-[10px] uppercase tracking-[0.3em] text-black/45">
                         <span>Delivery</span>
-                        <span>৳{deliveryCharge}</span>
+                        <span className="font-garet font-bold">৳{deliveryCharge}</span>
                       </div>
                     </div>
 
