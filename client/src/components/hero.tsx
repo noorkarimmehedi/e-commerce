@@ -1,5 +1,4 @@
 import { ArrowDownRight } from "lucide-react";
-import heroImage from "@assets/image_1768632374082.png";
 import { motion } from "framer-motion";
 
 export default function Hero() {
@@ -12,11 +11,14 @@ export default function Hero() {
         transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
         className="absolute inset-0 z-0"
       >
-        <img
-          src={heroImage}
-          className="w-full h-full object-cover grayscale brightness-75 contrast-105"
-          alt="Luxury Couture"
-        />
+        <picture className="block h-full w-full">
+          <source media="(min-width: 768px)" srcSet="/hero_desktop.png" />
+          <img
+            src="/hero_mobile.png"
+            className="h-full w-full scale-110 object-cover brightness-75 contrast-105 md:scale-100"
+            alt="Luxury Couture"
+          />
+        </picture>
         <div className="absolute inset-0 bg-black/20" />
       </motion.div>
 
