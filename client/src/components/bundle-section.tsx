@@ -373,7 +373,7 @@ export default function BundleSection() {
               </div>
 
               <div className="p-6 md:p-10">
-                <DialogHeader className="border-b border-black/10 pb-6 text-left">
+                <DialogHeader className="border-b border-black/10 pb-6 text-center">
                   <DialogDescription className="text-[9px] uppercase tracking-[0.5em] font-bold text-brand-gold">
                     Secure Order Request
                   </DialogDescription>
@@ -383,7 +383,14 @@ export default function BundleSection() {
                 </DialogHeader>
 
                 {orderSubmitted ? (
-                  <div className="py-16 text-center">
+                  <motion.div
+                    key={`order-success-${orderRef || "no-ref"}`}
+                    initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: 12, scale: 0.99 }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    className="py-16 text-center"
+                  >
                     <span className="mx-auto mb-8 block h-px w-20 bg-brand-gold" />
                     <h3 className="font-display text-3xl font-light uppercase tracking-tight">
                       Order Placed Successfully
@@ -392,9 +399,14 @@ export default function BundleSection() {
                       Thanks for your order. We’ll contact you shortly with delivery and payment details.
                     </p>
                     {orderRef && (
-                      <p className="mx-auto mt-4 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-brand-gold">
+                      <motion.p
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.08, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                        className="mx-auto mt-4 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-brand-gold"
+                      >
                         Order Reference {orderRef}
-                      </p>
+                      </motion.p>
                     )}
                     <Button
                       onClick={() => setOrderOpen(false)}
@@ -402,7 +414,7 @@ export default function BundleSection() {
                     >
                       Close
                     </Button>
-                  </div>
+                  </motion.div>
                 ) : (
                   <form onSubmit={placeOrder} className="mt-8 space-y-8">
                     <div className="grid gap-4 border border-black/10 bg-white/45 p-4 md:grid-cols-[140px_1fr] md:p-5">
