@@ -1,6 +1,14 @@
 import type { IncomingMessage, ServerResponse } from "http";
-import { z } from "zod";
-import { insertSupabaseOrder, orderRequestSchema } from "../server/order-service";
+
+type OrderRequest = {
+  bundleTitle: string;
+  bundleDetails: string;
+  bundlePrice: number;
+  deliveryCharge: number;
+  customerName: string;
+  phone: string;
+  address: string;
+};
 
 async function readBody(req: IncomingMessage & { body?: unknown }) {
   if (req.body) {
@@ -14,6 +22,102 @@ async function readBody(req: IncomingMessage & { body?: unknown }) {
 
   const rawBody = Buffer.concat(chunks).toString("utf8");
   return rawBody ? JSON.parse(rawBody) : {};
+}
+
+function validateOrder(body: unknown): OrderRequest {
+  if (!body || typeof body !== "object") {
+    throw new Error("Invalid order details");
+  }
+
+  const order = body as Record<string, unknown>;
+  const bundleTitle = String(order.bundleTitle || "").trim();
+  const bundleDetails = String(order.bundleDetails || "").trim();
+  const bundlePrice = Number(order.bundlePrice);
+  const deliveryCharge = Number(order.deliveryCharge);
+  const customerName = String(order.customerName || "").trim();
+  const phone = String(order.phone || "").trim();
+  const address = String(order.address || "").trim();
+
+  if (
+    !bundleTitle ||
+    !bundleDetails ||
+    !Number.isInteger(bundlePrice) ||
+    bundlePrice <= 0 ||
+    !Number.isInteger(deliveryCharge) ||
+    deliveryCharge < 0 ||
+    customerName.length < 2 ||
+    phone.length < 6 ||
+    address.length < 5
+  ) {
+    throw new Error("Invalid order details");
+  }
+
+  return {
+    bundleTitle,
+    bundleDetails,
+    bundlePrice,
+    deliveryCharge,
+    customerName,
+    phone,
+    address,
+  };
+}
+
+function createOrderRef() {
+  const datePart = new Date()
+    .toISOString()
+    .slice(2, 10)
+    .replaceAll("-", "");
+  const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
+  return `WEB-${datePart}-${randomPart}`;
+}
+
+async function insertSupabaseOrder(order: OrderRequest) {
+  const supabaseUrl = process.env.SUPABASE_URL?.replace(/\/$/, "");
+  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+  const tableName = process.env.SUPABASE_ORDERS_TABLE || "orders";
+
+  if (!supabaseUrl || !serviceRoleKey) {
+    throw new Error("Supabase environment variables are missing in Vercel");
+  }
+
+  const orderRef = createOrderRef();
+  const total = order.bundlePrice + order.deliveryCharge;
+  const now = new Date().toISOString();
+  const payload = {
+    ref: orderRef,
+    customer_name: order.customerName,
+    phone: order.phone,
+    destination: order.address,
+    merchandise: order.bundleDetails,
+    value: total,
+    status: "confirmed",
+    source: "website",
+    order_date: now,
+    bundle_title: order.bundleTitle,
+    bundle_price: order.bundlePrice,
+    delivery_charge: order.deliveryCharge,
+    total,
+  };
+
+  const response = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
+    method: "POST",
+    headers: {
+      apikey: serviceRoleKey,
+      Authorization: `Bearer ${serviceRoleKey}`,
+      "Content-Type": "application/json",
+      Prefer: "return=representation",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    const message = await response.text();
+    throw new Error(`Supabase insert failed: ${message}`);
+  }
+
+  const rows = await response.json();
+  return { orderRef, order: rows?.[0] ?? payload };
 }
 
 function sendJson(res: ServerResponse, statusCode: number, body: unknown) {
@@ -33,18 +137,10 @@ export default async function handler(
 
   try {
     const body = await readBody(req);
-    const order = orderRequestSchema.parse(body);
+    const order = validateOrder(body);
     const result = await insertSupabaseOrder(order);
     sendJson(res, 201, result);
   } catch (error) {
-    if (error instanceof z.ZodError) {
-      sendJson(res, 400, {
-        message: "Invalid order details",
-        errors: error.flatten().fieldErrors,
-      });
-      return;
-    }
-
     console.error("Order insert failed:", error);
     sendJson(res, 500, {
       message:
