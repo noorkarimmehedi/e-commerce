@@ -48,3 +48,49 @@
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
+
+@keyframes image-auto-slider-scroll {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.image-auto-slider-track {
+  animation: image-auto-slider-scroll 24s linear infinite;
+}
+
+.image-auto-slider-mask {
+  mask: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+  -webkit-mask: linear-gradient(
+    90deg,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+}
+
+.image-auto-slider-item {
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.image-auto-slider-item:hover {
+  filter: brightness(1.04);
+  transform: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .image-auto-slider-track {
+    animation-duration: 80s;
+  }
+}

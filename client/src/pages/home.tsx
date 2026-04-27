@@ -1,5 +1,6 @@
 import Layout from "@/components/layout";
 import Hero from "@/components/hero";
+import { Component as ImageAutoSlider } from "@/components/ui/image-auto-slider";
 import VideoReel from "@/components/video-reel";
 import BundleSection from "@/components/bundle-section";
 import ProductGrid from "@/components/product-grid";
@@ -11,6 +12,7 @@ export default function Home() {
   return (
     <Layout>
       <Hero />
+      <ImageAutoSlider />
       <VideoReel />
       <BundleSection />
 
