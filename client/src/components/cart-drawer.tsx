@@ -2,9 +2,35 @@ import { useCart } from "@/contexts/cart-context";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus, X, ShoppingBag, ArrowDownRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, type Variants } from "framer-motion";
 import { useMemo, useState } from "react";
 import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
+
+const cartEase = [0.22, 1, 0.36, 1] as const;
+
+const cartPanelVariants: Variants = {
+    closed: { opacity: 0, x: 28, filter: "blur(6px)" },
+    open: {
+        opacity: 1,
+        x: 0,
+        filter: "blur(0px)",
+        transition: {
+            duration: 0.58,
+            ease: cartEase,
+            staggerChildren: 0.07,
+            delayChildren: 0.08,
+        },
+    },
+};
+
+const cartSectionVariants: Variants = {
+    closed: { opacity: 0, y: 16 },
+    open: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: cartEase },
+    },
+};
 
 export default function CartDrawer() {
     const { items, isOpen, setIsOpen, removeFromCart, updateQuantity, clearCart, itemCount } = useCart();
@@ -53,9 +79,14 @@ export default function CartDrawer() {
                     <ShoppingBag className="w-[60vw] md:w-[300px] h-[60vw] md:h-[300px] stroke-[0.5px]" />
                 </div>
 
-                <div className="flex flex-col h-full relative z-10">
+                <motion.div
+                    variants={cartPanelVariants}
+                    initial="closed"
+                    animate={isOpen ? "open" : "closed"}
+                    className="flex flex-col h-full relative z-10"
+                >
                     {/* Header */}
-                    <div className="border-b border-black/5 p-8 md:p-12">
+                    <motion.div variants={cartSectionVariants} className="border-b border-black/5 p-8 md:p-12">
                         <div className="flex justify-between items-center mb-6">
                             <div className="space-y-1">
                                 <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold block">
@@ -74,16 +105,17 @@ export default function CartDrawer() {
                                 <X className="w-4 h-4" />
                             </Button>
                         </div>
-                    </div>
+                    </motion.div>
 
                     {/* Cart Items */}
-                    <div className="flex-grow overflow-y-auto">
+                    <motion.div variants={cartSectionVariants} className="flex-grow overflow-y-auto">
                         <AnimatePresence mode="popLayout">
                             {items.length === 0 ? (
                                 <motion.div
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    exit={{ opacity: 0, y: -20 }}
+                                    initial={{ opacity: 0, y: 18, scale: 0.98 }}
+                                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                                    exit={{ opacity: 0, y: -18, scale: 0.98 }}
+                                    transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
                                     className="flex flex-col items-center justify-center h-full p-12 text-center space-y-6"
                                 >
                                     <ShoppingBag className="w-16 h-16 stroke-[1px] text-black/10" />
@@ -107,12 +139,12 @@ export default function CartDrawer() {
                                     {items.map((item, index) => (
                                         <motion.div
                                             key={item.id}
-                                            initial={{ opacity: 0, x: 50 }}
-                                            animate={isOpen ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-                                            exit={{ opacity: 0, x: -20 }}
+                                            initial={{ opacity: 0, x: 32, scale: 0.98 }}
+                                            animate={isOpen ? { opacity: 1, x: 0, scale: 1 } : { opacity: 0, x: 32, scale: 0.98 }}
+                                            exit={{ opacity: 0, x: -18, scale: 0.98 }}
                                             transition={{
-                                                duration: 0.8,
-                                                delay: index * 0.1,
+                                                duration: 0.52,
+                                                delay: index * 0.055,
                                                 ease: [0.22, 1, 0.36, 1]
                                             }}
                                             className="p-6 md:p-8 hover:bg-black/[0.01] transition-colors group"
@@ -177,11 +209,14 @@ export default function CartDrawer() {
                                 </div>
                             )}
                         </AnimatePresence>
-                    </div>
+                    </motion.div>
 
                     {/* Footer - Subtotal & Checkout */}
                     {items.length > 0 && (
-                        <div className="border-t border-black/5 p-8 md:p-12 space-y-6 bg-white">
+                        <motion.div
+                            variants={cartSectionVariants}
+                            className="border-t border-black/5 p-8 md:p-12 space-y-6 bg-white"
+                        >
                             {/* Subtotal */}
                             <div className="space-y-4">
                                 <div className="flex justify-between items-baseline pb-4 border-b border-black/5">
@@ -218,9 +253,9 @@ export default function CartDrawer() {
                             >
                                 Continue Shopping
                             </button>
-                        </div>
+                        </motion.div>
                     )}
-                </div>
+                </motion.div>
             </SheetContent>
             <OrderDialog
                 open={orderOpen}
