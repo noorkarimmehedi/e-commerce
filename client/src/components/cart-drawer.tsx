@@ -17,7 +17,7 @@ export default function CartDrawer() {
         <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetContent
                 side="right"
-                className="w-full md:w-[500px] h-full bg-brand-ivory border-l border-black/5 p-0 overflow-hidden [&>button]:hidden"
+                className="top-0 bottom-0 w-full h-screen max-h-screen bg-brand-ivory border-l border-black/5 p-0 overflow-hidden supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:w-[500px] [&>button]:hidden"
             >
                 {/* Background Branding */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.02] select-none z-0">

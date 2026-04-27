@@ -86,7 +86,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70 group-hover:opacity-100 transition-opacity">Menu</span>
                   </Button>
                 </SheetTrigger>
-                <SheetContent side="left" className="w-full h-full bg-brand-ivory border-none p-0 overflow-hidden [&>button]:hidden">
+                <SheetContent side="left" className="top-0 bottom-0 w-full h-screen max-h-screen bg-brand-ivory border-none p-0 overflow-hidden supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh [&>button]:hidden">
                   {/* Background Branding */}
                   <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none z-0">
                     <h2 className="text-[40vw] font-display font-light uppercase tracking-tighter rotate-90 leading-none">
