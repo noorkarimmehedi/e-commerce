@@ -282,7 +282,7 @@ export default function BundleSection() {
             <DialogContent
               forceMount
               onOpenAutoFocus={(event) => event.preventDefault()}
-              className="max-h-[92vh] overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none sm:max-w-[900px] [&>button]:rounded-none [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
+              className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[900px] [&>button]:rounded-none [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
             >
             <motion.div
               initial={{ opacity: 0, y: 24, scale: 0.97 }}
