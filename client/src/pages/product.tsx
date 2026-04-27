@@ -1,38 +1,42 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
-import { ArrowLeft, ArrowDownRight, ShieldCheck, Globe, Truck, Minus, Plus } from "lucide-react";
+import { ArrowLeft, ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-context";
-import { useToast } from "@/hooks/use-toast";
 import Layout from "@/components/layout";
-import imgNoir from "@assets/image_1768632448516.png";
-import imgSherwani from "@assets/image_1768632387917.png";
-import imgCrimson from "@assets/image_1768632401640.png";
-import imgSilk from "@assets/image_1768632422582.png";
-import imgBridal from "@assets/image_1768632436038.png";
-import imgEarth from "@assets/image_1768632360954.png";
+import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
+import makeupPen from "@assets/makeup_pen_4_in_1.png";
+import tintBordeaux from "@assets/peptide_lip_tint_bordeaux.png";
+import tintPlum from "@assets/peptide_lip_tint_plum.png";
+import tintRose from "@assets/peptide_lip_tint_rosy.png";
+import tintMauve from "@assets/peptide_lip_tint_mauve.png";
 
 const products = {
-  "1": { id: 1, title: "Noir Kurta", price: "BDT 45,000", image: imgNoir, description: "A study in absolute black. Constructed from hand-spun Swiss cotton and silk blend, featuring architectural stitching and hidden fasteners.", material: "80% Cotton, 20% Silk", origin: "Studio Dhaka", care: "Professional Dry Clean Only" },
-  "2": { id: 2, title: "Sherwani", price: "BDT 120,000", image: imgSherwani, description: "Exquisite hand-embroidery meets radical modern silhouettes. A masterpiece of time and precision.", material: "Premium Raw Silk", origin: "Artisan Workshop", care: "Specialist Care" },
-  "3": { id: 3, title: "Crimson", price: "BDT 89,000", image: imgCrimson, description: "Deep pigments and structured velvet. A garment designed for presence and permanence.", material: "Silk Velvet", origin: "Studio Dhaka", care: "Dry Clean" },
-  "4": { id: 4, title: "Silk Blend", price: "BDT 65,000", image: imgSilk, description: "The intersection of comfort and luxury. Light-catching fibers woven with surgical precision.", material: "Fine Silk Blend", origin: "Studio Dhaka", care: "Hand Wash" },
-  "5": { id: 5, title: "Bridal", price: "Enquiry", image: imgBridal, description: "Bespoke bridal couture. A collaborative journey between client and atelier to create a legacy piece.", material: "Custom Selection", origin: "Bespoke Atelier", care: "Legacy Preservation" },
-  "6": { id: 6, title: "Earth Classic", price: "BDT 52,000", image: imgEarth, description: "Neutral tones derived from natural pigments. A timeless staple for the contemporary wardrobe.", material: "Linen & Wool", origin: "Studio Dhaka", care: "Gentle Cycle" }
+  "1": { id: 1, title: "4-in-1 Makeup Pen", price: "৳999", amount: 999, image: makeupPen, description: "A compact 4-in-1 makeup pen designed for quick definition, soft detail, and a polished no makeup look in one everyday tool.", material: "Multi-use eye, brow, and lip definition", origin: "Seraphine Bangladesh", care: "Keep capped and store in a cool, dry place" },
+  "2": { id: 2, title: "Bordeaux", price: "৳799", amount: 799, image: tintBordeaux, description: "A peptide lip tint with a warm burnt-red wash for soft color that still feels natural and easy.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
+  "3": { id: 3, title: "Plum Veil", price: "৳799", amount: 799, image: tintPlum, description: "A sheer deep-berry tint that gives lips a plush veil of color while keeping the look effortless.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
+  "4": { id: 4, title: "Rosy Bloom", price: "৳799", amount: 799, image: tintRose, description: "A fresh petal-pink tint made for soft daily glow, easy touch-ups, and a clean no makeup finish.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
+  "5": { id: 5, title: "Mauve Nude", price: "৳799", amount: 799, image: tintMauve, description: "A muted soft-rose tint for natural-looking lips with just enough color to brighten the face.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" }
 };
 
 export default function ProductPage({ params }: { params: { id: string } }) {
   const product = products[params.id as keyof typeof products];
-  const [selectedSize, setSelectedSize] = useState<string>('M');
   const { addToCart } = useCart();
-  const { toast } = useToast();
+  const [orderOpen, setOrderOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [params.id]);
 
   if (!product) return <div>Product not found</div>;
+
+  const productOrder: OrderDialogBundle = {
+    title: product.title,
+    details: `1x ${product.title}`,
+    price: product.amount,
+    images: [{ src: product.image, alt: product.title }]
+  };
 
   return (
     <Layout>
@@ -47,7 +51,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                 src={product.image}
                 alt={product.title}
-                className="w-full h-full object-cover grayscale brightness-75 contrast-105 group-hover:grayscale-0 group-hover:brightness-100 transition-all duration-[2s]"
+                className="w-full h-full object-contain bg-[#f2f1f0] p-14 mix-blend-multiply brightness-95 transition-all duration-[2s] group-hover:scale-105 md:p-24"
               />
 
               {/* Gold Frame Detail overlay */}
@@ -58,7 +62,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 <Link href="/">
                   <a className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-white font-bold hover:text-brand-gold transition-colors">
                     <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-2" />
-                    Back to Collection
+                    Back to Products
                   </a>
                 </Link>
               </div>
@@ -66,7 +70,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               {/* Vertical Label */}
               <div className="absolute bottom-12 left-12 z-20 hidden md:block opacity-40">
                 <div className="rotate-[-90deg] origin-left flex items-center gap-8">
-                  <span className="text-[9px] uppercase tracking-[0.6em] font-bold text-white whitespace-nowrap">Seraphine Studio / Atelier</span>
+                  <span className="text-[9px] uppercase tracking-[0.6em] font-bold text-white whitespace-nowrap">Seraphine Studio / Beauty</span>
                   <div className="w-12 h-px bg-white/40" />
                 </div>
               </div>
@@ -85,7 +89,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               <div className="space-y-10">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] uppercase tracking-[0.6em] font-medium text-brand-gold">
-                    Collection 2026 / Archive
+                    Beauty 2026 / Selected Product
                   </span>
                   <span className="text-[10px] uppercase tracking-[0.4em] font-bold opacity-30 italic">
                     REF.{product.id.toString().padStart(4, '0')}
@@ -110,34 +114,12 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 <div className="flex gap-12 pt-4">
                   <div className="flex flex-col">
                     <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-brand-gold mb-1">Origin</span>
-                    <span className="text-[10px] uppercase tracking-widest font-medium">Handcrafted in Dhaka</span>
+                    <span className="text-[10px] uppercase tracking-widest font-medium">{product.origin}</span>
                   </div>
                   <div className="flex flex-col">
                     <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-brand-gold mb-1">Time</span>
-                    <span className="text-[10px] uppercase tracking-widest font-medium">14 Business Days</span>
+                    <span className="text-[10px] uppercase tracking-widest font-medium">Everyday Beauty</span>
                   </div>
-                </div>
-              </div>
-
-              {/* Size Selector - Luxury Style */}
-              <div className="space-y-8">
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] uppercase tracking-[0.4em] font-bold">Select Dimension</span>
-                  <button className="text-[9px] uppercase tracking-widest font-bold underline opacity-40 hover:opacity-100 transition-opacity">Size Guide</button>
-                </div>
-                <div className="flex gap-4">
-                  {['S', 'M', 'L', 'XL', 'Custom'].map(s => (
-                    <button
-                      key={s}
-                      onClick={() => setSelectedSize(s)}
-                      className={`flex-1 h-14 border transition-all flex items-center justify-center text-[10px] uppercase tracking-[0.4em] font-bold ${selectedSize === s
-                        ? 'border-brand-gold bg-white/50 text-black'
-                        : 'border-black/5 text-black/40 hover:border-brand-gold hover:text-black hover:bg-white/50'
-                        }`}
-                    >
-                      {s}
-                    </button>
-                  ))}
                 </div>
               </div>
 
@@ -153,31 +135,34 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                           price: product.price,
                           image: product.image
                         },
-                        selectedSize
+                        "Default"
                       );
                     }}
                     className="h-16 rounded-none bg-transparent border border-black/20 text-black text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-4 group"
                   >
                     Add to Cart
                   </Button>
-                  <Button className="h-16 rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all flex items-center justify-center gap-4 group">
+                  <Button
+                    onClick={() => setOrderOpen(true)}
+                    className="h-16 rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all flex items-center justify-center gap-4 group"
+                  >
                     Buy it Now
                     <ArrowDownRight className="w-5 h-5 stroke-[1px] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </Button>
                 </div>
                 <p className="text-center text-[9px] uppercase tracking-widest text-black/30 font-medium">
-                  Inclusive of VAT and Insured Global Freight
+                  Available for individual order
                 </p>
               </div>
 
               {/* Product Specifications - Minimal Swiss Grid */}
               <div className="space-y-0 border-y border-black/5 mt-12">
                 {[
-                  { label: "Origin", val: "Handcrafted in Dhaka" },
-                  { label: "Time", val: "14 Business Days" },
-                  { label: "Material", val: "80% Cotton, 20% Silk" },
-                  { label: "Care", val: "Professional Dry Clean Only" },
-                  { label: "Shipping", val: "Complimentary Express" }
+                  { label: "Origin", val: product.origin },
+                  { label: "Use", val: "No makeup look" },
+                  { label: "Format", val: product.material },
+                  { label: "Care", val: product.care },
+                  { label: "Delivery", val: "Inside and outside Dhaka" }
                 ].map((item, i) => (
                   <div
                     key={i}
@@ -248,6 +233,11 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           </div>
         </section>
       </div>
+      <OrderDialog
+        open={orderOpen}
+        onOpenChange={setOrderOpen}
+        bundle={productOrder}
+      />
     </Layout>
   );
 }

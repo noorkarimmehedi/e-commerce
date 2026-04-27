@@ -3,14 +3,43 @@ import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { Button } from "@/components/ui/button";
 import { Minus, Plus, X, ShoppingBag, ArrowDownRight } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useMemo, useState } from "react";
+import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
 
 export default function CartDrawer() {
-    const { items, isOpen, setIsOpen, removeFromCart, updateQuantity, itemCount } = useCart();
+    const { items, isOpen, setIsOpen, removeFromCart, updateQuantity, clearCart, itemCount } = useCart();
+    const [orderOpen, setOrderOpen] = useState(false);
+
+    const cartOrder = useMemo<OrderDialogBundle | null>(() => {
+        if (items.length === 0) {
+            return null;
+        }
+
+        const subtotal = items.reduce((total, item) => {
+            const price = parseFloat(item.price.replace(/[^0-9]/g, ''));
+            return total + ((Number.isNaN(price) ? 0 : price) * item.quantity);
+        }, 0);
+
+        return {
+            title: "Cart Checkout",
+            details: items.map((item) => `${item.quantity}x ${item.title}`).join(" + "),
+            price: subtotal,
+            images: items.slice(0, 2).map((item) => ({
+                src: item.image,
+                alt: item.title
+            }))
+        };
+    }, [items]);
+
+    const openCheckout = () => {
+        setIsOpen(false);
+        setOrderOpen(true);
+    };
 
     // Calculate subtotal
     const subtotal = items.reduce((total, item) => {
         const price = parseFloat(item.price.replace(/[^0-9]/g, ''));
-        return total + (price * item.quantity);
+        return total + ((Number.isNaN(price) ? 0 : price) * item.quantity);
     }, 0);
 
     return (
@@ -159,9 +188,15 @@ export default function CartDrawer() {
                                     <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-black/40">
                                         Subtotal
                                     </span>
-                                    <span className="text-2xl font-display font-light text-black">
-                                        BDT {subtotal.toLocaleString()}
-                                    </span>
+                                    {subtotal > 0 ? (
+                                        <span className="text-2xl font-display font-light text-black">
+                                            BDT {subtotal.toLocaleString()}
+                                        </span>
+                                    ) : (
+                                        <span className="text-[10px] uppercase tracking-[0.3em] font-bold text-brand-gold">
+                                            Select Items
+                                        </span>
+                                    )}
                                 </div>
                                 <p className="text-[9px] uppercase tracking-[0.3em] font-medium text-black/30 text-center">
                                     Shipping and taxes calculated at checkout
@@ -169,7 +204,10 @@ export default function CartDrawer() {
                             </div>
 
                             {/* Checkout Button */}
-                            <Button className="w-full h-16 rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all flex items-center justify-center gap-4 group">
+                            <Button
+                                onClick={openCheckout}
+                                className="w-full h-16 rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all flex items-center justify-center gap-4 group"
+                            >
                                 Proceed to Checkout
                                 <ArrowDownRight className="w-5 h-5 stroke-[1px] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                             </Button>
@@ -184,6 +222,12 @@ export default function CartDrawer() {
                     )}
                 </div>
             </SheetContent>
+            <OrderDialog
+                open={orderOpen}
+                onOpenChange={setOrderOpen}
+                bundle={cartOrder}
+                onSuccess={clearCart}
+            />
         </Sheet>
     );
 }

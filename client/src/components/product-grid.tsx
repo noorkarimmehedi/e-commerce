@@ -2,20 +2,18 @@ import { motion } from "framer-motion";
 import { useLocation } from "wouter";
 
 // Import images
-import imgNoir from "@assets/image_1768632448516.png";
-import imgSherwani from "@assets/image_1768632387917.png";
-import imgCrimson from "@assets/image_1768632401640.png";
-import imgSilk from "@assets/image_1768632422582.png";
-import imgBridal from "@assets/image_1768632436038.png";
-import imgEarth from "@assets/image_1768632360954.png";
+import makeupPen from "@assets/makeup_pen_4_in_1.png";
+import tintBordeaux from "@assets/peptide_lip_tint_bordeaux.png";
+import tintPlum from "@assets/peptide_lip_tint_plum.png";
+import tintRose from "@assets/peptide_lip_tint_rosy.png";
+import tintMauve from "@assets/peptide_lip_tint_mauve.png";
 
 const products = [
-  { id: 1, title: "Noir Kurta", price: "BDT 45,000", image: imgNoir },
-  { id: 2, title: "Sherwani", price: "BDT 120,000", image: imgSherwani },
-  { id: 3, title: "Crimson", price: "BDT 89,000", image: imgCrimson },
-  { id: 4, title: "Silk Blend", price: "BDT 65,000", image: imgSilk },
-  { id: 5, title: "Bridal", price: "Enquiry", image: imgBridal },
-  { id: 6, title: "Earth Classic", price: "BDT 52,000", image: imgEarth }
+  { id: 1, title: "4-in-1 Makeup Pen", price: "৳999", image: makeupPen, type: "Makeup Essential" },
+  { id: 2, title: "Bordeaux", price: "৳799", image: tintBordeaux, type: "Peptide Lip Tint" },
+  { id: 3, title: "Plum Veil", price: "৳799", image: tintPlum, type: "Peptide Lip Tint" },
+  { id: 4, title: "Rosy Bloom", price: "৳799", image: tintRose, type: "Peptide Lip Tint" },
+  { id: 5, title: "Mauve Nude", price: "৳799", image: tintMauve, type: "Peptide Lip Tint" }
 ];
 
 export default function ProductGrid() {
@@ -31,12 +29,12 @@ export default function ProductGrid() {
             Archive 2026
           </span>
           <h2 className="text-[2.2rem] md:text-7xl font-display font-light uppercase tracking-tight leading-none">
-            Selected <span className="font-bold">Works</span>
+            Selected <span className="font-bold">Products</span>
           </h2>
         </div>
         <div className="flex gap-10 text-[9px] uppercase tracking-[0.3em] font-bold opacity-25 mb-1">
           <span>Vol. 01</span>
-          <span>Studio Collection</span>
+          <span>Everyday Edit</span>
         </div>
       </div>
 
@@ -62,20 +60,17 @@ export default function ProductGrid() {
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: i * 0.1 }}
             onClick={() => setLocation(`/product/${p.id}`)}
-            className="group flex flex-col cursor-pointer bg-brand-ivory"
+            className="group flex cursor-pointer flex-col bg-brand-ivory"
           >
             {/* Image */}
-            <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100">
+            <div className="relative aspect-[3/4] overflow-hidden bg-[#f2f1f0]">
               <img
                 src={p.image}
-                className="w-full h-full object-cover grayscale brightness-95 transition-all duration-1000 group-hover:grayscale-0 group-hover:scale-105"
+                className="h-full w-full object-contain p-8 mix-blend-multiply transition-transform duration-1000 group-hover:scale-105 md:p-12"
                 alt={p.title}
               />
-              {/* Subtle gradient on hover */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-              {/* View label */}
-              <div className="absolute bottom-3 right-3 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-1 group-hover:translate-y-0">
-                <span className="text-[7px] md:text-[8px] text-white uppercase tracking-[0.4em] font-medium bg-black/50 backdrop-blur-sm px-2.5 py-1">
+              <div className="absolute bottom-3 right-3 opacity-0 transition-all duration-500 translate-y-1 group-hover:translate-y-0 group-hover:opacity-100">
+                <span className="bg-black/70 px-2.5 py-1 text-[7px] uppercase tracking-[0.4em] font-medium text-white backdrop-blur-sm md:text-[8px]">
                   View
                 </span>
               </div>
@@ -91,7 +86,7 @@ export default function ProductGrid() {
                   {p.price}
                 </span>
                 <span className="text-[7px] md:text-[9px] uppercase tracking-[0.35em] font-medium opacity-20">
-                  Bespoke
+                  {p.type}
                 </span>
               </div>
             </div>
