@@ -45,7 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 w-full border-b border-black/5 bg-brand-ivory/80 backdrop-blur-md transition-all duration-300">
         <div className="bg-[#f2f1f0] border-b border-black/5 px-4 md:px-16">
-          <div className="mx-auto flex h-9 max-w-[1440px] items-center justify-center md:justify-between">
+          <div className="mx-auto flex h-6 max-w-[1440px] items-center justify-center md:h-9 md:justify-between">
             <div className="hidden md:flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-black/45">
               <span>Seraphine Dispatch</span>
               <span className="h-px w-10 bg-black/15" />
@@ -59,7 +59,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   animate={{ opacity: 1, y: "-50%" }}
                   exit={{ opacity: 0, y: "-80%" }}
                   transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-x-0 top-1/2 text-center text-[8px] uppercase tracking-[0.18em] md:text-[9px] md:tracking-[0.5em] font-medium text-black/65"
+                  className="absolute inset-x-0 top-1/2 text-center text-[7px] uppercase tracking-[0.16em] md:text-[9px] md:tracking-[0.5em] font-medium text-black/65"
                 >
                   {announcements[announcementIndex]}
                 </motion.p>
@@ -72,7 +72,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </div>
           </div>
         </div>
-        <div className="flex h-20 md:h-24 items-center justify-between px-4 md:px-16">
+        <div className="flex h-14 items-center justify-between px-4 md:h-24 md:px-16">
           <div className="flex-1 flex items-center justify-start">
             <div className="hidden md:flex items-center gap-10 text-[10px] uppercase tracking-[0.3em] font-medium opacity-70">
               <Link href="/collection"><a className="hover:text-brand-gold transition-colors">Collection</a></Link>
@@ -82,8 +82,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="md:hidden">
               <Sheet open={isOpen} onOpenChange={setIsOpen}>
                 <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="group rounded-none w-auto h-12 flex items-center justify-center px-0">
-                    <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70 group-hover:opacity-100 transition-opacity">Menu</span>
+                  <Button variant="ghost" size="icon" className="group flex h-9 w-auto items-center justify-center rounded-none px-0 md:h-12">
+                    <span className="text-[9px] uppercase tracking-[0.24em] font-bold opacity-70 transition-opacity group-hover:opacity-100">Menu</span>
                   </Button>
                 </SheetTrigger>
                 <SheetContent side="left" className="top-0 bottom-0 w-full h-screen max-h-screen bg-brand-ivory border-none p-0 overflow-hidden supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh [&>button]:hidden">
@@ -158,7 +158,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           <div className="flex items-center justify-center">
             <Link href="/">
-              <a className="text-2xl md:text-4xl font-display font-light uppercase tracking-[0.1em] text-black">
+              <a className="text-xl font-display font-light uppercase tracking-[0.12em] text-black md:text-4xl md:tracking-[0.1em]">
                 Seraphine
               </a>
             </Link>
@@ -169,9 +169,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Button
               variant="ghost"
               onClick={() => setCartOpen(true)}
-              className="h-12 px-3 flex items-center justify-center rounded-none group hover:bg-transparent relative"
+              className="group relative flex h-9 items-center justify-center rounded-none px-2 hover:bg-transparent md:h-12 md:px-3"
             >
-              <span className="text-[10px] uppercase tracking-[0.3em] font-bold opacity-70 group-hover:opacity-100 transition-opacity">
+              <span className="text-[9px] uppercase tracking-[0.24em] font-bold opacity-70 transition-opacity group-hover:opacity-100 md:text-[10px] md:tracking-[0.3em]">
                 Cart
               </span>
               {itemCount > 0 && (
