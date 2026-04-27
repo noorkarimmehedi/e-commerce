@@ -43,7 +43,7 @@ export const Component = () => {
   const duplicatedImages = [...images, ...images];
 
   return (
-    <section className="relative w-full overflow-hidden border-y border-black/10 bg-brand-ivory py-14 md:py-24">
+    <section className="relative w-full overflow-hidden border-y border-black/10 bg-brand-ivory pt-14 pb-0 md:pt-24 md:pb-0">
       <div className="mx-auto flex max-w-[1440px] items-end justify-between gap-8 px-4 pb-10 md:px-16">
         <div className="flex items-center gap-4 text-[9px] font-bold uppercase tracking-[0.45em] text-brand-gold">
           <span>Peptide Tint</span>

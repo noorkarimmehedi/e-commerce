@@ -27,7 +27,7 @@ const REEL_VIDEOS = [
 
 export default function VideoReel() {
     return (
-        <section className="bg-brand-ivory pt-24 pb-10 md:py-48 flex flex-col overflow-hidden">
+        <section className="bg-brand-ivory pt-0 pb-10 md:pt-0 md:pb-48 flex flex-col overflow-hidden">
             <div className="w-full max-w-[1440px] mx-auto px-4 md:px-16 mb-16 md:mb-24">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
