@@ -14,7 +14,7 @@ export default function Hero() {
         <picture className="block h-full w-full">
           <source media="(min-width: 768px)" srcSet="/hero_desktop.png" />
           <img
-            src="/hero_mobile.png"
+            src="/hero_mobile_no_makeup.png"
             className="h-full w-full scale-110 object-cover brightness-75 contrast-105 md:scale-100"
             alt="Luxury Couture"
           />
@@ -31,14 +31,14 @@ export default function Hero() {
           className="max-w-4xl"
         >
           <span className="text-[10px] md:text-xs uppercase tracking-[0.5em] font-medium text-white/80 mb-6 block">
-            Seraphine Studio • Collection 2026
+            Seraphine Studio • Everyday Beauty
           </span>
           <h1 className="text-[12vw] md:text-[7vw] font-display font-light text-white leading-[0.9] tracking-tight uppercase mb-8">
-            Majestic <span className="font-bold">Elegance</span>
+            No Makeup <span className="font-bold">Look</span>
           </h1>
           <div className="w-24 h-px bg-brand-gold mx-auto mb-8" />
           <p className="text-sm md:text-base uppercase tracking-[0.2em] text-white/90 max-w-lg mx-auto leading-relaxed font-light">
-            Swiss modernist principles applied to contemporary luxury couture.
+            4-in-1 makeup pen and peptide lip tint for soft, effortless glow.
           </p>
         </motion.div>
 

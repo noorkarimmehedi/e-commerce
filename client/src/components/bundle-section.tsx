@@ -446,7 +446,7 @@ export default function BundleSection() {
                           </div>
                         </div>
                       )}
-                      <div className="flex flex-col justify-between gap-5">
+                      <div className="flex flex-col justify-center gap-5">
                         <div>
                           <span className="mb-2 block text-[9px] uppercase tracking-[0.35em] font-bold text-brand-gold">
                             Selected Bundle
@@ -457,14 +457,6 @@ export default function BundleSection() {
                           <p className="mt-2 text-[10px] uppercase tracking-[0.25em] leading-5 text-black/45">
                             {selectedBundle.details}
                           </p>
-                        </div>
-                        <div className="flex items-end justify-between border-t border-black/10 pt-4">
-                          <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/35">
-                            Total
-                          </span>
-                          <span className="font-garet text-3xl font-bold">
-                            ৳{(selectedBundle.price + deliveryCharge).toLocaleString()}
-                          </span>
                         </div>
                       </div>
                     </div>
@@ -549,6 +541,14 @@ export default function BundleSection() {
                       <div className="mt-3 flex justify-between text-[10px] uppercase tracking-[0.3em] text-black/45">
                         <span>Delivery</span>
                         <span className="font-garet font-bold">৳{deliveryCharge}</span>
+                      </div>
+                      <div className="mt-4 flex items-end justify-between border-t border-black/10 pt-4">
+                        <span className="text-[10px] uppercase tracking-[0.35em] font-bold text-black">
+                          Total
+                        </span>
+                        <span className="font-garet text-3xl font-bold text-black">
+                          ৳{(selectedBundle.price + deliveryCharge).toLocaleString()}
+                        </span>
                       </div>
                     </div>
 
