@@ -35,10 +35,14 @@ export async function insertSupabaseOrder(order: OrderRequest) {
   const now = new Date().toISOString();
   const payload = {
     ref: orderRef,
+    order_number: orderRef,
     customer_name: order.customerName,
     phone: order.phone,
     address: order.address,
     destination: order.address,
+    product: order.bundleTitle,
+    quantity: 1,
+    price: order.bundlePrice,
     merchandise: order.bundleDetails,
     value: total,
     status: "confirmed",
