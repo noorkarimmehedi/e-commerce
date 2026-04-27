@@ -45,7 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Navigation */}
       <nav className="sticky top-0 z-50 w-full border-b border-black/5 bg-brand-ivory/80 backdrop-blur-md transition-all duration-300">
         <div className="bg-[#f2f1f0] border-b border-black/5 px-4 md:px-16">
-          <div className="mx-auto flex h-6 max-w-[1440px] items-center justify-center md:h-9 md:justify-between">
+          <div className="mx-auto flex h-9 max-w-[1440px] items-center justify-center md:justify-between">
             <div className="hidden md:flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-black/45">
               <span>Seraphine Dispatch</span>
               <span className="h-px w-10 bg-black/15" />
@@ -59,7 +59,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                   animate={{ opacity: 1, y: "-50%" }}
                   exit={{ opacity: 0, y: "-80%" }}
                   transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-x-0 top-1/2 text-center text-[7px] uppercase tracking-[0.16em] md:text-[9px] md:tracking-[0.5em] font-medium text-black/65"
+                  className="absolute inset-x-0 top-1/2 text-center text-[8px] uppercase tracking-[0.18em] md:text-[9px] md:tracking-[0.5em] font-medium text-black/65"
                 >
                   {announcements[announcementIndex]}
                 </motion.p>
