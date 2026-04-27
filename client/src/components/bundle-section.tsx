@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
+import { apiRequest } from "@/lib/queryClient";
 import {
   Dialog,
   DialogContent,
@@ -38,17 +39,53 @@ export default function BundleSection() {
   } | null>(null);
   const [deliveryCharge, setDeliveryCharge] = useState(deliveryOptions[0].charge);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
+  const [orderSubmitting, setOrderSubmitting] = useState(false);
+  const [orderError, setOrderError] = useState("");
+  const [orderRef, setOrderRef] = useState("");
 
   const openOrderForm = (bundle: NonNullable<typeof selectedBundle>) => {
     setSelectedBundle(bundle);
     setDeliveryCharge(deliveryOptions[0].charge);
     setOrderSubmitted(false);
+    setOrderSubmitting(false);
+    setOrderError("");
+    setOrderRef("");
     setOrderOpen(true);
   };
 
-  const placeOrder = (event: React.FormEvent<HTMLFormElement>) => {
+  const placeOrder = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setOrderSubmitted(true);
+
+    if (!selectedBundle) {
+      return;
+    }
+
+    const formData = new FormData(event.currentTarget);
+    setOrderSubmitting(true);
+    setOrderError("");
+
+    try {
+      const response = await apiRequest("POST", "/api/orders", {
+        bundleTitle: selectedBundle.title,
+        bundleDetails: selectedBundle.details,
+        bundlePrice: selectedBundle.price,
+        deliveryCharge,
+        customerName: String(formData.get("name") || ""),
+        phone: String(formData.get("phone") || ""),
+        address: String(formData.get("address") || ""),
+      });
+      const result = await response.json();
+      setOrderRef(result.orderRef || "");
+      setOrderSubmitted(true);
+    } catch (error) {
+      setOrderError(
+        error instanceof Error
+          ? error.message
+          : "Could not place your order. Please try again.",
+      );
+    } finally {
+      setOrderSubmitting(false);
+    }
   };
 
   return (
@@ -354,6 +391,11 @@ export default function BundleSection() {
                     <p className="mx-auto mt-5 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-black/45">
                       Our studio team will contact you shortly to confirm delivery and payment.
                     </p>
+                    {orderRef && (
+                      <p className="mx-auto mt-4 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-brand-gold">
+                        Reference {orderRef}
+                      </p>
+                    )}
                     <Button
                       onClick={() => setOrderOpen(false)}
                       className="mt-10 h-12 rounded-none bg-black px-10 text-[10px] uppercase tracking-[0.35em] text-white hover:bg-brand-gold"
@@ -466,6 +508,12 @@ export default function BundleSection() {
                       />
                     </label>
 
+                    {orderError && (
+                      <div className="border border-red-500/30 bg-red-50 px-4 py-3 text-[10px] uppercase tracking-[0.22em] leading-5 text-red-700">
+                        {orderError}
+                      </div>
+                    )}
+
                     <div className="grid gap-3">
                       <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
                         Delivery Charge
@@ -504,8 +552,11 @@ export default function BundleSection() {
                       </div>
                     </div>
 
-                    <Button className="h-14 w-full rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all">
-                      Place Order
+                    <Button
+                      disabled={orderSubmitting}
+                      className="h-14 w-full rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all disabled:cursor-not-allowed disabled:opacity-60"
+                    >
+                      {orderSubmitting ? "Placing Order..." : "Place Order"}
                     </Button>
                   </form>
                 )}
