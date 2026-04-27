@@ -133,22 +133,25 @@ export default function BundleSection() {
                     {lipTints.map((tint) => (
                       <button
                         key={tint.name}
+                        type="button"
                         onClick={() => setSelectedTint(tint)}
-                        className={`group border p-3 text-left transition-all ${
+                        className={`group flex min-h-16 items-center gap-2.5 border px-2.5 py-2 text-left transition-all md:block md:min-h-0 md:p-3 ${
                           selectedTint.name === tint.name
                             ? "border-black bg-white"
                             : "border-black/10 bg-transparent hover:border-black/30"
                         }`}
                       >
                         <span
-                          className="mb-4 block h-5 w-5 rounded-full border border-black/10"
+                          className="block h-7 w-7 shrink-0 rounded-full border border-black/10 md:mb-4 md:h-5 md:w-5"
                           style={{ backgroundColor: tint.swatch }}
                         />
-                        <span className="block text-[10px] uppercase tracking-[0.25em] font-bold text-black">
-                          {tint.name}
-                        </span>
-                        <span className="mt-1 block text-[8px] uppercase tracking-[0.25em] font-medium text-black/35">
-                          {tint.tone}
+                        <span className="min-w-0">
+                          <span className="block text-[9px] uppercase tracking-[0.18em] font-bold leading-tight text-black md:text-[10px] md:tracking-[0.25em]">
+                            {tint.name}
+                          </span>
+                          <span className="mt-1 block text-[8px] uppercase tracking-[0.18em] font-medium leading-tight text-black/45 md:tracking-[0.25em] md:text-black/35">
+                            {tint.tone}
+                          </span>
                         </span>
                       </button>
                     ))}
