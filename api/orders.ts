@@ -88,6 +88,7 @@ async function insertSupabaseOrder(order: OrderRequest) {
     ref: orderRef,
     customer_name: order.customerName,
     phone: order.phone,
+    address: order.address,
     destination: order.address,
     merchandise: order.bundleDetails,
     value: total,
