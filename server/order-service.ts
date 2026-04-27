@@ -40,7 +40,7 @@ export async function insertSupabaseOrder(order: OrderRequest) {
     phone: order.phone,
     address: order.address,
     destination: order.address,
-    product: order.bundleTitle,
+    product: order.bundleDetails,
     quantity: 1,
     price: order.bundlePrice,
     merchandise: order.bundleDetails,

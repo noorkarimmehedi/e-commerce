@@ -199,8 +199,8 @@ export default function BundleSection() {
               <Button
                 onClick={() =>
                   openOrderForm({
-                    title: "The Everyday Edit - Classic",
-                    details: `Makeup Pen + ${selectedTint.name} Lip Tint`,
+                    title: "Makeup Pen + 1 Lip Tint",
+                    details: `Makeup Pen + 1 Lip Tint (${selectedTint.name})`,
                     price: 1499,
                     images: [
                       { src: makeupPen, alt: "4-in-1 Makeup Pen" },
@@ -295,8 +295,8 @@ export default function BundleSection() {
               <Button
                 onClick={() =>
                   openOrderForm({
-                    title: "The Everyday Edit - Quad",
-                    details: "Makeup Pen + All 4 Lip Tints",
+                    title: "Makeup Pen + 4 Lip Tints",
+                    details: `Makeup Pen + 4 Lip Tints (${lipTints.map((tint) => tint.name).join(", ")})`,
                     price: 2499,
                     images: [
                       { src: makeupPen, alt: "4-in-1 Makeup Pen" },
@@ -386,14 +386,14 @@ export default function BundleSection() {
                   <div className="py-16 text-center">
                     <span className="mx-auto mb-8 block h-px w-20 bg-brand-gold" />
                     <h3 className="font-display text-3xl font-light uppercase tracking-tight">
-                      Order Request Received
+                      Order Placed Successfully
                     </h3>
                     <p className="mx-auto mt-5 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-black/45">
-                      Our studio team will contact you shortly to confirm delivery and payment.
+                      Thanks for your order. We’ll contact you shortly with delivery and payment details.
                     </p>
                     {orderRef && (
                       <p className="mx-auto mt-4 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-brand-gold">
-                        Reference {orderRef}
+                        Order Reference {orderRef}
                       </p>
                     )}
                     <Button
