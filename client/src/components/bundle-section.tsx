@@ -31,12 +31,14 @@ const deliveryOptions = [
 export default function BundleSection() {
   const [selectedTint, setSelectedTint] = useState(lipTints[0]);
   const [orderOpen, setOrderOpen] = useState(false);
+  const [orderOpenInstance, setOrderOpenInstance] = useState(0);
   const [selectedBundle, setSelectedBundle] = useState<{
     title: string;
     details: string;
     price: number;
     images: { src: string; alt: string }[];
   } | null>(null);
+  const [orderClosing, setOrderClosing] = useState(false);
   const [deliveryCharge, setDeliveryCharge] = useState(deliveryOptions[0].charge);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [orderSubmitting, setOrderSubmitting] = useState(false);
@@ -44,13 +46,26 @@ export default function BundleSection() {
   const [orderRef, setOrderRef] = useState("");
 
   const openOrderForm = (bundle: NonNullable<typeof selectedBundle>) => {
+    setOrderOpenInstance((current) => current + 1);
     setSelectedBundle(bundle);
     setDeliveryCharge(deliveryOptions[0].charge);
     setOrderSubmitted(false);
     setOrderSubmitting(false);
     setOrderError("");
     setOrderRef("");
+    setOrderClosing(false);
     setOrderOpen(true);
+  };
+
+  const updateOrderOpen = (nextOpen: boolean) => {
+    if (nextOpen) {
+      setOrderClosing(false);
+      setOrderOpen(true);
+      return;
+    }
+
+    setOrderClosing(true);
+    setOrderOpen(false);
   };
 
   const placeOrder = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -89,7 +104,7 @@ export default function BundleSection() {
   };
 
   return (
-    <section id="bundles" className="scroll-mt-24 bg-[#f2f1f0] border-y border-black/5 px-4 pt-8 pb-20 md:px-16 md:pt-14 md:pb-32 overflow-hidden">
+    <section id="bundles" className="scroll-mt-24 bg-[#f2f1f0] border-y border-black/5 px-4 pt-8 pb-10 md:px-16 md:pt-14 md:pb-16 overflow-hidden">
       <div className="mx-auto max-w-[1440px]">
         <div className="grid gap-8 border-y border-black/10 py-8 md:grid-cols-[1fr_auto_1fr] md:items-end md:gap-10 md:py-10">
           <div className="flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-brand-gold">
@@ -316,21 +331,37 @@ export default function BundleSection() {
         </div>
       </div>
 
-      <Dialog open={orderOpen} onOpenChange={setOrderOpen}>
-        <AnimatePresence>
-          {orderOpen && selectedBundle && (
-            <DialogContent
-              forceMount
-              onOpenAutoFocus={(event) => event.preventDefault()}
-              className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[900px] [&>button]:rounded-none [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
+      <Dialog open={orderOpen || orderClosing} onOpenChange={updateOrderOpen}>
+        {(orderOpen || orderClosing) && selectedBundle && (
+          <DialogContent
+            forceMount
+            onOpenAutoFocus={(event) => event.preventDefault()}
+            className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[900px] [&>button]:rounded-none [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
+          >
+            <AnimatePresence
+              initial={true}
+              onExitComplete={() => setOrderClosing(false)}
             >
-            <motion.div
-              initial={{ opacity: 0, y: 24, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 18, scale: 0.98 }}
-              transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
-              className="grid md:grid-cols-[0.86fr_1.14fr]"
-            >
+              {orderOpen && (
+                <motion.div
+                  key={orderOpenInstance}
+                  initial={{ opacity: 0, y: 48, scale: 0.96, filter: "blur(6px)" }}
+                  animate={{
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: "blur(0px)",
+                    transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] },
+                  }}
+                  exit={{
+                    opacity: 0,
+                    y: 48,
+                    scale: 0.96,
+                    filter: "blur(6px)",
+                    transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
+                  }}
+                  className="grid min-h-full bg-[#f2f1f0] md:min-h-0 md:grid-cols-[0.86fr_1.14fr]"
+                >
               <div className="relative hidden bg-[#e7e3df] p-10 md:block">
                 <div className="absolute inset-6 border border-black/10" />
                 {selectedBundle.images.length > 2 ? (
@@ -409,7 +440,7 @@ export default function BundleSection() {
                       </motion.p>
                     )}
                     <Button
-                      onClick={() => setOrderOpen(false)}
+                      onClick={() => updateOrderOpen(false)}
                       className="mt-10 h-12 rounded-none bg-black px-10 text-[10px] uppercase tracking-[0.35em] text-white hover:bg-brand-gold"
                     >
                       Close
@@ -573,10 +604,11 @@ export default function BundleSection() {
                   </form>
                 )}
               </div>
-            </motion.div>
-            </DialogContent>
-          )}
-        </AnimatePresence>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </DialogContent>
+        )}
       </Dialog>
     </section>
   );

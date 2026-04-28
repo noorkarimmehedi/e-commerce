@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
@@ -33,21 +33,36 @@ export default function OrderDialog({
   bundle: OrderDialogBundle | null;
   onSuccess?: () => void;
 }) {
+  const [openInstance, setOpenInstance] = useState(0);
   const [deliveryCharge, setDeliveryCharge] = useState(deliveryOptions[0].charge);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [orderSubmitting, setOrderSubmitting] = useState(false);
   const [orderError, setOrderError] = useState("");
   const [orderRef, setOrderRef] = useState("");
+  const [orderClosing, setOrderClosing] = useState(false);
+  const previousOpen = useRef(open);
+
+  useEffect(() => {
+    if (!previousOpen.current && open) {
+      setOpenInstance((current) => current + 1);
+    }
+    previousOpen.current = open;
+  }, [open]);
 
   const resetDialog = (nextOpen: boolean) => {
-    onOpenChange(nextOpen);
-    if (nextOpen) {
-      setDeliveryCharge(deliveryOptions[0].charge);
-      setOrderSubmitted(false);
-      setOrderSubmitting(false);
-      setOrderError("");
-      setOrderRef("");
+    if (!nextOpen) {
+      setOrderClosing(true);
+      onOpenChange(false);
+      return;
     }
+
+    setOrderClosing(false);
+    onOpenChange(nextOpen);
+    setDeliveryCharge(deliveryOptions[0].charge);
+    setOrderSubmitted(false);
+    setOrderSubmitting(false);
+    setOrderError("");
+    setOrderRef("");
   };
 
   const placeOrder = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -87,21 +102,37 @@ export default function OrderDialog({
   };
 
   return (
-    <Dialog open={open} onOpenChange={resetDialog}>
-      <AnimatePresence>
-        {open && bundle && (
-          <DialogContent
-            forceMount
-            onOpenAutoFocus={(event) => event.preventDefault()}
-            className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[760px] [&>button]:rounded-none [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
+    <Dialog open={open || orderClosing} onOpenChange={resetDialog}>
+      {(open || orderClosing) && bundle && (
+        <DialogContent
+          forceMount
+          onOpenAutoFocus={(event) => event.preventDefault()}
+          className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[760px] [&>button]:rounded-none [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
+        >
+          <AnimatePresence
+            initial={true}
+            onExitComplete={() => setOrderClosing(false)}
           >
-            <motion.div
-              initial={{ opacity: 0, y: 24, scale: 0.97 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: 18, scale: 0.98 }}
-              transition={{ duration: 0.58, ease: [0.22, 1, 0.36, 1] }}
-              className="p-6 md:p-10"
-            >
+            {open && (
+              <motion.div
+                key={openInstance}
+                initial={{ opacity: 0, y: 48, scale: 0.96, filter: "blur(6px)" }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  filter: "blur(0px)",
+                  transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] },
+                }}
+                exit={{
+                  opacity: 0,
+                  y: 48,
+                  scale: 0.96,
+                  filter: "blur(6px)",
+                  transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
+                }}
+                className="min-h-full bg-[#f2f1f0] p-6 md:min-h-0 md:p-10"
+              >
               <DialogHeader className="items-center border-b border-black/10 pb-6 text-center">
                 <DialogDescription className="text-[9px] uppercase tracking-[0.5em] font-bold text-brand-gold">
                   Secure Order Request
@@ -258,10 +289,11 @@ export default function OrderDialog({
                   </Button>
                 </form>
               )}
-            </motion.div>
-          </DialogContent>
-        )}
-      </AnimatePresence>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </DialogContent>
+      )}
     </Dialog>
   );
 }

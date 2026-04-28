@@ -159,7 +159,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center justify-center">
             <Link href="/">
               <a className="flex flex-col items-center text-black">
-                <span className="font-garet text-xl font-bold uppercase tracking-[0.34em] md:text-4xl md:tracking-[0.28em]">
+                <span className="font-display text-2xl font-medium uppercase tracking-[0.36em] text-black md:text-4xl md:tracking-[0.32em]">
                   Seraphine
                 </span>
                 <span className="mt-0.5 text-[7px] uppercase tracking-[0.35em] font-bold text-black/45 md:mt-1 md:text-[8px] md:tracking-[0.45em]">
