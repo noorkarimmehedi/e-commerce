@@ -23,7 +23,7 @@ export default function ProductGrid() {
     <section className="bg-brand-ivory">
 
       {/* ── Section Header ─────────────────────────────────── */}
-      <div className="px-5 md:px-16 pt-14 md:pt-24 pb-8 md:pb-14 flex flex-col md:flex-row justify-between items-end gap-4 md:gap-8">
+      <div className="px-5 md:px-16 pt-2 md:pt-4 pb-8 md:pb-14 flex flex-col md:flex-row justify-between items-end gap-4 md:gap-8">
         <div>
           <span className="text-[9px] uppercase tracking-[0.55em] font-medium text-brand-gold mb-3 block">
             Archive 2026

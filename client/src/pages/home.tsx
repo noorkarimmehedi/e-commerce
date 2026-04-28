@@ -14,8 +14,8 @@ export default function Home() {
     <Layout>
       <Hero />
       <ImageAutoSlider />
-      <VideoReel />
       <BundleSection />
+      <VideoReel />
 
       {/* Brand Manifesto */}
       <section className="bg-brand-ivory pt-12 pb-12 md:pt-36 md:pb-20 px-8 md:px-16 overflow-hidden">
@@ -40,8 +40,8 @@ export default function Home() {
         </motion.div>
       </section>
 
-      <ProductGrid />
       <BookingSection />
+      <ProductGrid />
       <CustomerReviews />
       <Categories />
     </Layout>

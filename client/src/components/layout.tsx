@@ -159,7 +159,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center justify-center">
             <Link href="/">
               <a className="flex flex-col items-center text-black">
-                <span className="text-xl font-display font-light uppercase tracking-[0.22em] md:text-4xl md:tracking-[0.18em]">
+                <span className="font-garet text-xl font-bold uppercase tracking-[0.34em] md:text-4xl md:tracking-[0.28em]">
                   Seraphine
                 </span>
                 <span className="mt-0.5 text-[7px] uppercase tracking-[0.35em] font-bold text-black/45 md:mt-1 md:text-[8px] md:tracking-[0.45em]">
@@ -272,8 +272,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Massive Logo Section */}
-        <div className="border-t border-black/5 pt-12 pb-2 overflow-hidden relative group cursor-default">
-          <h2 className="text-[25vw] font-display font-light uppercase tracking-tighter leading-[0.7] text-center text-black/5 select-none transition-all duration-1000 group-hover:text-brand-gold/10 group-hover:tracking-[0.1em]">
+        <div className="border-t border-black/5 px-3 pt-10 pb-5 md:px-0 md:pt-12 md:pb-2 overflow-hidden relative group cursor-default">
+          <h2 className="text-[18vw] md:text-[25vw] font-display font-light uppercase tracking-normal md:tracking-tighter leading-none md:leading-[0.7] text-center text-black/5 select-none transition-all duration-1000 md:group-hover:text-brand-gold/10 md:group-hover:tracking-[0.1em]">
             Seraphine
           </h2>
         </div>
