@@ -20,7 +20,9 @@ export function initMetaPixel() {
   (function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
     if (f.fbq) return;
     n = f.fbq = function () {
-      (n.callMethod ? n.callMethod : n.queue).apply(n, arguments);
+      // Match Meta's official snippet: queue calls until script loads.
+      // Important: use n.queue.push (not n.queue) to avoid runtime crashes.
+      (n.callMethod ? n.callMethod : n.queue.push).apply(n, arguments);
     };
     if (!f._fbq) f._fbq = n;
     n.push = n;
@@ -34,8 +36,12 @@ export function initMetaPixel() {
     s.parentNode.insertBefore(t, s);
   })(window, document, "script", "https://connect.facebook.net/en_US/fbevents.js");
 
-  (window as any).fbq?.("init", pixelId);
-  (window as any).fbq?.("track", "PageView");
+  try {
+    (window as any).fbq?.("init", pixelId);
+    (window as any).fbq?.("track", "PageView");
+  } catch {
+    // If blocked by extensions/network, don't crash the app.
+  }
 }
 
 export function createEventId() {
