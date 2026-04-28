@@ -77,10 +77,24 @@ export const Component = () => {
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-[1440px] items-center justify-center px-4 pt-4 md:px-16 md:pt-6">
-        <div className="flex items-center gap-5 border border-black bg-black px-6 py-4 text-[10px] font-bold uppercase tracking-[0.34em] text-white shadow-[0_24px_70px_rgba(0,0,0,0.12)] md:gap-7 md:px-12 md:py-5 md:text-sm md:tracking-[0.42em]">
-          <Equal className="h-5 w-5 shrink-0 text-brand-gold stroke-[1.8px] md:h-6 md:w-6" />
-          <span>No Makeup Look</span>
+      <div className="pt-4 md:pt-6">
+        <div className="grid items-center border-y border-black bg-brand-ivory text-black md:grid-cols-[0.35fr_1fr_0.35fr]">
+          <div className="hidden h-full items-center justify-center border-r border-black/10 md:flex">
+            <span className="text-[9px] font-bold uppercase tracking-[0.45em] text-black/35">
+              Result
+            </span>
+          </div>
+          <div className="flex items-center justify-center gap-5 px-5 py-5 md:gap-8 md:px-10 md:py-7">
+            <Equal className="h-8 w-8 shrink-0 text-brand-gold stroke-[1.5px] md:h-10 md:w-10" />
+            <span className="font-display text-3xl font-bold uppercase leading-none tracking-tight md:text-6xl">
+              No Makeup Look
+            </span>
+          </div>
+          <div className="hidden h-full items-center justify-center border-l border-black/10 md:flex">
+            <span className="text-[9px] font-bold uppercase tracking-[0.45em] text-brand-gold">
+              Daily Edit
+            </span>
+          </div>
         </div>
       </div>
     </section>

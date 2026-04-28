@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useMotionValue } from "framer-motion";
 import { useEffect, useState } from "react";
 
 const HERO_IMAGES = [
@@ -26,6 +26,11 @@ const HERO_IMAGES = [
 
 export default function Hero() {
   const [activeImage, setActiveImage] = useState(0);
+  const dragX = useMotionValue(0);
+
+  const goToImage = (idx: number) => {
+    setActiveImage((idx + HERO_IMAGES.length) % HERO_IMAGES.length);
+  };
 
   useEffect(() => {
     const timer = window.setInterval(() => {
@@ -43,24 +48,41 @@ export default function Hero() {
         transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
         className="relative mx-auto aspect-square w-full max-w-[min(100%,780px)] overflow-hidden bg-[#f4efea] md:max-w-[min(100%,880px)]"
       >
-        {HERO_IMAGES.map((image, idx) => (
-          <motion.img
-            key={image.src}
-            src={image.src}
-            alt={image.alt}
-            aria-hidden="true"
-            initial={false}
-            animate={{
-              opacity: activeImage === idx ? 1 : 0,
-              scale: activeImage === idx ? 1 : 1.02,
-            }}
-            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
-            loading="eager"
-            className={`absolute inset-0 h-full w-full object-center brightness-95 contrast-105 ${
-              image.fit === "cover" ? "object-cover" : "object-contain"
-            }`}
-          />
-        ))}
+        <motion.div
+          className="flex h-full touch-pan-y cursor-grab active:cursor-grabbing"
+          style={{ x: dragX }}
+          animate={{ x: `-${activeImage * 100}%` }}
+          transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.18}
+          onDragEnd={(_, info) => {
+            const swipePower = Math.abs(info.offset.x) * info.velocity.x;
+
+            if (info.offset.x < -56 || swipePower < -8000) {
+              goToImage(activeImage + 1);
+            } else if (info.offset.x > 56 || swipePower > 8000) {
+              goToImage(activeImage - 1);
+            } else {
+              goToImage(activeImage);
+            }
+          }}
+        >
+          {HERO_IMAGES.map((image) => (
+            <div key={image.src} className="relative h-full w-full shrink-0">
+              <img
+                src={image.src}
+                alt={image.alt}
+                aria-hidden="true"
+                loading="eager"
+                draggable={false}
+                className={`absolute inset-0 h-full w-full select-none object-center brightness-95 contrast-105 ${
+                  image.fit === "cover" ? "object-cover" : "object-contain"
+                }`}
+              />
+            </div>
+          ))}
+        </motion.div>
         <div className="absolute inset-0 border border-black/10 pointer-events-none" />
         <div className="absolute inset-x-0 bottom-0 z-10 h-28 bg-gradient-to-t from-black/18 to-transparent pointer-events-none" />
 
@@ -70,7 +92,7 @@ export default function Hero() {
               <button
                 key={image.src}
                 type="button"
-                onClick={() => setActiveImage(idx)}
+                onClick={() => goToImage(idx)}
                 aria-label={`Show hero image ${idx + 1}`}
                 className="group flex h-5 w-5 items-center justify-center"
               >
