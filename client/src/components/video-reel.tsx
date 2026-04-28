@@ -66,10 +66,7 @@ export default function VideoReel() {
                 {REEL_VIDEOS.map((video, idx) => (
                     <motion.div
                         key={video.id}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ margin: "0px -100px" }}
-                        transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+                        initial={{ opacity: 1, scale: 1 }}
                         className="group relative aspect-[9/16] w-[78vw] max-w-[340px] shrink-0 snap-center sm:w-[46vw] md:w-full md:max-w-none"
                     >
                         <div className="mb-3 flex items-center justify-between border-t border-black/10 pt-2">
