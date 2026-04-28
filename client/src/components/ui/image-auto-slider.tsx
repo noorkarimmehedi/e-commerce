@@ -1,4 +1,5 @@
 import React from "react";
+import { Equal, Plus } from "lucide-react";
 
 const images = [
   {
@@ -43,12 +44,11 @@ export const Component = () => {
   const duplicatedImages = [...images, ...images];
 
   return (
-    <section className="relative w-full overflow-hidden border-y border-black/10 bg-brand-ivory pt-14 pb-0 md:pt-24 md:pb-0">
-      <div className="mx-auto flex max-w-[1440px] items-end justify-between gap-8 px-4 pb-10 md:px-16">
-        <div className="flex items-center gap-4 text-[9px] font-bold uppercase tracking-[0.45em] text-brand-gold">
-          <span>Peptide Tint</span>
-          <span className="h-px w-10 bg-black/15" />
-          <span>Gloss Study</span>
+    <section className="relative w-full overflow-hidden border-y border-black/10 bg-brand-ivory pt-3 pb-0 md:pt-8 md:pb-0">
+      <div className="mx-auto flex max-w-[1440px] items-end justify-center gap-8 px-4 pb-4 md:justify-between md:px-16 md:pb-6">
+        <div className="flex items-center gap-5 border border-black/15 bg-transparent px-5 py-3 text-[10px] font-bold uppercase tracking-[0.3em] text-black md:gap-7 md:px-8 md:py-4 md:text-xs md:tracking-[0.38em]">
+          <Plus className="h-5 w-5 shrink-0 text-brand-gold stroke-[1.8px]" />
+          <span>Peptide Lip Tint</span>
         </div>
         <div className="hidden items-center gap-4 text-[9px] font-bold uppercase tracking-[0.45em] text-black/35 md:flex">
           <span>Texture</span>
@@ -77,8 +77,11 @@ export const Component = () => {
         </div>
       </div>
 
-      <div className="mx-auto flex max-w-[1440px] items-center justify-center px-4 pt-10 md:px-16">
-        <span className="h-px w-20 bg-brand-gold" />
+      <div className="mx-auto flex max-w-[1440px] items-center justify-center px-4 pt-4 md:px-16 md:pt-6">
+        <div className="flex items-center gap-5 border border-black bg-black px-6 py-4 text-[10px] font-bold uppercase tracking-[0.34em] text-white shadow-[0_24px_70px_rgba(0,0,0,0.12)] md:gap-7 md:px-12 md:py-5 md:text-sm md:tracking-[0.42em]">
+          <Equal className="h-5 w-5 shrink-0 text-brand-gold stroke-[1.8px] md:h-6 md:w-6" />
+          <span>No Makeup Look</span>
+        </div>
       </div>
     </section>
   );
