@@ -20,9 +20,11 @@ export function initMetaPixel() {
   (function (f: any, b: any, e: any, v: any, n?: any, t?: any, s?: any) {
     if (f.fbq) return;
     n = f.fbq = function () {
-      // Match Meta's official snippet: queue calls until script loads.
-      // Important: use n.queue.push (not n.queue) to avoid runtime crashes.
-      (n.callMethod ? n.callMethod : n.queue.push).apply(n, arguments);
+      // Canonical behavior:
+      // - If the real pixel library is loaded, callMethod exists → forward call.
+      // - Otherwise queue the arguments until the script loads.
+      if (n.callMethod) return n.callMethod.apply(n, arguments);
+      return n.queue.push(arguments);
     };
     if (!f._fbq) f._fbq = n;
     n.push = n;
