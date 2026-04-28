@@ -8,6 +8,7 @@ type OrderRequest = {
   customerName: string;
   phone: string;
   address: string;
+  metaEventId?: string;
 };
 
 async function readBody(req: IncomingMessage & { body?: unknown }) {
@@ -37,6 +38,7 @@ function validateOrder(body: unknown): OrderRequest {
   const customerName = String(order.customerName || "").trim();
   const phone = String(order.phone || "").trim();
   const address = String(order.address || "").trim();
+  const metaEventId = typeof order.metaEventId === "string" ? order.metaEventId.trim() : "";
 
   if (
     !bundleTitle ||
@@ -60,6 +62,7 @@ function validateOrder(body: unknown): OrderRequest {
     customerName,
     phone,
     address,
+    ...(metaEventId ? { metaEventId } : {}),
   };
 }
 
@@ -125,6 +128,36 @@ async function insertSupabaseOrder(order: OrderRequest) {
   return { orderRef, order: rows?.[0] ?? payload };
 }
 
+async function sendPurchaseCapi(opts: {
+  order: OrderRequest;
+  orderRef: string;
+  total: number;
+  headers: Record<string, unknown>;
+}) {
+  const { getMetaUserDataFromRequest, sendMetaCapiEvent } = await import(
+    "../server/meta-capi"
+  );
+
+  const user_data = getMetaUserDataFromRequest({
+    headers: opts.headers,
+    phone: opts.order.phone,
+  });
+
+  await sendMetaCapiEvent({
+    event_name: "Purchase",
+    event_id: opts.order.metaEventId,
+    event_source_url: String(opts.headers["referer"] || ""),
+    user_data,
+    custom_data: {
+      currency: "BDT",
+      value: opts.total,
+      content_type: "product",
+      contents: [{ id: opts.order.bundleTitle, quantity: 1, item_price: opts.order.bundlePrice }],
+      order_id: opts.orderRef,
+    },
+  });
+}
+
 function sendJson(res: ServerResponse, statusCode: number, body: unknown) {
   res.statusCode = statusCode;
   res.setHeader("Content-Type", "application/json");
@@ -144,6 +177,18 @@ export default async function handler(
     const body = await readBody(req);
     const order = validateOrder(body);
     const result = await insertSupabaseOrder(order);
+    const total = order.bundlePrice + order.deliveryCharge;
+
+    // Fire-and-forget Purchase CAPI (do not block checkout).
+    void sendPurchaseCapi({
+      order,
+      orderRef: result.orderRef,
+      total,
+      headers: req.headers as unknown as Record<string, unknown>,
+    }).catch((error) => {
+      console.error("Meta Purchase CAPI failed:", error);
+    });
+
     sendJson(res, 201, result);
   } catch (error) {
     console.error("Order insert failed:", error);

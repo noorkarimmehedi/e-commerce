@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
+import { createEventId, trackMetaEvent } from "@/lib/meta";
 import {
   Dialog,
   DialogContent,
@@ -45,6 +46,21 @@ export default function OrderDialog({
   useEffect(() => {
     if (!previousOpen.current && open) {
       setOpenInstance((current) => current + 1);
+
+      const eventId = createEventId();
+      trackMetaEvent({
+        eventName: "InitiateCheckout",
+        eventId,
+        capi: true,
+        customData: {
+          currency: "BDT",
+          value: bundle?.price ?? 0,
+          content_type: "product",
+          contents: bundle
+            ? [{ id: bundle.title, quantity: 1, item_price: bundle.price }]
+            : [],
+        },
+      });
     }
     previousOpen.current = open;
   }, [open]);
@@ -73,6 +89,7 @@ export default function OrderDialog({
     }
 
     const formData = new FormData(event.currentTarget);
+    const eventId = createEventId();
     setOrderSubmitting(true);
     setOrderError("");
 
@@ -85,11 +102,24 @@ export default function OrderDialog({
         customerName: String(formData.get("name") || ""),
         phone: String(formData.get("phone") || ""),
         address: String(formData.get("address") || ""),
+        metaEventId: eventId,
       });
       const result = await response.json();
       setOrderRef(result.orderRef || "");
       setOrderSubmitted(true);
       onSuccess?.();
+
+      trackMetaEvent({
+        eventName: "Purchase",
+        eventId,
+        capi: false, // Purchase is sent server-side from /api/orders (for dedup)
+        customData: {
+          currency: "BDT",
+          value: bundle.price + deliveryCharge,
+          content_type: "product",
+          contents: [{ id: bundle.title, quantity: 1, item_price: bundle.price }],
+        },
+      });
     } catch (error) {
       setOrderError(
         error instanceof Error

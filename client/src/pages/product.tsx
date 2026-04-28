@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-context";
 import Layout from "@/components/layout";
 import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
+import { createEventId, trackMetaEvent } from "@/lib/meta";
 import makeupPen from "@assets/makeup_pen_4_in_1.png";
 import tintBordeaux from "@assets/peptide_lip_tint_bordeaux.png";
 import tintPlum from "@assets/peptide_lip_tint_plum.png";
@@ -28,6 +29,22 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [params.id]);
+
+  useEffect(() => {
+    const eventId = createEventId();
+    trackMetaEvent({
+      eventName: "ViewContent",
+      eventId,
+      capi: true,
+      customData: {
+        currency: "BDT",
+        value: product.amount,
+        content_type: "product",
+        content_ids: [String(product.id)],
+        contents: [{ id: String(product.id), quantity: 1, item_price: product.amount }],
+      },
+    });
+  }, [product.amount, product.id]);
 
   if (!product) return <div>Product not found</div>;
 

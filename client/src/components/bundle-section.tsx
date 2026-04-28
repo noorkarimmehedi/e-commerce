@@ -2,6 +2,7 @@ import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
+import { createEventId, trackMetaEvent } from "@/lib/meta";
 import {
   Dialog,
   DialogContent,
@@ -55,6 +56,19 @@ export default function BundleSection() {
     setOrderRef("");
     setOrderClosing(false);
     setOrderOpen(true);
+
+    const eventId = createEventId();
+    trackMetaEvent({
+      eventName: "InitiateCheckout",
+      eventId,
+      capi: true,
+      customData: {
+        currency: "BDT",
+        value: bundle.price,
+        content_type: "product",
+        contents: [{ id: bundle.title, quantity: 1, item_price: bundle.price }],
+      },
+    });
   };
 
   const updateOrderOpen = (nextOpen: boolean) => {
@@ -76,6 +90,7 @@ export default function BundleSection() {
     }
 
     const formData = new FormData(event.currentTarget);
+    const eventId = createEventId();
     setOrderSubmitting(true);
     setOrderError("");
 
@@ -88,10 +103,23 @@ export default function BundleSection() {
         customerName: String(formData.get("name") || ""),
         phone: String(formData.get("phone") || ""),
         address: String(formData.get("address") || ""),
+        metaEventId: eventId,
       });
       const result = await response.json();
       setOrderRef(result.orderRef || "");
       setOrderSubmitted(true);
+
+      trackMetaEvent({
+        eventName: "Purchase",
+        eventId,
+        capi: false, // Purchase is sent server-side from /api/orders (for dedup)
+        customData: {
+          currency: "BDT",
+          value: selectedBundle.price + deliveryCharge,
+          content_type: "product",
+          contents: [{ id: selectedBundle.title, quantity: 1, item_price: selectedBundle.price }],
+        },
+      });
     } catch (error) {
       setOrderError(
         error instanceof Error

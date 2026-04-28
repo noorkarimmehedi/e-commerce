@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { createEventId, trackMetaEvent } from "@/lib/meta";
 
 export interface CartItem {
     id: string;
@@ -80,6 +81,21 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
         // Open cart drawer after adding
         setIsOpen(true);
+
+        const value = Number(String(product.price).replace(/[^0-9.]/g, "")) || 0;
+        const eventId = createEventId();
+        trackMetaEvent({
+          eventName: "AddToCart",
+          eventId,
+          capi: true,
+          customData: {
+            currency: "BDT",
+            value,
+            content_type: "product",
+            content_ids: [String(product.id)],
+            contents: [{ id: String(product.id), quantity, item_price: value }],
+          },
+        });
     };
 
     const removeFromCart = (itemId: string) => {
