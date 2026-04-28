@@ -1,167 +1,133 @@
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import imgCouture from "@assets/couture_category_1769348846360.png";
-import imgAtelier from "@assets/atelier_category_1769348866794.png";
-import imgHeritage from "@assets/heritage_category_1769348884857.png";
-import imgAccessories from "@assets/accessories_category_1769348904424.png";
+import { ChevronDown } from "lucide-react";
+import { useState } from "react";
 
-const CATEGORIES = [
-    {
-        title: "The Couture",
-        subtitle: "Bespoke Evening Gowns",
-        image: imgCouture,
-        path: "/couture"
-    },
-    {
-        title: "The Atelier",
-        subtitle: "Modern Tailoring",
-        image: imgAtelier,
-        path: "/atelier"
-    },
-    {
-        title: "The Heritage",
-        subtitle: "Artisan Craftsmanship",
-        image: imgHeritage,
-        path: "/heritage"
-    },
-    {
-        title: "The Accessories",
-        subtitle: "Refined Accents",
-        image: imgAccessories,
-        path: "/accessories"
-    }
+const FAQS = [
+  {
+    question: "What makes the peptide lip tint different?",
+    answer:
+      "It pairs a sheer polished tint with peptide-led lip care, so lips look glossy and fresh while feeling hydrated, smooth, and comfortably nourished.",
+  },
+  {
+    question: "Will it make my lips look fuller?",
+    answer:
+      "The formula helps lips appear fuller by adding cushiony moisture and a reflective finish that visually softens lines and enhances natural volume.",
+  },
+  {
+    question: "Is it suitable for everyday wear?",
+    answer:
+      "Yes. The finish is lightweight and refined, made for a clean daily look rather than a heavy makeup feel.",
+  },
+  {
+    question: "How does delivery work?",
+    answer:
+      "Orders are confirmed after checkout. Delivery is available inside and outside Dhaka, with the final delivery charge shown during order confirmation.",
+  },
+  {
+    question: "Can I choose my lip tint shade?",
+    answer:
+      "Yes. The Everyday Edit lets you select your preferred peptide lip tint shade before placing the order.",
+  },
 ];
 
 export default function Categories() {
-    return (
-        <section className="bg-brand-ivory border-t border-black">
+  const [openIndex, setOpenIndex] = useState(0);
 
-            {/* ── Header ──────────────────────────────────────────── */}
-            <div className="flex items-center border-b border-black">
-                <div className="flex-1 px-6 md:px-16 py-3 border-r border-black">
-                    <span className="text-[9px] uppercase tracking-[0.6em] font-medium text-brand-gold">
-                        Our Universe
-                    </span>
-                </div>
-                <div className="px-6 md:px-16 py-3">
-                    <span className="text-[9px] uppercase tracking-[0.4em] font-medium text-black/30">
-                        04 — Collections
-                    </span>
-                </div>
-            </div>
+  return (
+    <section className="bg-brand-ivory border-t border-black">
+      <div className="flex items-center border-b border-black">
+        <div className="flex-1 px-6 py-3 border-r border-black md:px-16">
+          <span className="text-[9px] uppercase tracking-[0.6em] font-medium text-brand-gold">
+            Client Notes
+          </span>
+        </div>
+        <div className="px-6 py-3 md:px-16">
+          <span className="text-[9px] uppercase tracking-[0.4em] font-medium text-black/30">
+            05 - Answers
+          </span>
+        </div>
+      </div>
 
-            {/* Title */}
-            <div className="px-6 md:px-16 py-10 md:py-20 border-b border-black">
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-                    className="text-[clamp(3.2rem,11vw,8rem)] font-display font-light uppercase tracking-tight text-black leading-[0.88]"
+      <div className="grid md:grid-cols-[0.92fr_1.08fr]">
+        <div className="border-b border-black px-6 py-12 md:border-b-0 md:border-r md:px-16 md:py-20">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="md:sticky md:top-28"
+          >
+            <span className="mb-8 block text-[9px] uppercase tracking-[0.55em] font-bold text-brand-gold">
+              Before You Order
+            </span>
+            <h2 className="font-display text-[clamp(3.2rem,10vw,8rem)] font-light uppercase leading-[0.86] tracking-tight text-black">
+              Essential<br />
+              <span className="font-bold">FAQ</span>
+            </h2>
+            <div className="my-8 h-px w-20 bg-brand-gold md:my-12" />
+            <p className="max-w-sm text-[10px] uppercase leading-7 tracking-[0.26em] text-black/45">
+              Clear answers for the peptide lip tint ritual, shade selection, and delivery experience.
+            </p>
+          </motion.div>
+        </div>
+
+        <div className="divide-y divide-black border-black">
+          {FAQS.map((item, idx) => (
+            <motion.div
+              key={item.question}
+              initial={{ opacity: 0, y: 18 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, delay: idx * 0.06, ease: [0.22, 1, 0.36, 1] }}
+              className="group"
+            >
+              <button
+                type="button"
+                onClick={() => setOpenIndex(openIndex === idx ? -1 : idx)}
+                className="grid w-full cursor-pointer grid-cols-[3rem_1fr_2rem] items-center gap-4 px-6 py-7 text-left md:grid-cols-[5rem_1fr_3rem] md:px-12 md:py-10"
+              >
+                <span className="font-display text-4xl font-light leading-none text-black/15 md:text-6xl">
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
+                <h3 className="text-sm uppercase tracking-[0.22em] font-bold leading-6 text-black md:text-lg md:tracking-[0.32em]">
+                  {item.question}
+                </h3>
+                <motion.span
+                  animate={{ rotate: openIndex === idx ? 180 : 0 }}
+                  transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                  className="flex h-9 w-9 items-center justify-center border border-black/10 text-brand-gold md:h-11 md:w-11"
                 >
-                    <span className="font-bold">The Maison</span><br />
-                    Archives
-                </motion.h2>
-            </div>
+                  <ChevronDown className="h-4 w-4 stroke-[1.4px]" />
+                </motion.span>
+              </button>
 
-            {/* Description */}
-            <div className="flex items-stretch border-b border-black">
-                <div className="w-12 md:w-16 border-r border-black shrink-0" />
-                <p className="flex-1 px-6 md:px-10 py-4 text-[9px] uppercase tracking-[0.3em] font-medium text-black/40 leading-loose max-w-md">
-                    Explore our curated selection of bespoke evening wear,
-                    precision tailoring, and heritage craftsmanship.
-                </p>
-            </div>
-
-            {/* ── Mobile: Swiss editorial stack ───────────────────── */}
-            <div className="md:hidden">
-                {CATEGORIES.map((cat, idx) => (
-                    <motion.div
-                        key={cat.title}
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.7, delay: idx * 0.08 }}
-                        className="border-b border-black group"
-                    >
-                        {/* Number + subtitle header row */}
-                        <div className="flex items-end justify-between px-6 pt-6 pb-0">
-                            <span className="text-[4.5rem] font-display font-light leading-none text-black/[0.07] select-none">
-                                0{idx + 1}
-                            </span>
-                            <span className="text-[9px] uppercase tracking-[0.5em] font-bold text-brand-gold pb-2">
-                                {cat.subtitle}
-                            </span>
-                        </div>
-
-                        {/* Ruled title bar */}
-                        <div className="flex items-center gap-4 px-6 pb-4">
-                            <h3 className="text-[1.35rem] font-display font-light uppercase tracking-tight text-black">
-                                {cat.title}
-                            </h3>
-                            <div className="h-px flex-1 bg-black/15" />
-                        </div>
-
-                        {/* Full-width image — landscape */}
-                        <div className="relative overflow-hidden w-full" style={{ aspectRatio: "4/3" }}>
-                            <img
-                                src={cat.image}
-                                alt={cat.title}
-                                className="w-full h-full object-cover grayscale brightness-90 contrast-110 transition-all duration-[2s] group-hover:grayscale-0"
-                            />
-                        </div>
-
-                        {/* Bottom bar: counter + CTA */}
-                        <div className="flex items-center justify-between px-6 py-4 border-t border-black">
-                            <span className="text-[9px] uppercase tracking-[0.4em] font-medium text-black/30">
-                                {String(idx + 1).padStart(2, "0")} / 04
-                            </span>
-                            <button className="flex items-center gap-2 text-[9px] uppercase tracking-[0.4em] font-bold text-brand-gold">
-                                Explore <ArrowRight className="w-3 h-3" />
-                            </button>
-                        </div>
-                    </motion.div>
-                ))}
-            </div>
-
-            {/* ── Desktop: immersive 4-column grid ─────────────────── */}
-            <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4">
-                {CATEGORIES.map((cat, idx) => (
-                    <motion.div
-                        key={cat.title}
-                        initial={{ opacity: 0 }}
-                        whileInView={{ opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 1, delay: idx * 0.2 }}
-                        className="group relative h-[80vh] overflow-hidden border-r border-black last:border-r-0"
-                    >
-                        <motion.img
-                            src={cat.image}
-                            alt={cat.title}
-                            className="absolute inset-0 w-full h-full object-cover grayscale brightness-90 contrast-110 transition-all duration-[2s] group-hover:grayscale-0 group-hover:scale-105"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-60 group-hover:opacity-40 transition-opacity duration-1000" />
-                        <div className="absolute inset-0 p-12 flex flex-col justify-end">
-                            <div className="space-y-4 translate-y-8 group-hover:translate-y-0 transition-transform duration-700 ease-out">
-                                <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold">
-                                    0{idx + 1}
-                                </span>
-                                <div className="h-px w-8 bg-brand-gold opacity-40 group-hover:w-16 transition-all duration-700" />
-                                <h3 className="text-4xl md:text-5xl font-display font-light uppercase tracking-tighter text-white">
-                                    {cat.title}
-                                </h3>
-                                <p className="text-[10px] uppercase tracking-[0.3em] font-medium text-white/60 mb-8">
-                                    {cat.subtitle}
-                                </p>
-                                <button className="flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] font-bold text-brand-gold opacity-0 group-hover:opacity-100 transition-opacity duration-700 delay-100">
-                                    Explore Collection <ArrowRight className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
-                        <div className="absolute inset-8 border border-white/5 pointer-events-none group-hover:inset-6 transition-all duration-1000" />
-                    </motion.div>
-                ))}
-            </div>
-
-        </section>
-    );
+              <motion.div
+                initial={false}
+                animate={openIndex === idx ? "open" : "closed"}
+                variants={{
+                  open: { height: "auto", opacity: 1 },
+                  closed: { height: 0, opacity: 0 },
+                }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                className="overflow-hidden"
+              >
+                <motion.div
+                  variants={{
+                    open: { y: 0 },
+                    closed: { y: -8 },
+                  }}
+                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  className="px-6 pb-8 pl-[5.5rem] md:px-12 md:pb-10 md:pl-[8.25rem]"
+                >
+                  <p className="max-w-2xl text-sm leading-7 tracking-[0.08em] text-black/55 md:text-base md:leading-8">
+                    {item.answer}
+                  </p>
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
 }

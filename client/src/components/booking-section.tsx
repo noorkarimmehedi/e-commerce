@@ -1,126 +1,114 @@
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import { ArrowDownRight, Ruler, MapPin, Calendar } from "lucide-react";
-import studioImage from "@assets/image_1768632360954.png";
-import BookingForm from "./booking-form";
+import { ArrowDownRight, Droplets, ShieldCheck, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 
+const peptideImage = "/peptide-lip-benefits.png";
+
+const benefits = [
+  {
+    label: "Deep Hydration",
+    detail: "A cushiony moisture veil helps lips feel smoother, softer, and less dry.",
+    icon: Droplets,
+  },
+  {
+    label: "Fuller Look",
+    detail: "Glossy tint and peptide care make the lip line appear visibly plusher.",
+    icon: Sparkles,
+  },
+  {
+    label: "Collagen Support",
+    detail: "Peptide-powered care supports the appearance of firmer, healthy-looking lips.",
+    icon: ShieldCheck,
+  },
+];
+
 export default function BookingSection() {
-  const [open, setOpen] = useState(false);
-
   return (
-    <section className="bg-brand-ivory pt-32 pb-48 md:pt-48 md:pb-64 overflow-hidden">
-      <div className="max-w-[1440px] mx-auto px-8 md:px-16 relative">
-        {/* Editorial Layout: Overlapping Elements */}
-        <div className="grid grid-cols-1 md:grid-cols-12 gap-0 items-center">
+    <section className="bg-brand-ivory px-4 py-16 overflow-hidden md:px-16 md:py-28">
+      <div className="mx-auto max-w-[1440px]">
+        <div className="grid items-start border-y border-black/10 md:grid-cols-[1.04fr_0.96fr]">
+          <motion.div
+            initial={{ opacity: 0, x: -36 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="relative aspect-[3/2] overflow-hidden border-b border-black/10 bg-[#fff7f7] md:border-b-0 md:border-r"
+          >
+            <img
+              src={peptideImage}
+              alt="Peptide lip tint hydration and fuller lip benefits"
+              className="absolute inset-0 h-full w-full object-cover object-center"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/15 via-transparent to-white/10 md:bg-gradient-to-r md:from-transparent md:via-transparent md:to-brand-ivory/20" />
+            <div className="absolute inset-8 hidden border border-white/35 pointer-events-none md:block" />
+          </motion.div>
 
-          {/* Background Text: Large & Faded */}
-          <div className="absolute top-0 left-0 w-full overflow-hidden pointer-events-none select-none opacity-[0.03] z-0">
-            <h2 className="text-[30vw] font-display font-light uppercase tracking-tighter leading-none -ml-20">
-              ATELIER
-            </h2>
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 36 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.35 }}
+            transition={{ duration: 1, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+            className="relative flex flex-col justify-between bg-brand-ivory px-5 py-10 md:px-16 md:py-20"
+          >
+            <div className="absolute right-4 top-4 hidden text-[8vw] font-display font-light uppercase leading-none tracking-tight text-black/[0.025] md:block">
+              PEPTIDE
+            </div>
 
-          {/* Left Column: The Image (Editorial Style) */}
-          <div className="md:col-span-7 relative z-10 mb-24 md:mb-0">
-            <motion.div
-              initial={{ opacity: 0, x: -50 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-              className="relative aspect-[4/5] md:aspect-[3/4] overflow-hidden shadow-[40px_40px_80px_rgba(0,0,0,0.1)]"
-            >
-              <img
-                src={studioImage}
-                alt="Studio Atmosphere"
-                className="absolute inset-0 w-full h-full object-cover grayscale brightness-75 contrast-110 transition-transform duration-[3s] hover:scale-110"
-              />
-              {/* Gold Border Detail */}
-              <div className="absolute inset-4 border border-brand-gold/20 pointer-events-none" />
-
-              {/* Overlay Label */}
-              <div className="absolute bottom-12 -right-8 md:-right-16 bg-black text-white px-10 py-6 hidden md:block">
-                <span className="text-[10px] uppercase tracking-[0.5em] font-bold">Studio Archive</span>
+            <div className="relative">
+              <div className="mb-8 flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-brand-gold">
+                <span>Lip Science</span>
+                <span className="h-px w-12 bg-black/15" />
+                <span>Daily Ritual</span>
               </div>
-            </motion.div>
-          </div>
 
-          {/* Right Column: Dramatic Text Overlay */}
-          <div className="md:col-span-6 md:-ml-32 relative z-20">
-            <motion.div
-              initial={{ opacity: 0, y: 50 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="bg-brand-ivory/95 backdrop-blur-xl p-6 md:p-20 shadow-[0_50px_100px_rgba(0,0,0,0.05)] border border-black/5"
-            >
-              <span className="text-[10px] md:text-xs uppercase tracking-[0.6em] font-medium text-brand-gold mb-10 block">
-                The Bespoke Experience
-              </span>
-
-              <h2 className="text-4xl md:text-8xl font-display font-light uppercase leading-[0.8] tracking-tight text-black mb-12 break-words">
-                Private<br />
-                <span className="font-bold block mt-4">Consultation</span>
+              <h2 className="font-display text-5xl font-light uppercase leading-[0.86] tracking-tight text-black md:text-8xl">
+                Fuller<br />
+                <span className="font-bold">Hydrated</span><br />
+                Lips
               </h2>
 
-              <div className="w-20 h-px bg-brand-gold mb-12" />
+              <div className="my-8 h-px w-20 bg-brand-gold md:my-12" />
 
-              <p className="text-sm md:text-base uppercase leading-loose tracking-[0.15em] text-black/60 mb-16 max-w-sm">
-                A journey into the soul of craftsmanship. We welcome you for a private fitting at our Gulshan studio or via a dedicated digital atelier.
+              <p className="max-w-xl text-[11px] uppercase leading-7 tracking-[0.22em] text-black/60 md:text-sm md:leading-8">
+                Peptide lip tint gives the finish customers notice first: a smooth glossy veil, softer feel, and a naturally fuller-looking lip without a heavy makeup look.
               </p>
+            </div>
 
-              {/* Minimalist Details */}
-              <div className="space-y-6 mb-16">
-                {[
-                  { label: "Master Silhouette Analysis", icon: Ruler },
-                  { label: "Exclusive SS26 Fabric Selection", icon: Calendar }
-                ].map((item, idx) => (
-                  <div key={idx} className="flex items-center gap-4 text-[9px] md:text-[10px] uppercase tracking-[0.4em] font-bold text-black/80">
-                    <item.icon className="w-3 h-3 text-brand-gold" />
-                    {item.label}
+            <div className="relative mt-10 space-y-5 md:mt-14 md:space-y-7">
+              {benefits.map((benefit) => (
+                <div key={benefit.label} className="grid grid-cols-[2.5rem_1fr] gap-4 border-t border-black/10 pt-5 md:grid-cols-[3rem_1fr] md:gap-6 md:pt-7">
+                  <div className="flex h-10 w-10 items-center justify-center border border-brand-gold/35 text-brand-gold md:h-12 md:w-12">
+                    <benefit.icon className="h-4 w-4 stroke-[1.4px]" />
                   </div>
+                  <div>
+                    <h3 className="text-[10px] uppercase tracking-[0.38em] font-bold text-black">
+                      {benefit.label}
+                    </h3>
+                    <p className="mt-2 max-w-md text-[11px] leading-6 tracking-[0.08em] text-black/50 md:text-sm md:leading-7">
+                      {benefit.detail}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className="relative mt-10 border-t border-black/10 pt-8 md:mt-14 md:pt-10">
+              <div className="mb-7 grid grid-cols-3 divide-x divide-black/10 border border-black/10 text-center">
+                {["Hydrates", "Plumps", "Boosts Glow"].map((item) => (
+                  <span key={item} className="px-2 py-4 text-[8px] uppercase tracking-[0.25em] font-bold text-black/55 md:text-[10px]">
+                    {item}
+                  </span>
                 ))}
               </div>
 
-              {/* Editorial CTA */}
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger asChild>
-                  <button className="group relative flex items-center gap-6 text-[10px] uppercase tracking-[0.5em] font-bold text-black transition-all hover:text-brand-gold">
-                    <span className="relative">
-                      Request a Fitting
-                      <span className="absolute -bottom-2 left-0 w-full h-px bg-black group-hover:bg-brand-gold transition-colors" />
-                    </span>
-                    <ArrowDownRight className="w-5 h-5 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
-                  </button>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[600px] rounded-none border-none bg-brand-ivory p-0 overflow-hidden shadow-[0_100px_200px_rgba(0,0,0,0.2)]">
-                  <div className="p-10 md:p-16">
-                    <DialogHeader className="mb-16 text-center">
-                      <DialogTitle className="font-display font-light uppercase text-5xl md:text-6xl tracking-tight">Inquiry</DialogTitle>
-                      <div className="w-12 h-px bg-brand-gold mx-auto mt-6 mb-4" />
-                      <DialogDescription className="text-[10px] uppercase tracking-[0.4em] font-medium text-brand-gold">
-                        Our studio concierge will reach out
-                      </DialogDescription>
-                    </DialogHeader>
-                    <BookingForm onSubmitted={() => setOpen(false)} />
-                  </div>
-                </DialogContent>
-              </Dialog>
-            </motion.div>
-          </div>
-        </div>
-
-        {/* Floating Metadata */}
-        <div className="absolute bottom-0 right-16 hidden md:flex items-center gap-12 text-[9px] uppercase tracking-[0.5em] font-bold opacity-20 rotate-90 origin-right translate-y-24">
-          <span>DHAKA / STUDIO</span>
-          <div className="w-12 h-px bg-black" />
-          <span>2026 ARCHIVE</span>
+              <a
+                href="#bundles"
+                className="group flex h-14 w-full items-center justify-center gap-4 bg-black px-6 text-[9px] uppercase tracking-[0.32em] font-bold text-white transition-colors hover:bg-brand-gold md:w-fit md:min-w-80 md:text-[10px]"
+              >
+                Shop The Peptide Edit
+                <ArrowDownRight className="h-5 w-5 stroke-[1px] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
+              </a>
+            </div>
+          </motion.div>
         </div>
       </div>
     </section>
