@@ -89,7 +89,7 @@ export default function BundleSection() {
   };
 
   return (
-    <section id="bundles" className="scroll-mt-24 bg-[#f2f1f0] border-y border-black/5 px-4 py-20 md:px-16 md:py-32 overflow-hidden">
+    <section id="bundles" className="scroll-mt-24 bg-[#f2f1f0] border-y border-black/5 px-4 pt-8 pb-20 md:px-16 md:pt-14 md:pb-32 overflow-hidden">
       <div className="mx-auto max-w-[1440px]">
         <div className="grid gap-8 border-y border-black/10 py-8 md:grid-cols-[1fr_auto_1fr] md:items-end md:gap-10 md:py-10">
           <div className="flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-brand-gold">

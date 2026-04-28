@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 
 export default function Hero() {
   return (
-    <section className="relative w-full h-screen bg-brand-ivory overflow-hidden">
+    <section className="relative w-full h-[82svh] min-h-[560px] bg-brand-ivory overflow-hidden md:h-screen">
       {/* Immersive Background Image */}
       <motion.div
         initial={{ scale: 1.1, opacity: 0 }}
@@ -24,7 +24,7 @@ export default function Hero() {
       </motion.div>
 
       {/* Elegant Content Overlay */}
-      <div className="relative z-10 h-full flex flex-col justify-end items-center text-center px-5 pb-24 md:justify-center md:px-6 md:pb-0">
+      <div className="relative z-10 h-full flex flex-col justify-end items-center text-center px-5 pb-14 md:justify-center md:px-6 md:pb-0">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

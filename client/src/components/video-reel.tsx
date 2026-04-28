@@ -27,7 +27,7 @@ const REEL_VIDEOS = [
 
 export default function VideoReel() {
     return (
-        <section className="bg-brand-ivory pt-0 pb-10 md:pt-0 md:pb-48 flex flex-col overflow-hidden">
+        <section className="bg-brand-ivory pt-0 pb-0 md:pt-0 md:pb-0 flex flex-col overflow-hidden">
             <div className="w-full max-w-[1440px] mx-auto px-4 md:px-16 mb-16 md:mb-24">
                 <motion.div
                     initial={{ opacity: 0, y: 50 }}
@@ -61,8 +61,8 @@ export default function VideoReel() {
                 </motion.div>
             </div>
 
-            {/* Swiss Editorial Triptych */}
-            <div className="mx-auto grid w-full max-w-[430px] grid-cols-3 items-center gap-2 px-4 pb-2 md:max-w-[1040px] md:grid-cols-[minmax(150px,260px)_minmax(220px,340px)_minmax(150px,260px)] md:gap-10 md:px-16 md:pb-12">
+            {/* Swiss Editorial Films */}
+            <div className="no-scrollbar flex w-full snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-0 md:mx-auto md:grid md:max-w-[1180px] md:grid-cols-3 md:items-start md:gap-8 md:overflow-visible md:px-16 md:pb-0">
                 {REEL_VIDEOS.map((video, idx) => (
                     <motion.div
                         key={video.id}
@@ -70,7 +70,7 @@ export default function VideoReel() {
                         whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ margin: "0px -100px" }}
                         transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-                        className="relative aspect-[9/16] w-full group"
+                        className="group relative aspect-[9/16] w-[78vw] max-w-[340px] shrink-0 snap-center sm:w-[46vw] md:w-full md:max-w-none"
                     >
                         <div className="mb-3 flex items-center justify-between border-t border-black/10 pt-2">
                             <span className="text-[7px] md:text-[9px] uppercase tracking-[0.25em] md:tracking-[0.45em] font-bold text-brand-gold">
@@ -78,7 +78,7 @@ export default function VideoReel() {
                             </span>
                             <span className="hidden md:block h-px flex-1 mx-4 bg-black/10" />
                             <span className="hidden md:inline text-[7px] md:text-[9px] uppercase tracking-[0.18em] md:tracking-[0.35em] font-medium text-black/35">
-                                {idx === 1 ? "Center" : idx === 0 ? "Left" : "Right"}
+                                Film
                             </span>
                         </div>
 
@@ -88,7 +88,7 @@ export default function VideoReel() {
                                 muted
                                 loop
                                 playsInline
-                                className="w-full h-full object-cover grayscale brightness-90 contrast-110 group-hover:scale-105 transition-transform duration-[3s] ease-out"
+                                className="w-full h-full object-cover brightness-100 contrast-105 saturate-110 group-hover:scale-105 transition-transform duration-[3s] ease-out"
                             >
                                 <source src={video.url} type="video/mp4" />
                             </video>
