@@ -1,5 +1,5 @@
 import { motion, useMotionValue } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 const HERO_IMAGES = [
   {
@@ -31,14 +31,6 @@ export default function Hero() {
   const goToImage = (idx: number) => {
     setActiveImage((idx + HERO_IMAGES.length) % HERO_IMAGES.length);
   };
-
-  useEffect(() => {
-    const timer = window.setInterval(() => {
-      setActiveImage((current) => (current + 1) % HERO_IMAGES.length);
-    }, 4200);
-
-    return () => window.clearInterval(timer);
-  }, []);
 
   return (
     <section className="relative w-full bg-brand-ivory px-0 pt-0 pb-12 overflow-hidden md:px-16 md:pt-8 md:pb-16">
