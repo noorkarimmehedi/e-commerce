@@ -1,7 +1,7 @@
 import crypto from "node:crypto";
 
 type MetaUserData = {
-  ph?: string;
+  ph?: string[] | string;
   client_ip_address?: string;
   client_user_agent?: string;
   fbp?: string;
@@ -49,6 +49,24 @@ function parseCookie(cookieHeader: string | undefined) {
   return result;
 }
 
+function parseFbclidFromUrl(urlRaw: string | undefined) {
+  if (!urlRaw) return "";
+  try {
+    const url = new URL(urlRaw);
+    return url.searchParams.get("fbclid") || "";
+  } catch {
+    return "";
+  }
+}
+
+function createFbcFromFbclid(fbclid: string) {
+  const cleaned = String(fbclid || "").trim();
+  if (!cleaned) return "";
+  // Meta format: fb.1.<unix_timestamp>.<fbclid>
+  const ts = Math.floor(Date.now() / 1000);
+  return `fb.1.${ts}.${cleaned}`;
+}
+
 function getClientIp(headers: Record<string, unknown>) {
   const xff = String(headers["x-forwarded-for"] || "");
   if (xff) return xff.split(",")[0].trim();
@@ -59,10 +77,15 @@ function getClientIp(headers: Record<string, unknown>) {
 export function getMetaUserDataFromRequest(opts: {
   headers: Record<string, unknown>;
   phone?: string;
+  eventSourceUrl?: string;
 }) {
   const cookies = parseCookie(String(opts.headers["cookie"] || ""));
   const fbp = cookies["_fbp"];
-  const fbc = cookies["_fbc"];
+  const cookieFbc = cookies["_fbc"];
+  const headerReferer = String(opts.headers["referer"] || "");
+  const fbclid =
+    parseFbclidFromUrl(opts.eventSourceUrl) || parseFbclidFromUrl(headerReferer);
+  const fbc = cookieFbc || (fbclid ? createFbcFromFbclid(fbclid) : undefined);
 
   const user_data: MetaUserData = {
     client_ip_address: getClientIp(opts.headers),
@@ -73,7 +96,7 @@ export function getMetaUserDataFromRequest(opts: {
   if (fbc) user_data.fbc = fbc;
 
   const phHash = opts.phone ? hashPhone(opts.phone) : "";
-  if (phHash) user_data.ph = phHash;
+  if (phHash) user_data.ph = [phHash];
 
   return user_data;
 }

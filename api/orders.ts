@@ -141,6 +141,7 @@ async function sendPurchaseCapi(opts: {
   const user_data = getMetaUserDataFromRequest({
     headers: opts.headers,
     phone: opts.order.phone,
+    eventSourceUrl: String(opts.headers["referer"] || ""),
   });
 
   await sendMetaCapiEvent({

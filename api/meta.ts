@@ -41,7 +41,10 @@ export default async function handler(
     }
 
     const headers = req.headers as unknown as Record<string, unknown>;
-    const user_data = getMetaUserDataFromRequest({ headers });
+    const user_data = getMetaUserDataFromRequest({
+      headers,
+      eventSourceUrl: body.event_source_url,
+    });
 
     const result = await sendMetaCapiEvent({
       event_name: body.event_name,
