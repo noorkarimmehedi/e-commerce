@@ -24,6 +24,25 @@ const lipTints = [
   { name: "Mauve Nude", tone: "Soft rose", image: tintMauve, swatch: "#b96f79" }
 ];
 
+const tintLookImages: Record<string, { src: string; alt: string }> = {
+  "Bordeaux": {
+    src: "/pbj-carousel-1_2480x%20(1).webp",
+    alt: "Bordeaux Burnt Red finished look",
+  },
+  "Plum Veil": {
+    src: "/imgi_131_Mobile-EspressoGrid-1_1024x.jpg",
+    alt: "Plum Veil Deep Berry finished look",
+  },
+  "Rosy Bloom": {
+    src: "/imgi_130_PDP-Ribbon-1-M_1024x.jpg",
+    alt: "Rosy Bloom Petal Pink finished look",
+  },
+  "Mauve Nude": {
+    src: "/salty-tan-carousel-4_2480x.webp",
+    alt: "Mauve Nude Soft Rose finished look",
+  },
+};
+
 const deliveryOptions = [
   { label: "Inside Dhaka", charge: 80 },
   { label: "Outside Dhaka", charge: 130 }
@@ -45,6 +64,7 @@ export default function BundleSection() {
   const [orderSubmitting, setOrderSubmitting] = useState(false);
   const [orderError, setOrderError] = useState("");
   const [orderRef, setOrderRef] = useState("");
+  const selectedTintLook = tintLookImages[selectedTint.name];
 
   const openOrderForm = (bundle: NonNullable<typeof selectedBundle>) => {
     setOrderOpenInstance((current) => current + 1);
@@ -161,7 +181,7 @@ export default function BundleSection() {
             className="grid overflow-hidden border border-black/10 bg-brand-ivory md:grid-cols-[0.92fr_1.08fr]"
           >
             <div className="relative grid grid-cols-2 gap-px bg-black/10">
-              <div className="relative aspect-[4/5] bg-[#ebe8e4] p-6">
+              <div className={`relative bg-[#ebe8e4] p-6 ${selectedTintLook ? "row-span-2" : "aspect-[4/5]"}`}>
                 <img
                   src={makeupPen}
                   alt="4-in-1 Makeup Pen"
@@ -178,6 +198,17 @@ export default function BundleSection() {
                   className="h-full w-full object-contain mix-blend-multiply"
                 />
               </div>
+              {selectedTintLook && (
+                <div className="bg-[#ebe8e4] p-2">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-[#ded8cf]">
+                    <img
+                      src={selectedTintLook.src}
+                      alt={selectedTintLook.alt}
+                      className="h-full w-full object-contain"
+                    />
+                  </div>
+                </div>
+              )}
             </div>
 
             <div className="flex flex-col justify-between p-6 md:p-12">
