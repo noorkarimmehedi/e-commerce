@@ -1,11 +1,15 @@
 import crypto from "node:crypto";
 
 type MetaUserData = {
+  em?: string[] | string;
   ph?: string[] | string;
+  fn?: string[] | string;
+  ln?: string[] | string;
   client_ip_address?: string;
   client_user_agent?: string;
   fbp?: string;
   fbc?: string;
+  external_id?: string[] | string;
 };
 
 export type MetaEvent = {
@@ -20,6 +24,28 @@ export type MetaEvent = {
 
 function sha256(value: string) {
   return crypto.createHash("sha256").update(value).digest("hex");
+}
+
+function normalizeText(valueRaw: string) {
+  return valueRaw.trim().toLowerCase().replace(/\s+/g, " ");
+}
+
+function hashText(valueRaw: string) {
+  const normalized = normalizeText(valueRaw);
+  return normalized ? sha256(normalized) : "";
+}
+
+function hashEmail(emailRaw: string) {
+  const normalized = emailRaw.trim().toLowerCase();
+  return normalized ? sha256(normalized) : "";
+}
+
+function splitName(nameRaw: string) {
+  const parts = normalizeText(nameRaw).split(" ").filter(Boolean);
+  return {
+    firstName: parts[0] || "",
+    lastName: parts.length > 1 ? parts.slice(1).join(" ") : "",
+  };
 }
 
 export function normalizePhone(phoneRaw: string) {
@@ -76,6 +102,9 @@ function getClientIp(headers: Record<string, unknown>) {
 
 export function getMetaUserDataFromRequest(opts: {
   headers: Record<string, unknown>;
+  browserUserData?: Partial<MetaUserData>;
+  customerName?: string;
+  email?: string;
   phone?: string;
   eventSourceUrl?: string;
 }) {
@@ -92,11 +121,27 @@ export function getMetaUserDataFromRequest(opts: {
     client_user_agent: String(opts.headers["user-agent"] || ""),
   };
 
-  if (fbp) user_data.fbp = fbp;
-  if (fbc) user_data.fbc = fbc;
+  const browserFbp = String(opts.browserUserData?.fbp || "");
+  const browserFbc = String(opts.browserUserData?.fbc || "");
+  if (fbp || browserFbp) user_data.fbp = fbp || browserFbp;
+  if (fbc || browserFbc) user_data.fbc = fbc || browserFbc;
 
   const phHash = opts.phone ? hashPhone(opts.phone) : "";
   if (phHash) user_data.ph = [phHash];
+
+  const emHash = opts.email ? hashEmail(opts.email) : "";
+  if (emHash) user_data.em = [emHash];
+
+  if (opts.customerName) {
+    const { firstName, lastName } = splitName(opts.customerName);
+    const fnHash = firstName ? hashText(firstName) : "";
+    const lnHash = lastName ? hashText(lastName) : "";
+    if (fnHash) user_data.fn = [fnHash];
+    if (lnHash) user_data.ln = [lnHash];
+  }
+
+  const externalId = String(opts.browserUserData?.external_id || "");
+  if (externalId) user_data.external_id = externalId;
 
   return user_data;
 }
@@ -140,4 +185,3 @@ export async function sendMetaCapiEvent(event: MetaEvent) {
 
   return { ok: true, status: response.status, body: text };
 }
-

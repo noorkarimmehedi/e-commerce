@@ -55,9 +55,6 @@ export default defineConfig({
       exclude: []
     }
   },
-  define: {
-    'process.env': process.env
-  },
   preview: {
     port: 3000,
     strictPort: true,

@@ -1,13 +1,9 @@
 import express, { type Express, type Request, type Response, type NextFunction } from "express";
 import path from "node:path";
-import { fileURLToPath } from 'node:url';
 import fs from 'node:fs';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 export function serveStatic(app: Express) {
-  const distPath = path.resolve(__dirname, "../dist/public");
+  const distPath = path.resolve(process.cwd(), "dist/public");
   
   // Check if the build directory exists
   if (!fs.existsSync(distPath)) {
@@ -74,7 +70,7 @@ export function serveStatic(app: Express) {
   app.use(express.static(distPath));
 
   // Handle SPA fallback - serve index.html for any route
-  app.get('*', (req, res) => {
+  app.get('/{*path}', (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'), {
       headers: {
         'Cache-Control': 'no-cache, no-store, must-revalidate',

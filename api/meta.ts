@@ -5,6 +5,11 @@ type MetaEventRequest = {
   event_name: string;
   event_id?: string;
   event_source_url?: string;
+  user_data?: {
+    fbp?: string;
+    fbc?: string;
+    external_id?: string;
+  };
   custom_data?: Record<string, unknown>;
 };
 
@@ -44,6 +49,7 @@ export default async function handler(
     const user_data = getMetaUserDataFromRequest({
       headers,
       eventSourceUrl: body.event_source_url,
+      browserUserData: body.user_data,
     });
 
     const result = await sendMetaCapiEvent({
@@ -60,4 +66,3 @@ export default async function handler(
     sendJson(res, 500, { ok: false });
   }
 }
-

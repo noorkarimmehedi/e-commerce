@@ -31,6 +31,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   }, [params.id]);
 
   useEffect(() => {
+    if (!product) return;
+
     const eventId = createEventId();
     trackMetaEvent({
       eventName: "ViewContent",
@@ -44,7 +46,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         contents: [{ id: String(product.id), quantity: 1, item_price: product.amount }],
       },
     });
-  }, [product.amount, product.id]);
+  }, [product]);
 
   if (!product) return <div>Product not found</div>;
 

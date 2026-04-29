@@ -9,7 +9,7 @@ import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import ProductPage from "@/pages/product";
 import BookingPage from "@/pages/booking";
-import { initMetaPixel, trackMetaEvent } from "@/lib/meta";
+import { createEventId, initMetaPixel, trackMetaEvent } from "@/lib/meta";
 import { useEffect } from "react";
 
 function Router() {
@@ -20,7 +20,7 @@ function Router() {
   }, []);
 
   useEffect(() => {
-    trackMetaEvent({ eventName: "PageView", capi: true });
+    trackMetaEvent({ eventName: "PageView", eventId: createEventId(), capi: true });
   }, [location]);
 
   return (

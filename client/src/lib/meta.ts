@@ -9,6 +9,53 @@ export function getMetaPixelId() {
   return (import.meta as any).env?.VITE_META_PIXEL_ID as string | undefined;
 }
 
+function getCookie(name: string) {
+  if (typeof document === "undefined") return "";
+  const value = document.cookie
+    .split("; ")
+    .find((part) => part.startsWith(`${name}=`))
+    ?.split("=")
+    .slice(1)
+    .join("=");
+  return value ? decodeURIComponent(value) : "";
+}
+
+function getFbcFromLocation() {
+  if (typeof window === "undefined") return "";
+  const fbclid = new URLSearchParams(window.location.search).get("fbclid");
+  if (!fbclid) return "";
+  return `fb.1.${Math.floor(Date.now() / 1000)}.${fbclid}`;
+}
+
+function getBrowserId() {
+  if (typeof window === "undefined") return "";
+  const storageKey = "seraphine-meta-browser-id";
+  const existing = window.localStorage.getItem(storageKey);
+  if (existing) return existing;
+
+  const next = createEventId();
+  window.localStorage.setItem(storageKey, next);
+  return next;
+}
+
+async function sha256(value: string) {
+  if (typeof crypto === "undefined" || !crypto.subtle) return "";
+  const data = new TextEncoder().encode(value.trim().toLowerCase());
+  const digest = await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(digest))
+    .map((byte) => byte.toString(16).padStart(2, "0"))
+    .join("");
+}
+
+async function getBrowserUserData() {
+  const externalId = await sha256(getBrowserId());
+  return {
+    fbp: getCookie("_fbp"),
+    fbc: getCookie("_fbc") || getFbcFromLocation(),
+    ...(externalId ? { external_id: externalId } : {}),
+  };
+}
+
 export function initMetaPixel() {
   const pixelId = getMetaPixelId();
   if (!pixelId) return;
@@ -40,7 +87,6 @@ export function initMetaPixel() {
 
   try {
     (window as any).fbq?.("init", pixelId);
-    (window as any).fbq?.("track", "PageView");
   } catch {
     // If blocked by extensions/network, don't crash the app.
   }
@@ -73,13 +119,18 @@ export async function trackCapi(
   eventSourceUrl?: string,
 ) {
   try {
+    if (typeof window === "undefined") return;
+
     await fetch("/api/meta", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
+      credentials: "include",
+      keepalive: true,
       body: JSON.stringify({
         event_name: eventName,
         event_id: eventId,
         event_source_url: eventSourceUrl ?? window.location.href,
+        user_data: await getBrowserUserData(),
         custom_data: customData ?? {},
       }),
     });
@@ -99,4 +150,3 @@ export function trackMetaEvent(opts: {
     void trackCapi(opts.eventName, opts.customData, opts.eventId);
   }
 }
-
