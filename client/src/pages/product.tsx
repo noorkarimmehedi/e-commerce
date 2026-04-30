@@ -46,6 +46,38 @@ const makeupPenCarouselImages = [
   },
 ];
 
+const bordeauxCarouselImages = [
+  {
+    src: "/pbj-carousel-1_2480x%20(1).webp",
+    alt: "Bordeaux burnt red lip tint finish",
+    fit: "contain",
+  },
+];
+
+const plumVeilCarouselImages = [
+  {
+    src: "/imgi_131_Mobile-EspressoGrid-1_1024x.jpg",
+    alt: "Plum Veil deep berry lip tint finish",
+    fit: "contain",
+  },
+];
+
+const rosyBloomCarouselImages = [
+  {
+    src: "/imgi_130_PDP-Ribbon-1-M_1024x.jpg",
+    alt: "Rosy Bloom petal pink lip tint finish",
+    fit: "contain",
+  },
+];
+
+const mauveNudeCarouselImages = [
+  {
+    src: "/salty-tan-carousel-4_2480x.webp",
+    alt: "Mauve Nude soft rose lip tint finish",
+    fit: "contain",
+  },
+];
+
 const makeupPenVideos = [
   { src: "/vid_01.mp4", label: "Makeup Pen video 1" },
   { src: "/vid_02.mp4", label: "Makeup Pen video 2" },
@@ -109,6 +141,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       return;
     }
 
+    emblaApi.scrollTo(0, true);
+    setActiveImage(0);
     syncActiveImage();
     emblaApi.on("select", syncActiveImage);
     emblaApi.on("reInit", syncActiveImage);
@@ -131,6 +165,42 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           },
           ...makeupPenCarouselImages,
         ]
+      : product.slug === "bordeaux"
+        ? [
+            {
+              src: product.image,
+              alt: product.title,
+              fit: "contain",
+          },
+          ...bordeauxCarouselImages,
+        ]
+      : product.slug === "plum-veil"
+        ? [
+            {
+              src: product.image,
+              alt: product.title,
+              fit: "contain",
+            },
+            ...plumVeilCarouselImages,
+          ]
+      : product.slug === "rosy-bloom"
+        ? [
+            {
+              src: product.image,
+              alt: product.title,
+              fit: "contain",
+            },
+            ...rosyBloomCarouselImages,
+          ]
+      : product.slug === "mauve-nude"
+        ? [
+            {
+              src: product.image,
+              alt: product.title,
+              fit: "contain",
+            },
+            ...mauveNudeCarouselImages,
+          ]
       : [
           {
             src: product.image,

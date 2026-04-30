@@ -15,8 +15,16 @@ import { useEffect, useRef } from "react";
 function Router() {
   const [location] = useLocation();
   const scrollPositions = useRef(new Map<string, number>());
-  const previousLocation = useRef(location);
+  const currentLocation = useRef(location);
   const isHistoryNavigation = useRef(false);
+
+  const restoreScrollPosition = (top: number) => {
+    const restoreScroll = () => window.scrollTo({ top, left: 0, behavior: "auto" });
+    window.requestAnimationFrame(restoreScroll);
+    [80, 240, 520, 900, 1300].forEach((delay) => {
+      window.setTimeout(restoreScroll, delay);
+    });
+  };
 
   useEffect(() => {
     initMetaPixel();
@@ -31,32 +39,64 @@ function Router() {
       window.history.scrollRestoration = "manual";
     }
 
-    const markHistoryNavigation = () => {
-      isHistoryNavigation.current = true;
+    const saveCurrentScroll = () => {
+      scrollPositions.current.set(currentLocation.current, window.scrollY);
     };
 
+    const saveBeforeInternalNavigation = (event: MouseEvent | TouchEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) {
+        return;
+      }
+
+      const anchor = target.closest("a[href]");
+      if (!(anchor instanceof HTMLAnchorElement)) {
+        return;
+      }
+
+      if (anchor.origin === window.location.origin) {
+        saveCurrentScroll();
+      }
+    };
+
+    const markHistoryNavigation = () => {
+      saveCurrentScroll();
+      isHistoryNavigation.current = true;
+      const targetLocation = `${window.location.pathname}${window.location.search}`;
+      const savedY = scrollPositions.current.get(targetLocation);
+      if (savedY !== undefined) {
+        restoreScrollPosition(savedY);
+      }
+    };
+
+    window.addEventListener("scroll", saveCurrentScroll, { passive: true });
+    document.addEventListener("click", saveBeforeInternalNavigation, true);
+    document.addEventListener("touchstart", saveBeforeInternalNavigation, { capture: true, passive: true });
     window.addEventListener("popstate", markHistoryNavigation);
+    window.addEventListener("beforeunload", saveCurrentScroll);
 
     return () => {
+      window.removeEventListener("scroll", saveCurrentScroll);
+      document.removeEventListener("click", saveBeforeInternalNavigation, true);
+      document.removeEventListener("touchstart", saveBeforeInternalNavigation, true);
       window.removeEventListener("popstate", markHistoryNavigation);
+      window.removeEventListener("beforeunload", saveCurrentScroll);
     };
   }, []);
 
   useEffect(() => {
-    const fromLocation = previousLocation.current;
-    scrollPositions.current.set(fromLocation, window.scrollY);
-    previousLocation.current = location;
-
     const savedY = scrollPositions.current.get(location);
     const targetY = isHistoryNavigation.current && savedY !== undefined ? savedY : 0;
     isHistoryNavigation.current = false;
+    currentLocation.current = location;
 
     const restoreScroll = () => window.scrollTo({ top: targetY, left: 0, behavior: "auto" });
-    window.requestAnimationFrame(restoreScroll);
-    const timeoutId = window.setTimeout(restoreScroll, 360);
+    const timeoutIds = [80, 240, 520, 900].map((delay) =>
+      window.setTimeout(restoreScroll, delay),
+    );
 
     return () => {
-      window.clearTimeout(timeoutId);
+      timeoutIds.forEach((timeoutId) => window.clearTimeout(timeoutId));
     };
   }, [location]);
 
