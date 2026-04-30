@@ -13,26 +13,18 @@
       }
     }
   ],
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/orders",
-      "dest": "/api/orders.ts"
+      "source": "/api/orders",
+      "destination": "/api/orders.ts"
     },
     {
-      "src": "/api/meta",
-      "dest": "/api/meta.ts"
+      "source": "/api/meta",
+      "destination": "/api/meta.ts"
     },
     {
-      "src": "/product/(.*)",
-      "dest": "/dist/public/index.html"
-    },
-    {
-      "src": "/(.*\\.(?:js|css|jpg|jpeg|gif|png|svg|ico|webp|woff|woff2|ttf|eot|otf|json|webmanifest))",
-      "dest": "/$1"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/dist/public/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [

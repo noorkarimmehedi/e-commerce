@@ -122,7 +122,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   </span>
                 </div>
 
-                <h1 className="max-w-full break-words font-display text-[clamp(2.05rem,10.5vw,2.75rem)] font-light uppercase leading-[0.92] tracking-tight text-black md:text-[clamp(4rem,6vw,6rem)]">
+                <h1 className="max-w-full break-words font-display text-[clamp(1.9rem,9.8vw,2.55rem)] font-light uppercase leading-[0.92] tracking-tight text-black md:text-[clamp(3.65rem,5.5vw,5.5rem)]">
                   {product.title}
                 </h1>
 
