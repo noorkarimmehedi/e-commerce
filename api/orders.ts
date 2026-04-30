@@ -109,7 +109,7 @@ async function insertSupabaseOrder(order: OrderRequest) {
     destination: order.address,
     product: productDetails,
     quantity: 1,
-    price: order.bundlePrice,
+    price: total,
     merchandise: productDetails,
     value: total,
     status: "confirmed",

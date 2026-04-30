@@ -257,15 +257,20 @@ export default function OrderDialog({
                 <div className="py-16 text-center">
                   <span className="mx-auto mb-8 block h-px w-20 bg-brand-gold" />
                   <h3 className="font-display text-3xl font-light uppercase tracking-tight">
-                    Order Request Received
+                    Order Confirmed
                   </h3>
                   <p className="mx-auto mt-5 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-black/45">
                     Our studio team will contact you shortly to confirm delivery and payment.
                   </p>
                   {orderRef && (
-                    <p className="mx-auto mt-4 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-brand-gold">
-                      Reference {orderRef}
-                    </p>
+                    <div className="mx-auto mt-5 inline-flex flex-col items-center gap-1 border border-brand-gold/40 bg-white/70 px-5 py-3">
+                      <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/45">
+                        Order Number
+                      </span>
+                      <span className="font-garet text-sm font-bold uppercase tracking-[0.18em] text-brand-gold">
+                        {orderRef}
+                      </span>
+                    </div>
                   )}
                   <Button
                     onClick={() => resetDialog(false)}
