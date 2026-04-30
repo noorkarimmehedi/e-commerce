@@ -1,6 +1,14 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { rm, readFile } from "fs/promises";
+import { copyFile, mkdir, readFile, rm } from "fs/promises";
+
+const productSlugs = [
+  "4-in-1-makeup-pen",
+  "bordeaux",
+  "plum-veil",
+  "rosy-bloom",
+  "mauve-nude",
+];
 
 // server deps to bundle to reduce openat(2) syscalls
 // which helps cold start times
@@ -37,6 +45,15 @@ async function buildAll() {
 
   console.log("building client...");
   await viteBuild();
+
+  console.log("creating product route fallbacks...");
+  await Promise.all(
+    productSlugs.map(async (slug) => {
+      const routeDir = `dist/public/product/${slug}`;
+      await mkdir(routeDir, { recursive: true });
+      await copyFile("dist/public/index.html", `${routeDir}/index.html`);
+    }),
+  );
 
   console.log("building server...");
   const pkg = JSON.parse(await readFile("package.json", "utf-8"));
