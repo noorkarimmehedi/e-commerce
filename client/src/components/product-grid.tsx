@@ -9,11 +9,11 @@ import tintRose from "@assets/peptide_lip_tint_rosy.png";
 import tintMauve from "@assets/peptide_lip_tint_mauve.png";
 
 const products = [
-  { id: 1, title: "4-in-1 Makeup Pen", price: "৳999", image: makeupPen, type: "Makeup Essential" },
-  { id: 2, title: "Bordeaux", price: "৳799", image: tintBordeaux, type: "Peptide Lip Tint" },
-  { id: 3, title: "Plum Veil", price: "৳799", image: tintPlum, type: "Peptide Lip Tint" },
-  { id: 4, title: "Rosy Bloom", price: "৳799", image: tintRose, type: "Peptide Lip Tint" },
-  { id: 5, title: "Mauve Nude", price: "৳799", image: tintMauve, type: "Peptide Lip Tint" }
+  { id: 1, slug: "4-in-1-makeup-pen", title: "4-in-1 Makeup Pen", price: "৳999", image: makeupPen, type: "Makeup Essential" },
+  { id: 2, slug: "bordeaux", title: "Bordeaux", price: "৳799", image: tintBordeaux, type: "Peptide Lip Tint" },
+  { id: 3, slug: "plum-veil", title: "Plum Veil", price: "৳799", image: tintPlum, type: "Peptide Lip Tint" },
+  { id: 4, slug: "rosy-bloom", title: "Rosy Bloom", price: "৳799", image: tintRose, type: "Peptide Lip Tint" },
+  { id: 5, slug: "mauve-nude", title: "Mauve Nude", price: "৳799", image: tintMauve, type: "Peptide Lip Tint" }
 ];
 
 export default function ProductGrid() {
@@ -59,7 +59,7 @@ export default function ProductGrid() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: i * 0.1 }}
-            onClick={() => setLocation(`/product/${p.id}`)}
+            onClick={() => setLocation(`/product/${p.slug}`)}
             className="group flex cursor-pointer flex-col bg-brand-ivory"
           >
             {/* Image */}

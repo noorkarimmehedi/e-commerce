@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 import { ArrowLeft, ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-context";
@@ -13,22 +13,29 @@ import tintPlum from "@assets/peptide_lip_tint_plum.png";
 import tintRose from "@assets/peptide_lip_tint_rosy.png";
 import tintMauve from "@assets/peptide_lip_tint_mauve.png";
 
-const products = {
-  "1": { id: 1, title: "4-in-1 Makeup Pen", price: "৳999", amount: 999, image: makeupPen, description: "A compact 4-in-1 makeup pen designed for quick definition, soft detail, and a polished no makeup look in one everyday tool.", material: "Multi-use eye, brow, and lip definition", origin: "Seraphine Bangladesh", care: "Keep capped and store in a cool, dry place" },
-  "2": { id: 2, title: "Bordeaux", price: "৳799", amount: 799, image: tintBordeaux, description: "A peptide lip tint with a warm burnt-red wash for soft color that still feels natural and easy.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
-  "3": { id: 3, title: "Plum Veil", price: "৳799", amount: 799, image: tintPlum, description: "A sheer deep-berry tint that gives lips a plush veil of color while keeping the look effortless.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
-  "4": { id: 4, title: "Rosy Bloom", price: "৳799", amount: 799, image: tintRose, description: "A fresh petal-pink tint made for soft daily glow, easy touch-ups, and a clean no makeup finish.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
-  "5": { id: 5, title: "Mauve Nude", price: "৳799", amount: 799, image: tintMauve, description: "A muted soft-rose tint for natural-looking lips with just enough color to brighten the face.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" }
-};
+const products = [
+  { id: 1, slug: "4-in-1-makeup-pen", title: "4-in-1 Makeup Pen", price: "৳999", amount: 999, image: makeupPen, description: "A compact 4-in-1 makeup pen designed for quick definition, soft detail, and a polished no makeup look in one everyday tool.", material: "Multi-use eye, brow, and lip definition", origin: "Seraphine Bangladesh", care: "Keep capped and store in a cool, dry place" },
+  { id: 2, slug: "bordeaux", title: "Bordeaux", price: "৳799", amount: 799, image: tintBordeaux, description: "A peptide lip tint with a warm burnt-red wash for soft color that still feels natural and easy.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
+  { id: 3, slug: "plum-veil", title: "Plum Veil", price: "৳799", amount: 799, image: tintPlum, description: "A sheer deep-berry tint that gives lips a plush veil of color while keeping the look effortless.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
+  { id: 4, slug: "rosy-bloom", title: "Rosy Bloom", price: "৳799", amount: 799, image: tintRose, description: "A fresh petal-pink tint made for soft daily glow, easy touch-ups, and a clean no makeup finish.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
+  { id: 5, slug: "mauve-nude", title: "Mauve Nude", price: "৳799", amount: 799, image: tintMauve, description: "A muted soft-rose tint for natural-looking lips with just enough color to brighten the face.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" }
+];
 
 export default function ProductPage({ params }: { params: { id: string } }) {
-  const product = products[params.id as keyof typeof products];
+  const product = products.find((item) => item.slug === params.id || String(item.id) === params.id);
   const { addToCart } = useCart();
+  const [, setLocation] = useLocation();
   const [orderOpen, setOrderOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [params.id]);
+
+  useEffect(() => {
+    if (product && params.id !== product.slug) {
+      setLocation(`/product/${product.slug}`, { replace: true });
+    }
+  }, [params.id, product, setLocation]);
 
   useEffect(() => {
     if (!product) return;
@@ -103,9 +110,9 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="p-8 md:p-20 flex-grow space-y-20">
+            <div className="flex-grow space-y-10 p-8 md:space-y-12 md:p-16 xl:p-20">
               {/* Product Info */}
-              <div className="space-y-10">
+              <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] uppercase tracking-[0.6em] font-medium text-brand-gold">
                     Beauty 2026 / Selected Product
@@ -120,13 +127,13 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 </h1>
 
                 <div className="flex items-center gap-6">
-                  <span className="text-3xl font-display font-light text-black italic">{product.price}</span>
+                  <span className="font-garet text-3xl font-bold text-black">{product.price}</span>
                   <div className="h-px flex-grow bg-black/5" />
                 </div>
               </div>
 
               {/* Manifesto Description */}
-              <div className="space-y-8">
+              <div className="space-y-6">
                 <p className="text-sm md:text-base uppercase leading-loose tracking-[0.15em] text-black/60 max-w-md">
                   {product.description}
                 </p>
@@ -143,7 +150,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               </div>
 
               {/* Premium Call to Action */}
-              <div className="pt-8 space-y-4">
+              <div className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button
                     onClick={() => {
@@ -175,7 +182,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               </div>
 
               {/* Product Specifications - Minimal Swiss Grid */}
-              <div className="space-y-0 border-y border-black/5 mt-12">
+              <div className="space-y-0 border-y border-black/5">
                 {[
                   { label: "Origin", val: product.origin },
                   { label: "Use", val: "No makeup look" },
@@ -185,7 +192,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="grid grid-cols-[120px_1fr] md:grid-cols-[160px_1fr] gap-8 md:gap-16 py-6 border-b border-black/5 last:border-b-0 group hover:bg-black/[0.01] transition-colors"
+                    className="grid grid-cols-[120px_1fr] gap-6 border-b border-black/5 py-4 transition-colors last:border-b-0 hover:bg-black/[0.01] md:grid-cols-[150px_1fr] md:gap-10"
                   >
                     <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-black/30 group-hover:text-brand-gold transition-colors">
                       {item.label}
@@ -201,10 +208,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         </div>
 
         {/* YOU MAY ALSO LIKE SECTION */}
-        <section className="py-24 md:py-48 px-0 border-t border-black/5 bg-brand-ivory">
+        <section className="border-t border-black/5 bg-brand-ivory px-0 pb-24 pt-12 md:pb-40 md:pt-20">
           <div className="max-w-[1440px] mx-auto">
-            <div className="flex flex-col md:flex-row justify-between items-end mb-16 gap-8 text-center md:text-left px-8 md:px-16">
-              <div className="space-y-4">
+            <div className="mb-10 flex flex-col items-end justify-between gap-5 px-8 text-center md:mb-12 md:flex-row md:px-16 md:text-left">
+              <div className="space-y-2">
                 <span className="text-[10px] uppercase tracking-[0.6em] font-medium text-brand-gold block">Curated Selection</span>
                 <h2 className="text-4xl md:text-6xl font-display font-light uppercase tracking-tight text-black italic">
                   You may also <span className="not-italic">Like</span>
@@ -218,8 +225,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-2 gap-2 md:gap-4">
-              {Object.values(products)
-                .filter(p => p.id.toString() !== params.id)
+              {products
+                .filter(p => p.id !== product.id)
                 .slice(0, 4)
                 .map((p, i) => (
                   <motion.div
@@ -228,17 +235,16 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    className="group"
+                    className="group bg-brand-ivory"
                   >
-                    <Link href={`/product/${p.id}`}>
-                      <a className="block space-y-6">
+                    <Link href={`/product/${p.slug}`}>
+                      <a className="block space-y-5">
                         <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100 shadow-sm">
                           <img
                             src={p.image}
                             alt={p.title}
-                            className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 group-hover:scale-105 transition-all duration-[1.5s]"
+                            className="h-full w-full object-contain p-8 mix-blend-multiply transition-transform duration-[1.5s] group-hover:scale-105 md:p-12"
                           />
-                          <div className="absolute inset-0 bg-black/5 group-hover:opacity-0 transition-opacity" />
                         </div>
                         <div className="flex justify-between items-baseline px-4 md:px-8">
                           <h3 className="text-lg md:text-xl font-display font-light uppercase tracking-tight text-black">{p.title}</h3>
@@ -246,6 +252,24 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                         </div>
                       </a>
                     </Link>
+                    <div className="px-4 pt-5 md:px-8">
+                      <Button
+                        onClick={() =>
+                          addToCart(
+                            {
+                              id: p.id,
+                              title: p.title,
+                              price: p.price,
+                              image: p.image,
+                            },
+                            "Default",
+                          )
+                        }
+                        className="h-11 w-full rounded-none border border-black/15 bg-transparent text-[9px] font-bold uppercase tracking-[0.32em] text-black transition-all hover:bg-black hover:text-white"
+                      >
+                        Quick Add
+                      </Button>
+                    </div>
                   </motion.div>
                 ))}
             </div>
