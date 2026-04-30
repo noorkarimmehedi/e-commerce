@@ -254,15 +254,68 @@ export default function OrderDialog({
               </DialogHeader>
 
               {orderSubmitted ? (
-                <div className="py-16 text-center">
-                  <span className="mx-auto mb-8 block h-px w-20 bg-brand-gold" />
-                  <h3 className="font-display text-3xl font-light uppercase tracking-tight">
+                <motion.div
+                  initial="hidden"
+                  animate="visible"
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: { staggerChildren: 0.09, delayChildren: 0.05 },
+                    },
+                  }}
+                  className="py-16 text-center"
+                >
+                  <motion.span
+                    variants={{
+                      hidden: { opacity: 0, scaleX: 0 },
+                      visible: {
+                        opacity: 1,
+                        scaleX: 1,
+                        transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
+                      },
+                    }}
+                    className="mx-auto mb-8 block h-px w-20 origin-center bg-brand-gold"
+                  />
+                  <motion.h3
+                    variants={{
+                      hidden: { opacity: 0, y: 18, filter: "blur(6px)" },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        filter: "blur(0px)",
+                        transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] },
+                      },
+                    }}
+                    className="font-display text-3xl font-light uppercase tracking-tight"
+                  >
                     Order Confirmed
-                  </h3>
-                  <p className="mx-auto mt-5 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-black/45">
+                  </motion.h3>
+                  <motion.p
+                    variants={{
+                      hidden: { opacity: 0, y: 14 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        transition: { duration: 0.48, ease: [0.22, 1, 0.36, 1] },
+                      },
+                    }}
+                    className="mx-auto mt-5 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-black/45"
+                  >
                     Our studio team will contact you shortly to confirm delivery and payment.
-                  </p>
-                  <div className="mt-5 flex flex-col items-center gap-6">
+                  </motion.p>
+                  <motion.div
+                    variants={{
+                      hidden: { opacity: 0, y: 16, scale: 0.97 },
+                      visible: {
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] },
+                      },
+                    }}
+                    className="mt-5 flex flex-col items-center gap-6"
+                  >
                     {orderRef && (
                       <div className="inline-flex flex-col items-center gap-1 border border-brand-gold/40 bg-white/70 px-5 py-3">
                         <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/45">
@@ -279,8 +332,8 @@ export default function OrderDialog({
                     >
                       Close
                     </Button>
-                  </div>
-                </div>
+                  </motion.div>
+                </motion.div>
               ) : (
                 <form onSubmit={placeOrder} className="mt-8 space-y-8">
                   <div className="grid grid-cols-[92px_1fr] items-center gap-4 border border-black/10 bg-white/45 p-3 md:grid-cols-[140px_1fr] md:items-stretch md:p-5">
