@@ -35,6 +35,7 @@ const cartSectionVariants: Variants = {
 export default function CartDrawer() {
     const { items, isOpen, setIsOpen, removeFromCart, updateQuantity, clearCart, itemCount } = useCart();
     const [orderOpen, setOrderOpen] = useState(false);
+    const [checkoutBundle, setCheckoutBundle] = useState<OrderDialogBundle | null>(null);
 
     const cartOrder = useMemo<OrderDialogBundle | null>(() => {
         if (items.length === 0) {
@@ -58,8 +59,16 @@ export default function CartDrawer() {
     }, [items]);
 
     const openCheckout = () => {
+        setCheckoutBundle(cartOrder);
         setIsOpen(false);
         setOrderOpen(true);
+    };
+
+    const updateOrderOpen = (nextOpen: boolean) => {
+        setOrderOpen(nextOpen);
+        if (!nextOpen) {
+            setCheckoutBundle(null);
+        }
     };
 
     // Calculate subtotal
@@ -264,8 +273,8 @@ export default function CartDrawer() {
             </SheetContent>
             <OrderDialog
                 open={orderOpen}
-                onOpenChange={setOrderOpen}
-                bundle={cartOrder}
+                onOpenChange={updateOrderOpen}
+                bundle={checkoutBundle}
                 onSuccess={clearCart}
             />
         </Sheet>
