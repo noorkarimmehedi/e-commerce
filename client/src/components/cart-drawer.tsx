@@ -238,7 +238,7 @@ export default function CartDrawer() {
                                         Subtotal
                                     </span>
                                     {subtotal > 0 ? (
-                                        <span className="text-xl md:text-2xl font-display font-light text-black">
+                                        <span className="font-garet text-xl font-bold text-black md:text-2xl">
                                             BDT {subtotal.toLocaleString()}
                                         </span>
                                     ) : (

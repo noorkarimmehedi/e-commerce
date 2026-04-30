@@ -69,10 +69,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   });
 
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [params.id]);
-
-  useEffect(() => {
     if (product && params.id !== product.slug) {
       setLocation(`/product/${product.slug}`, { replace: true });
     }

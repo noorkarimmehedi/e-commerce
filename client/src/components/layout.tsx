@@ -11,12 +11,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [isOpen, setIsOpen] = useState(false);
   const [location] = useLocation();
   const [time, setTime] = useState('');
-  const [announcementIndex, setAnnouncementIndex] = useState(0);
   const { setIsOpen: setCartOpen, itemCount } = useCart();
-  const announcements = [
-    "Private Atelier Appointments Now Open",
-    "Complimentary Couture Consultation This Week"
-  ];
 
   useEffect(() => {
     const updateTime = () => {
@@ -32,14 +27,6 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     return () => clearInterval(intervalId);
   }, []);
 
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setAnnouncementIndex((current) => (current + 1) % announcements.length);
-    }, 5000);
-
-    return () => clearInterval(intervalId);
-  }, [announcements.length]);
-
   return (
     <div className="min-h-screen flex flex-col bg-brand-ivory text-black selection:bg-brand-gold selection:text-white">
       {/* Navigation */}
@@ -52,18 +39,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <span>SS26</span>
             </div>
             <div className="relative flex h-full min-w-0 flex-1 items-center justify-center overflow-hidden md:flex-none md:min-w-[480px]">
-              <AnimatePresence mode="wait">
-                <motion.p
-                  key={announcementIndex}
-                  initial={{ opacity: 0, y: "-20%" }}
-                  animate={{ opacity: 1, y: "-50%" }}
-                  exit={{ opacity: 0, y: "-80%" }}
-                  transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                  className="absolute inset-x-0 top-1/2 text-center text-[8px] uppercase tracking-[0.18em] md:text-[9px] md:tracking-[0.5em] font-medium text-black/65"
-                >
-                  {announcements[announcementIndex]}
-                </motion.p>
-              </AnimatePresence>
+              <motion.p
+                initial={{ opacity: 0, y: "-20%" }}
+                animate={{ opacity: 1, y: "-50%" }}
+                transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                className="absolute inset-x-0 top-1/2 text-center text-[8px] uppercase tracking-[0.18em] md:text-[9px] md:tracking-[0.5em] font-medium text-black/65"
+              >
+                Free delivery over ৳2500
+              </motion.p>
             </div>
             <div className="hidden md:flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-black/45">
               <span>Dhaka</span>

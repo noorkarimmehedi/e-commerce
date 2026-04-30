@@ -10,10 +10,13 @@ import Home from "@/pages/home";
 import ProductPage from "@/pages/product";
 import BookingPage from "@/pages/booking";
 import { createEventId, initMetaPixel, trackMetaEvent } from "@/lib/meta";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 function Router() {
   const [location] = useLocation();
+  const scrollPositions = useRef(new Map<string, number>());
+  const previousLocation = useRef(location);
+  const isHistoryNavigation = useRef(false);
 
   useEffect(() => {
     initMetaPixel();
@@ -21,6 +24,40 @@ function Router() {
 
   useEffect(() => {
     trackMetaEvent({ eventName: "PageView", eventId: createEventId(), capi: true });
+  }, [location]);
+
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    const markHistoryNavigation = () => {
+      isHistoryNavigation.current = true;
+    };
+
+    window.addEventListener("popstate", markHistoryNavigation);
+
+    return () => {
+      window.removeEventListener("popstate", markHistoryNavigation);
+    };
+  }, []);
+
+  useEffect(() => {
+    const fromLocation = previousLocation.current;
+    scrollPositions.current.set(fromLocation, window.scrollY);
+    previousLocation.current = location;
+
+    const savedY = scrollPositions.current.get(location);
+    const targetY = isHistoryNavigation.current && savedY !== undefined ? savedY : 0;
+    isHistoryNavigation.current = false;
+
+    const restoreScroll = () => window.scrollTo({ top: targetY, left: 0, behavior: "auto" });
+    window.requestAnimationFrame(restoreScroll);
+    const timeoutId = window.setTimeout(restoreScroll, 360);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
   }, [location]);
 
   return (

@@ -17,6 +17,7 @@ const deliveryOptions = [
   { label: "Outside Dhaka", charge: 130 }
 ];
 
+const freeDeliveryThreshold = 2500;
 const bkashNumber = "01706099819";
 
 function BkashLogo({ className = "" }: { className?: string }) {
@@ -70,6 +71,7 @@ export default function OrderDialog({
   const [paymentMethod, setPaymentMethod] = useState<"cash_on_delivery" | "bkash" | null>(null);
   const [bkashCopied, setBkashCopied] = useState(false);
   const previousOpen = useRef(open);
+  const qualifiesForFreeDelivery = (bundle?.price ?? 0) >= freeDeliveryThreshold;
 
   useEffect(() => {
     if (!previousOpen.current && open) {
@@ -92,6 +94,12 @@ export default function OrderDialog({
     }
     previousOpen.current = open;
   }, [open]);
+
+  useEffect(() => {
+    if (open && qualifiesForFreeDelivery) {
+      setDeliveryCharge(0);
+    }
+  }, [open, qualifiesForFreeDelivery]);
 
   const resetDialog = (nextOpen: boolean) => {
     if (!nextOpen) {
@@ -404,27 +412,41 @@ export default function OrderDialog({
                     <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
                       Delivery Charge
                     </span>
-                    <div className="grid gap-2 md:grid-cols-2">
-                      {deliveryOptions.map((option) => (
-                        <button
-                          key={option.label}
-                          type="button"
-                          onClick={() => setDeliveryCharge(option.charge)}
-                          className={`border p-4 text-left transition-all ${
-                            deliveryCharge === option.charge
-                              ? "border-black bg-white"
-                              : "border-black/10 bg-transparent hover:border-black/30"
-                          }`}
-                        >
-                          <span className="block text-[10px] uppercase tracking-[0.28em] font-bold">
-                            {option.label}
-                          </span>
-                          <span className="mt-2 block font-garet text-2xl font-bold">
-                            ৳{option.charge}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
+                    {qualifiesForFreeDelivery ? (
+                      <div className="border border-brand-gold/40 bg-white p-4">
+                        <span className="block text-[10px] uppercase tracking-[0.28em] font-bold text-black">
+                          Free Delivery
+                        </span>
+                        <span className="mt-2 block font-garet text-2xl font-bold text-brand-gold">
+                          ৳0
+                        </span>
+                        <span className="mt-3 block text-[9px] uppercase leading-5 tracking-[0.22em] text-black/45">
+                          Applied automatically for orders over ৳2500
+                        </span>
+                      </div>
+                    ) : (
+                      <div className="grid gap-2 md:grid-cols-2">
+                        {deliveryOptions.map((option) => (
+                          <button
+                            key={option.label}
+                            type="button"
+                            onClick={() => setDeliveryCharge(option.charge)}
+                            className={`border p-4 text-left transition-all ${
+                              deliveryCharge === option.charge
+                                ? "border-black bg-white"
+                                : "border-black/10 bg-transparent hover:border-black/30"
+                            }`}
+                          >
+                            <span className="block text-[10px] uppercase tracking-[0.28em] font-bold">
+                              {option.label}
+                            </span>
+                            <span className="mt-2 block font-garet text-2xl font-bold">
+                              ৳{option.charge}
+                            </span>
+                          </button>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   <div className="grid gap-3">
@@ -555,7 +577,7 @@ export default function OrderDialog({
                     <div className="mt-3 flex justify-between text-[10px] uppercase tracking-[0.3em] text-black/45">
                       <span>Delivery</span>
                       <span className="font-garet font-bold">
-                        {deliveryCharge === null ? "Select" : `৳${deliveryCharge}`}
+                        {deliveryCharge === null ? "Select" : deliveryCharge === 0 ? "Free" : `৳${deliveryCharge}`}
                       </span>
                     </div>
                     <div className="mt-4 flex items-end justify-between gap-4 border-t border-black/10 pt-4">
