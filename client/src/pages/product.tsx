@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
+import { useCallback, useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import { ArrowLeft, ArrowDownRight } from "lucide-react";
@@ -21,11 +22,41 @@ const products = [
   { id: 5, slug: "mauve-nude", title: "Mauve Nude", price: "৳799", amount: 799, image: tintMauve, description: "A muted soft-rose tint for natural-looking lips with just enough color to brighten the face.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" }
 ];
 
+const makeupPenCarouselImages = [
+  {
+    src: "/hero_mobile_no_makeup.png",
+    alt: "No makeup look with 4-in-1 Makeup Pen",
+    fit: "cover",
+  },
+  {
+    src: "/hf_20260311_145847_43310d40-2ddd-4227-9283-2c3fe9830d15.webp",
+    alt: "4-in-1 Makeup Pen detail",
+    fit: "contain",
+  },
+  {
+    src: "/hf_20260311_151900_cff2b5db-4d48-4ede-b8cf-67eaacfac089.webp",
+    alt: "4-in-1 Makeup Pen shade detail",
+    fit: "contain",
+  },
+  {
+    src: "/hf_20260311_155853_1d38cb61-6e7f-4e18-9f98-5b871c571abd.webp",
+    alt: "4-in-1 Makeup Pen finish",
+    fit: "contain",
+  },
+];
+
 export default function ProductPage({ params }: { params: { id: string } }) {
   const product = products.find((item) => item.slug === params.id || String(item.id) === params.id);
   const { addToCart } = useCart();
   const [, setLocation] = useLocation();
   const [orderOpen, setOrderOpen] = useState(false);
+  const [activeImage, setActiveImage] = useState(0);
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    align: "start",
+    containScroll: false,
+    loop: false,
+    skipSnaps: false,
+  });
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -55,7 +86,52 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     });
   }, [product]);
 
+  const goToImage = (idx: number) => {
+    emblaApi?.scrollTo(idx);
+  };
+
+  const syncActiveImage = useCallback(() => {
+    if (!emblaApi) {
+      return;
+    }
+
+    setActiveImage(emblaApi.selectedScrollSnap());
+  }, [emblaApi]);
+
+  useEffect(() => {
+    if (!emblaApi) {
+      return;
+    }
+
+    syncActiveImage();
+    emblaApi.on("select", syncActiveImage);
+    emblaApi.on("reInit", syncActiveImage);
+
+    return () => {
+      emblaApi.off("select", syncActiveImage);
+      emblaApi.off("reInit", syncActiveImage);
+    };
+  }, [emblaApi, syncActiveImage]);
+
   if (!product) return <div>Product not found</div>;
+
+  const productImages =
+    product.slug === "4-in-1-makeup-pen"
+      ? [
+          {
+            src: product.image,
+            alt: product.title,
+            fit: "contain",
+          },
+          ...makeupPenCarouselImages,
+        ]
+      : [
+          {
+            src: product.image,
+            alt: product.title,
+            fit: "contain",
+          },
+        ];
 
   const productOrder: OrderDialogBundle = {
     title: product.title,
@@ -71,14 +147,57 @@ export default function ProductPage({ params }: { params: { id: string } }) {
           {/* Visual Side - Immersive & Premium */}
           <div className="lg:col-span-7 relative bg-neutral-100 overflow-hidden">
             <div className="group h-[64vh] min-h-[430px] lg:sticky lg:top-0 lg:h-screen">
-              <motion.img
+              <motion.div
                 initial={{ scale: 1.1, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                src={product.image}
-                alt={product.title}
-                className="h-full w-full bg-[#f2f1f0] object-contain p-10 mix-blend-multiply brightness-95 transition-all duration-[2s] group-hover:scale-105 md:p-24"
-              />
+                className="h-full w-full bg-[#f2f1f0]"
+              >
+                <div ref={emblaRef} className="h-full cursor-grab overflow-hidden active:cursor-grabbing">
+                  <div className="flex h-full touch-pan-y">
+                    {productImages.map((image) => (
+                      <div key={image.src} className="relative h-full min-w-0 flex-[0_0_100%]">
+                        <img
+                          src={image.src}
+                          alt={image.alt}
+                          draggable={false}
+                          className={`absolute inset-0 h-full w-full select-none object-center brightness-95 contrast-105 transition-transform duration-[2s] group-hover:scale-105 ${
+                            image.fit === "cover"
+                              ? "object-cover"
+                              : "object-contain p-10 mix-blend-multiply md:p-24"
+                          }`}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {productImages.length > 1 && (
+                  <>
+                    <div className="absolute inset-x-0 bottom-0 z-10 h-28 bg-gradient-to-t from-black/18 to-transparent pointer-events-none" />
+                    <div className="absolute inset-x-0 bottom-5 z-20 flex justify-center">
+                      <div className="flex items-center gap-3 border border-white/20 bg-black/15 px-4 py-3 backdrop-blur-sm">
+                        {productImages.map((image, idx) => (
+                          <button
+                            key={image.src}
+                            type="button"
+                            onClick={() => goToImage(idx)}
+                            aria-label={`Show product image ${idx + 1}`}
+                            className="group/dot flex h-5 w-5 items-center justify-center"
+                          >
+                            <span
+                              className={`block h-2 w-2 rounded-full transition-all duration-300 ${
+                                activeImage === idx
+                                  ? "w-6 rounded-full bg-brand-gold"
+                                  : "bg-white/70 group-hover/dot:bg-white"
+                              }`}
+                            />
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </motion.div>
 
               {/* Gold Frame Detail overlay */}
               <div className="absolute inset-8 md:inset-16 border border-brand-gold/20 pointer-events-none" />

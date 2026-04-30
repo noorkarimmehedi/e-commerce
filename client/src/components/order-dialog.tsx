@@ -262,22 +262,24 @@ export default function OrderDialog({
                   <p className="mx-auto mt-5 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-black/45">
                     Our studio team will contact you shortly to confirm delivery and payment.
                   </p>
-                  {orderRef && (
-                    <div className="mx-auto mt-5 inline-flex flex-col items-center gap-1 border border-brand-gold/40 bg-white/70 px-5 py-3">
-                      <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/45">
-                        Order Number
-                      </span>
-                      <span className="font-garet text-sm font-bold uppercase tracking-[0.18em] text-brand-gold">
-                        {orderRef}
-                      </span>
-                    </div>
-                  )}
-                  <Button
-                    onClick={() => resetDialog(false)}
-                    className="mt-10 h-auto rounded-none bg-transparent px-0 py-1 text-[10px] uppercase tracking-[0.35em] text-black underline underline-offset-8 shadow-none hover:bg-transparent hover:text-brand-gold"
-                  >
-                    Close
-                  </Button>
+                  <div className="mt-5 flex flex-col items-center gap-6">
+                    {orderRef && (
+                      <div className="inline-flex flex-col items-center gap-1 border border-brand-gold/40 bg-white/70 px-5 py-3">
+                        <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/45">
+                          Order Number
+                        </span>
+                        <span className="font-garet text-sm font-bold uppercase tracking-[0.18em] text-brand-gold">
+                          {orderRef}
+                        </span>
+                      </div>
+                    )}
+                    <Button
+                      onClick={() => resetDialog(false)}
+                      className="h-auto rounded-none bg-transparent px-0 py-1 text-[10px] uppercase tracking-[0.35em] text-black underline underline-offset-8 shadow-none hover:bg-transparent hover:text-brand-gold"
+                    >
+                      Close
+                    </Button>
+                  </div>
                 </div>
               ) : (
                 <form onSubmit={placeOrder} className="mt-8 space-y-8">
