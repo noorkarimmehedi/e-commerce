@@ -70,14 +70,14 @@ export default function ProductPage({ params }: { params: { id: string } }) {
         <div className="grid grid-cols-1 lg:grid-cols-12">
           {/* Visual Side - Immersive & Premium */}
           <div className="lg:col-span-7 relative bg-neutral-100 overflow-hidden">
-            <div className="lg:sticky lg:top-0 h-[80vh] lg:h-screen group">
+            <div className="group h-[64vh] min-h-[430px] lg:sticky lg:top-0 lg:h-screen">
               <motion.img
                 initial={{ scale: 1.1, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
                 src={product.image}
                 alt={product.title}
-                className="w-full h-full object-contain bg-[#f2f1f0] p-14 mix-blend-multiply brightness-95 transition-all duration-[2s] group-hover:scale-105 md:p-24"
+                className="h-full w-full bg-[#f2f1f0] object-contain p-10 mix-blend-multiply brightness-95 transition-all duration-[2s] group-hover:scale-105 md:p-24"
               />
 
               {/* Gold Frame Detail overlay */}
@@ -122,7 +122,7 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   </span>
                 </div>
 
-                <h1 className="text-6xl md:text-8xl font-display font-light uppercase tracking-tight leading-none text-black">
+                <h1 className="whitespace-nowrap font-display text-[2.35rem] font-light uppercase leading-none tracking-tight text-black min-[390px]:text-[2.8rem] md:text-8xl">
                   {product.title}
                 </h1>
 
