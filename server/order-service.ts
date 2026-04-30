@@ -43,8 +43,8 @@ export async function insertSupabaseOrder(order: OrderRequest) {
   const now = new Date().toISOString();
   const paymentDetails =
     order.paymentMethod === "bkash"
-      ? `Payment: bKash Send Money ${order.bkashTrxId}`
-      : "Payment: Cash on Delivery";
+      ? `Payment Method: bKash Send Money | Reference ID (TRXID): ${order.bkashTrxId}`
+      : "Payment Method: Cash on Delivery";
   const productDetails = `${order.bundleDetails} | ${paymentDetails}`;
   const payload = {
     ref: orderRef,

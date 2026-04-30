@@ -61,13 +61,13 @@ export default function OrderDialog({
   onSuccess?: () => void;
 }) {
   const [openInstance, setOpenInstance] = useState(0);
-  const [deliveryCharge, setDeliveryCharge] = useState(deliveryOptions[0].charge);
+  const [deliveryCharge, setDeliveryCharge] = useState<number | null>(null);
   const [orderSubmitted, setOrderSubmitted] = useState(false);
   const [orderSubmitting, setOrderSubmitting] = useState(false);
   const [orderError, setOrderError] = useState("");
   const [orderRef, setOrderRef] = useState("");
   const [orderClosing, setOrderClosing] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"cash_on_delivery" | "bkash">("cash_on_delivery");
+  const [paymentMethod, setPaymentMethod] = useState<"cash_on_delivery" | "bkash" | null>(null);
   const [bkashCopied, setBkashCopied] = useState(false);
   const previousOpen = useRef(open);
 
@@ -102,12 +102,12 @@ export default function OrderDialog({
 
     setOrderClosing(false);
     onOpenChange(nextOpen);
-    setDeliveryCharge(deliveryOptions[0].charge);
+    setDeliveryCharge(null);
     setOrderSubmitted(false);
     setOrderSubmitting(false);
     setOrderError("");
     setOrderRef("");
-    setPaymentMethod("cash_on_delivery");
+    setPaymentMethod(null);
     setBkashCopied(false);
   };
 
@@ -158,6 +158,17 @@ export default function OrderDialog({
 
     const formData = new FormData(event.currentTarget);
     const eventId = createEventId();
+    if (deliveryCharge === null) {
+      setOrderError("Please select a delivery charge before placing your order.");
+      return;
+    }
+    if (paymentMethod === null) {
+      setOrderError("Please select a payment method before placing your order.");
+      return;
+    }
+
+    const selectedDeliveryCharge = deliveryCharge;
+    const selectedPaymentMethod = paymentMethod;
     setOrderSubmitting(true);
     setOrderError("");
 
@@ -166,11 +177,11 @@ export default function OrderDialog({
         bundleTitle: bundle.title,
         bundleDetails: bundle.details,
         bundlePrice: bundle.price,
-        deliveryCharge,
+        deliveryCharge: selectedDeliveryCharge,
         customerName: String(formData.get("name") || ""),
         phone: String(formData.get("phone") || ""),
         address: String(formData.get("address") || ""),
-        paymentMethod,
+        paymentMethod: selectedPaymentMethod,
         bkashTrxId: String(formData.get("bkashTrxId") || ""),
         metaEventId: eventId,
       });
@@ -185,7 +196,7 @@ export default function OrderDialog({
         capi: false, // Purchase is sent server-side from /api/orders (for dedup)
         customData: {
           currency: "BDT",
-          value: bundle.price + deliveryCharge,
+          value: bundle.price + selectedDeliveryCharge,
           content_type: "product",
           contents: [{ id: bundle.title, quantity: 1, item_price: bundle.price }],
         },
@@ -331,6 +342,33 @@ export default function OrderDialog({
 
                   <div className="grid gap-3">
                     <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
+                      Delivery Charge
+                    </span>
+                    <div className="grid gap-2 md:grid-cols-2">
+                      {deliveryOptions.map((option) => (
+                        <button
+                          key={option.label}
+                          type="button"
+                          onClick={() => setDeliveryCharge(option.charge)}
+                          className={`border p-4 text-left transition-all ${
+                            deliveryCharge === option.charge
+                              ? "border-black bg-white"
+                              : "border-black/10 bg-transparent hover:border-black/30"
+                          }`}
+                        >
+                          <span className="block text-[10px] uppercase tracking-[0.28em] font-bold">
+                            {option.label}
+                          </span>
+                          <span className="mt-2 block font-garet text-2xl font-bold">
+                            ৳{option.charge}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="grid gap-3">
+                    <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
                       Payment Method
                     </span>
                     <div className="grid gap-2 md:grid-cols-2">
@@ -449,33 +487,6 @@ export default function OrderDialog({
                     </div>
                   )}
 
-                  <div className="grid gap-3">
-                    <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
-                      Delivery Charge
-                    </span>
-                    <div className="grid gap-2 md:grid-cols-2">
-                      {deliveryOptions.map((option) => (
-                        <button
-                          key={option.label}
-                          type="button"
-                          onClick={() => setDeliveryCharge(option.charge)}
-                          className={`border p-4 text-left transition-all ${
-                            deliveryCharge === option.charge
-                              ? "border-black bg-white"
-                              : "border-black/10 bg-transparent hover:border-black/30"
-                          }`}
-                        >
-                          <span className="block text-[10px] uppercase tracking-[0.28em] font-bold">
-                            {option.label}
-                          </span>
-                          <span className="mt-2 block font-garet text-2xl font-bold">
-                            ৳{option.charge}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-
                   <div className="border-y border-black/10 py-4">
                     <div className="flex justify-between text-[10px] uppercase tracking-[0.3em] text-black/45">
                       <span>Items</span>
@@ -483,15 +494,23 @@ export default function OrderDialog({
                     </div>
                     <div className="mt-3 flex justify-between text-[10px] uppercase tracking-[0.3em] text-black/45">
                       <span>Delivery</span>
-                      <span className="font-garet font-bold">৳{deliveryCharge}</span>
+                      <span className="font-garet font-bold">
+                        {deliveryCharge === null ? "Select" : `৳${deliveryCharge}`}
+                      </span>
                     </div>
-                    <div className="mt-4 flex items-end justify-between border-t border-black/10 pt-4">
+                    <div className="mt-4 flex items-end justify-between gap-4 border-t border-black/10 pt-4">
                       <span className="text-[10px] uppercase tracking-[0.35em] font-bold text-black">
                         Total
                       </span>
-                      <span className="font-garet text-3xl font-bold text-black">
-                        ৳{(bundle.price + deliveryCharge).toLocaleString()}
-                      </span>
+                      {deliveryCharge === null ? (
+                        <span className="max-w-[220px] text-right text-[9px] uppercase tracking-[0.22em] leading-5 font-bold text-red-700">
+                          Please select a delivery charge
+                        </span>
+                      ) : (
+                        <span className="font-garet text-3xl font-bold text-black">
+                          ৳{(bundle.price + deliveryCharge).toLocaleString()}
+                        </span>
+                      )}
                     </div>
                   </div>
 
