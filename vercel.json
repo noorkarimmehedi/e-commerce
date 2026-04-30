@@ -23,12 +23,16 @@
       "dest": "/api/meta.ts"
     },
     {
+      "src": "/product/(.*)",
+      "dest": "/dist/public/index.html"
+    },
+    {
       "src": "/(.*\\.(?:js|css|jpg|jpeg|gif|png|svg|ico|webp|woff|woff2|ttf|eot|otf|json|webmanifest))",
       "dest": "/$1"
     },
     {
       "src": "/(.*)",
-      "dest": "/index.html"
+      "dest": "/dist/public/index.html"
     }
   ],
   "headers": [
