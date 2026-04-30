@@ -8,6 +8,8 @@ type OrderRequest = {
   customerName: string;
   phone: string;
   address: string;
+  paymentMethod: "cash_on_delivery" | "bkash";
+  bkashTrxId?: string;
   metaEventId?: string;
 };
 
@@ -38,6 +40,9 @@ function validateOrder(body: unknown): OrderRequest {
   const customerName = String(order.customerName || "").trim();
   const phone = String(order.phone || "").trim();
   const address = String(order.address || "").trim();
+  const paymentMethod =
+    order.paymentMethod === "bkash" ? "bkash" : "cash_on_delivery";
+  const bkashTrxId = String(order.bkashTrxId || "").trim();
   const metaEventId = typeof order.metaEventId === "string" ? order.metaEventId.trim() : "";
 
   if (
@@ -49,7 +54,8 @@ function validateOrder(body: unknown): OrderRequest {
     deliveryCharge < 0 ||
     customerName.length < 2 ||
     phone.length < 6 ||
-    address.length < 5
+    address.length < 5 ||
+    (paymentMethod === "bkash" && !bkashTrxId)
   ) {
     throw new Error("Invalid order details");
   }
@@ -62,6 +68,8 @@ function validateOrder(body: unknown): OrderRequest {
     customerName,
     phone,
     address,
+    paymentMethod,
+    ...(bkashTrxId ? { bkashTrxId } : {}),
     ...(metaEventId ? { metaEventId } : {}),
   };
 }
@@ -87,6 +95,11 @@ async function insertSupabaseOrder(order: OrderRequest) {
   const orderRef = createOrderRef();
   const total = order.bundlePrice + order.deliveryCharge;
   const now = new Date().toISOString();
+  const paymentDetails =
+    order.paymentMethod === "bkash"
+      ? `Payment: bKash Send Money ${order.bkashTrxId}`
+      : "Payment: Cash on Delivery";
+  const productDetails = `${order.bundleDetails} | ${paymentDetails}`;
   const payload = {
     ref: orderRef,
     order_number: orderRef,
@@ -94,10 +107,10 @@ async function insertSupabaseOrder(order: OrderRequest) {
     phone: order.phone,
     address: order.address,
     destination: order.address,
-    product: order.bundleDetails,
+    product: productDetails,
     quantity: 1,
     price: order.bundlePrice,
-    merchandise: order.bundleDetails,
+    merchandise: productDetails,
     value: total,
     status: "confirmed",
     source: "website",

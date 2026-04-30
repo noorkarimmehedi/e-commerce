@@ -8,7 +8,15 @@ export const orderRequestSchema = z.object({
   customerName: z.string().min(2).max(120),
   phone: z.string().min(6).max(30),
   address: z.string().min(5).max(500),
-});
+  paymentMethod: z.enum(["cash_on_delivery", "bkash"]).default("cash_on_delivery"),
+  bkashTrxId: z.string().trim().max(80).optional().default(""),
+}).refine(
+  (order) => order.paymentMethod !== "bkash" || order.bkashTrxId.length > 0,
+  {
+    message: "bKash reference ID is required",
+    path: ["bkashTrxId"],
+  },
+);
 
 export type OrderRequest = z.infer<typeof orderRequestSchema>;
 
@@ -33,6 +41,11 @@ export async function insertSupabaseOrder(order: OrderRequest) {
   const orderRef = createOrderRef();
   const total = order.bundlePrice + order.deliveryCharge;
   const now = new Date().toISOString();
+  const paymentDetails =
+    order.paymentMethod === "bkash"
+      ? `Payment: bKash Send Money ${order.bkashTrxId}`
+      : "Payment: Cash on Delivery";
+  const productDetails = `${order.bundleDetails} | ${paymentDetails}`;
   const payload = {
     ref: orderRef,
     order_number: orderRef,
@@ -40,10 +53,10 @@ export async function insertSupabaseOrder(order: OrderRequest) {
     phone: order.phone,
     address: order.address,
     destination: order.address,
-    product: order.bundleDetails,
+    product: productDetails,
     quantity: 1,
     price: order.bundlePrice,
-    merchandise: order.bundleDetails,
+    merchandise: productDetails,
     value: total,
     status: "confirmed",
     source: "website",
