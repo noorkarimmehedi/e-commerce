@@ -274,7 +274,7 @@ export default function OrderDialog({
                   )}
                   <Button
                     onClick={() => resetDialog(false)}
-                    className="mt-10 h-12 rounded-none bg-black px-10 text-[10px] uppercase tracking-[0.35em] text-white hover:bg-brand-gold"
+                    className="mt-10 h-auto rounded-none bg-transparent px-0 py-1 text-[10px] uppercase tracking-[0.35em] text-black underline underline-offset-8 shadow-none hover:bg-transparent hover:text-brand-gold"
                   >
                     Close
                   </Button>

@@ -21,12 +21,8 @@ export const orderRequestSchema = z.object({
 export type OrderRequest = z.infer<typeof orderRequestSchema>;
 
 function createOrderRef() {
-  const datePart = new Date()
-    .toISOString()
-    .slice(2, 10)
-    .replaceAll("-", "");
-  const randomPart = Math.random().toString(36).slice(2, 7).toUpperCase();
-  return `WEB-${datePart}-${randomPart}`;
+  const orderNumber = Math.floor(1000 + Math.random() * 9000);
+  return `#${orderNumber}SB`;
 }
 
 export async function insertSupabaseOrder(order: OrderRequest) {
