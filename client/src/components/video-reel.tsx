@@ -4,24 +4,24 @@ import { ShoppingBag } from "lucide-react";
 const REEL_VIDEOS = [
     {
         id: 1,
-        url: "/AQNhkbOEBBi0CA06rklQbu650sd1ivbQoKkWyhi9KQSb_hDdSHI7iEjpB1REk9sYaWIaZVWC6jJpiGWYD4xDh-LeHr2AfZGlBWOiy8wl21N52Q.mp4",
-        title: "Silk Taffeta Noir",
-        price: "Enquire",
-        category: "Bespoke Evening Gown"
+        url: "/vid_01.mp4",
+        title: "Touch Up Anywhere",
+        price: "4-in-1",
+        category: "Makeup Pen Ritual"
     },
     {
         id: 2,
-        url: "/AQP5zFP4EUQGTXa_l6hbKQjJKjqOpzSiH4NO0VMdEi8QxHLISI_K6YOKeB81c2UnjcbxqWkSrrdUjesjr0no7vX-hBfqSZzQBPoyLYnnERFkgQ.mp4",
-        title: "Crimson Velvet",
-        price: "Enquire",
-        category: "Couture Gala Piece"
+        url: "/vid_02.mp4",
+        title: "Ready In Seconds",
+        price: "4-in-1",
+        category: "No Makeup Look"
     },
     {
         id: 3,
-        url: "/AQPdBUy3uo1uEpvB96NfzsXDIR-QXPFF9bMRVlkjS7nt9MLHE0wL59kQjpD9xZ-kTFIPo8tsYBnplaVvJax1FR1XEYKk2js2Yhz49j7q1Jh-ZQ.mp4",
-        title: "Ivory Organza",
-        price: "Enquire",
-        category: "Bridal Atelier"
+        url: "/vid_03.mp4",
+        title: "Compact Definition",
+        price: "4-in-1",
+        category: "Everyday Beauty"
     }
 ];
 
@@ -85,6 +85,10 @@ export default function VideoReel() {
                                 muted
                                 loop
                                 playsInline
+                                preload="metadata"
+                                onLoadedMetadata={(event) => {
+                                    event.currentTarget.play().catch(() => undefined);
+                                }}
                                 className="w-full h-full object-cover brightness-100 contrast-105 saturate-110 group-hover:scale-105 transition-transform duration-[3s] ease-out"
                             >
                                 <source src={video.url} type="video/mp4" />

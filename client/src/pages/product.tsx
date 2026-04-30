@@ -45,6 +45,15 @@ const makeupPenCarouselImages = [
   },
 ];
 
+const makeupPenVideos = [
+  { src: "/vid_01.mp4", label: "Makeup Pen video 1" },
+  { src: "/vid_02.mp4", label: "Makeup Pen video 2" },
+  { src: "/vid_03.mp4", label: "Makeup Pen video 3" },
+];
+
+const formatTimelineDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+
 export default function ProductPage({ params }: { params: { id: string } }) {
   const product = products.find((item) => item.slug === params.id || String(item.id) === params.id);
   const { addToCart } = useCart();
@@ -132,6 +141,16 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             fit: "contain",
           },
         ];
+  const today = new Date();
+  const processedDate = new Date(today);
+  processedDate.setDate(today.getDate() + 1);
+  const deliveredDate = new Date(processedDate);
+  deliveredDate.setDate(processedDate.getDate() + 1);
+  const deliveryTimeline = [
+    { title: "Order Placed", date: formatTimelineDate(today) },
+    { title: "Order Processed", date: formatTimelineDate(processedDate) },
+    { title: "Delivered", date: formatTimelineDate(deliveredDate) },
+  ];
 
   const productOrder: OrderDialogBundle = {
     title: product.title,
@@ -295,9 +314,48 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     <ArrowDownRight className="w-5 h-5 stroke-[1px] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </Button>
                 </div>
-                <p className="text-center text-[9px] uppercase tracking-widest text-black/30 font-medium">
-                  Available for individual order
-                </p>
+                <div className="border border-black/10 bg-white/35 px-4 py-5 md:px-5">
+                  <div className="relative pb-1 pt-5">
+                    <div className="absolute left-[12%] right-[12%] top-8 h-px bg-black/15" />
+                    <div className="relative z-20 grid grid-cols-3 gap-3">
+                      {deliveryTimeline.map((item) => (
+                        <div key={item.title} className="flex flex-col items-center text-center">
+                          <span className="mb-3 h-3 w-3 rounded-full border border-brand-gold bg-brand-ivory shadow-[0_0_0_4px_rgba(242,241,240,0.95)]" />
+                          <span className="font-garet text-[11px] font-bold uppercase tracking-[0.12em] text-brand-gold">
+                            {item.date}
+                          </span>
+                          <span className="mt-2 block text-[8px] font-bold uppercase leading-4 tracking-[0.18em] text-black md:text-[9px] md:tracking-[0.24em]">
+                            {item.title}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+                {product.slug === "4-in-1-makeup-pen" && (
+                  <div className="grid grid-cols-3 gap-2 pt-2 md:gap-3">
+                    {makeupPenVideos.map((video) => (
+                      <div
+                        key={video.src}
+                        className="aspect-[9/14] overflow-hidden border border-black/10 bg-black/5"
+                      >
+                        <video
+                          src={video.src}
+                          aria-label={video.label}
+                          className="h-full w-full object-cover"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          preload="metadata"
+                          onLoadedMetadata={(event) => {
+                            event.currentTarget.play().catch(() => undefined);
+                          }}
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Product Specifications - Minimal Swiss Grid */}
