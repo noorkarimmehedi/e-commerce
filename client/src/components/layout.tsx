@@ -237,12 +237,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {/* Navigation Column */}
           <div className="md:col-span-2 space-y-6">
-            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold block">Explore</span>
+            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold block">Information</span>
             <ul className="space-y-4 text-[10px] uppercase tracking-widest font-medium text-black/60">
-              <li><a href="#" className="hover:text-black transition-colors block">Collections</a></li>
-              <li><a href="#" className="hover:text-black transition-colors block">Bespoke Fitting</a></li>
-              <li><a href="#" className="hover:text-black transition-colors block">Fabric Archive</a></li>
-              <li><a href="#" className="hover:text-black transition-colors block">Journal</a></li>
+              <li><a href="#" className="hover:text-black transition-colors block">Shipping Policy</a></li>
+              <li><a href="#" className="hover:text-black transition-colors block">Terms and Conditions</a></li>
+              <li><a href="#" className="hover:text-black transition-colors block">Exchange and Return Policy</a></li>
             </ul>
           </div>
 
@@ -250,10 +249,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="md:col-span-2 space-y-6">
             <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold block">Maison</span>
             <ul className="space-y-4 text-[10px] uppercase tracking-widest font-medium text-black/60">
-              <li><a href="#" className="hover:text-black transition-colors block">Studio Dhaka</a></li>
-              <li><a href="#" className="hover:text-black transition-colors block">Client Care</a></li>
-              <li><a href="#" className="hover:text-black transition-colors block">Press</a></li>
               <li><a href="#" className="hover:text-black transition-colors block">Legal</a></li>
+              <li><a href="#" className="hover:text-black transition-colors block">Press</a></li>
+              <li><a href="#" className="hover:text-black transition-colors block">Client Care</a></li>
+              <li><a href="#" className="hover:text-black transition-colors block">Studio Dhaka</a></li>
             </ul>
           </div>
 

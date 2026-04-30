@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-context";
 import Layout from "@/components/layout";
 import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
+import CustomerReviews from "@/components/customer-reviews";
 import { createEventId, trackMetaEvent } from "@/lib/meta";
 import makeupPen from "@assets/makeup_pen_4_in_1.png";
 import tintBordeaux from "@assets/peptide_lip_tint_bordeaux.png";
@@ -461,6 +462,14 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   </motion.div>
                 ))}
             </div>
+
+            {product.slug === "4-in-1-makeup-pen" && (
+              <CustomerReviews
+                initialVisible={7}
+                showMoreCount={102}
+                className="bg-brand-ivory px-4 pt-16 md:px-16 md:pt-24"
+              />
+            )}
           </div>
         </section>
       </div>

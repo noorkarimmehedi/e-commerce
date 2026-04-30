@@ -231,12 +231,21 @@ function ReviewArticle({ review, index }: { review: (typeof reviews)[number]; in
   );
 }
 
-export default function CustomerReviews() {
+export default function CustomerReviews({
+  initialVisible = 3,
+  showMoreCount,
+  className = "bg-brand-ivory px-4 pb-16 md:px-16 md:pb-28",
+}: {
+  initialVisible?: number;
+  showMoreCount?: number;
+  className?: string;
+}) {
   const [showAll, setShowAll] = useState(false);
-  const visibleReviews = showAll ? reviews : reviews.slice(0, 3);
+  const visibleReviews = showAll ? reviews : reviews.slice(0, initialVisible);
+  const remainingCount = showMoreCount ?? reviews.length - initialVisible;
 
   return (
-    <section className="bg-brand-ivory px-4 pb-16 md:px-16 md:pb-28">
+    <section className={className}>
       <motion.div
         initial={{ opacity: 0, y: 28 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -290,7 +299,7 @@ export default function CustomerReviews() {
             onClick={() => setShowAll((current) => !current)}
             className="inline-flex h-12 min-w-56 items-center justify-center border border-black px-8 text-[10px] uppercase tracking-[0.35em] font-bold text-black transition-colors hover:bg-black hover:text-white"
           >
-            {showAll ? "Show Less" : `Show More (${reviews.length - 3})`}
+            {showAll ? "Show Less" : `Show More (${remainingCount})`}
           </button>
         </div>
       </motion.div>
