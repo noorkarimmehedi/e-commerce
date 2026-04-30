@@ -76,7 +76,9 @@ export default function CartDrawer() {
             >
                 {/* Background Branding */}
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.02] select-none z-0">
-                    <ShoppingBag className="w-[60vw] md:w-[300px] h-[60vw] md:h-[300px] stroke-[0.5px]" />
+                    <h2 className="text-[38vw] font-display font-light uppercase tracking-tighter rotate-90 leading-none md:text-[190px]">
+                        Seraphine
+                    </h2>
                 </div>
 
                 <motion.div
@@ -116,20 +118,23 @@ export default function CartDrawer() {
                                     animate={{ opacity: 1, y: 0, scale: 1 }}
                                     exit={{ opacity: 0, y: -18, scale: 0.98 }}
                                     transition={{ duration: 0.52, ease: [0.22, 1, 0.36, 1] }}
-                                    className="flex flex-col items-center justify-center h-full p-12 text-center space-y-6"
+                                    className="flex flex-col items-center justify-center h-full p-12 text-center space-y-7"
                                 >
-                                    <ShoppingBag className="w-16 h-16 stroke-[1px] text-black/10" />
-                                    <div className="space-y-2">
-                                        <h3 className="text-xl font-display font-light uppercase tracking-tight text-black/60">
+                                    <div className="relative flex h-24 w-24 items-center justify-center border border-black/10 bg-white/45">
+                                        <ShoppingBag className="h-10 w-10 stroke-[1px] text-brand-gold" />
+                                        <span className="absolute inset-2 border border-brand-gold/20" />
+                                    </div>
+                                    <div className="space-y-3">
+                                        <h3 className="text-2xl font-display font-light uppercase tracking-tight text-black">
                                             Your cart is empty
                                         </h3>
-                                        <p className="text-[10px] uppercase tracking-[0.3em] font-medium text-black/30">
+                                        <p className="mx-auto max-w-[220px] text-[10px] uppercase tracking-[0.28em] leading-6 font-medium text-black/35">
                                             Discover our curated collection
                                         </p>
                                     </div>
                                     <Button
                                         onClick={() => setIsOpen(false)}
-                                        className="h-12 px-8 rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all"
+                                        className="h-auto rounded-none border-b border-black bg-transparent px-0 py-2 text-[10px] uppercase font-bold tracking-[0.35em] text-black shadow-none hover:bg-transparent hover:border-brand-gold hover:text-brand-gold"
                                     >
                                         Continue Shopping
                                     </Button>

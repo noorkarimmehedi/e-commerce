@@ -358,27 +358,38 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                 )}
               </div>
 
-              {/* Product Specifications - Minimal Swiss Grid */}
-              <div className="space-y-0 border-y border-black/5">
-                {[
-                  { label: "Origin", val: product.origin },
-                  { label: "Use", val: "No makeup look" },
-                  { label: "Format", val: product.material },
-                  { label: "Care", val: product.care },
-                  { label: "Delivery", val: "Inside and outside Dhaka" }
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="grid grid-cols-[120px_1fr] gap-6 border-b border-black/5 py-4 transition-colors last:border-b-0 hover:bg-black/[0.01] md:grid-cols-[150px_1fr] md:gap-10"
-                  >
-                    <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-black/30 group-hover:text-brand-gold transition-colors">
-                      {item.label}
-                    </span>
-                    <span className="text-[10px] md:text-[11px] uppercase tracking-[0.25em] font-medium text-black/80 leading-relaxed text-center">
-                      {item.val}
-                    </span>
-                  </div>
-                ))}
+              {/* Product Specifications */}
+              <div className="border border-black/10 bg-white/35 p-5 md:p-6">
+                <div className="mb-5 flex items-center justify-between gap-4 border-b border-black/10 pb-4">
+                  <span className="text-[9px] uppercase tracking-[0.36em] font-bold text-brand-gold">
+                    Details
+                  </span>
+                  <span className="h-px flex-1 bg-black/10" />
+                  <span className="font-garet text-[10px] font-bold uppercase tracking-[0.24em] text-black/35">
+                    05 Notes
+                  </span>
+                </div>
+                <div className="grid gap-3">
+                  {[
+                    { label: "Origin", val: product.origin },
+                    { label: "Use", val: "No makeup look" },
+                    { label: "Format", val: product.material },
+                    { label: "Care", val: product.care },
+                    { label: "Delivery", val: "Inside and outside Dhaka" }
+                  ].map((item) => (
+                    <div
+                      key={item.label}
+                      className="grid gap-2 border-b border-black/5 pb-3 last:border-b-0 last:pb-0 md:grid-cols-[110px_1fr] md:items-start md:gap-5"
+                    >
+                      <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/35">
+                        {item.label}
+                      </span>
+                      <span className="text-[11px] uppercase tracking-[0.16em] font-medium leading-6 text-black/75 md:text-[12px]">
+                        {item.val}
+                      </span>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </motion.div>
