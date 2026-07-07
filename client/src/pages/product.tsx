@@ -136,8 +136,8 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
       <div className="bg-brand-ivory min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           {/* Visual Side */}
-          <div className="lg:col-span-7 relative bg-neutral-100 overflow-hidden">
-            <div className="group h-[64vh] min-h-[430px] lg:sticky lg:top-0 lg:h-screen">
+          <div className="lg:col-span-7 relative bg-neutral-100 overflow-hidden p-4 md:p-16 xl:p-20">
+            <div className="group mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[6px] lg:sticky lg:top-0">
               <motion.div
                 initial={{ scale: 1.1, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -151,6 +151,8 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                         <img
                           src={image.src}
                           alt={image.alt}
+                          width={1080}
+                          height={1080}
                           draggable={false}
                           className={`absolute inset-0 h-full w-full select-none object-center brightness-95 contrast-105 transition-transform duration-[2s] group-hover:scale-105 ${
                             image.fit === "cover"
