@@ -182,8 +182,8 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex-grow space-y-10 px-4 py-8 md:space-y-12 md:p-16 xl:p-20">
-              <div className="space-y-6">
+            <div className="flex-grow space-y-6 px-4 py-6 md:space-y-12 md:p-16 xl:p-20">
+              <div className="space-y-4 md:space-y-6">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] uppercase tracking-[0.6em] font-medium text-brand-gold">
                     Wellness / Insoles
@@ -205,9 +205,9 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
               </div>
 
               {/* Bundle Selection */}
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-black/60">Select Bundle</span>
-                <div className="pt-4 grid grid-cols-3 gap-3">
+                <div className="grid grid-cols-3 gap-3 md:pt-4">
                   {bundles.map((bundle, idx) => (
                     <button
                       key={bundle.id}
@@ -226,7 +226,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
               </div>
 
               {/* Premium Call to Action */}
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <Button
                     onClick={() => {
