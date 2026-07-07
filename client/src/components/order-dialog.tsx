@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check, Copy } from "lucide-react";
+import { Check, Copy, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
 import { createEventId, trackMetaEvent } from "@/lib/meta";
@@ -166,12 +166,35 @@ export default function OrderDialog({
 
     const formData = new FormData(event.currentTarget);
     const eventId = createEventId();
+
+    const name = String(formData.get("name") || "").trim();
+    const phone = String(formData.get("phone") || "").trim();
+    const address = String(formData.get("address") || "").trim();
+    const bkashTrxId = String(formData.get("bkashTrxId") || "").trim();
+
+    if (!name) {
+      setOrderError("Please enter your full name.");
+      return;
+    }
+    if (!phone) {
+      setOrderError("Please enter your phone number.");
+      return;
+    }
+    if (!address) {
+      setOrderError("Please enter your delivery address.");
+      return;
+    }
+
     if (deliveryCharge === null) {
       setOrderError("Please select a delivery charge before placing your order.");
       return;
     }
     if (paymentMethod === null) {
       setOrderError("Please select a payment method before placing your order.");
+      return;
+    }
+    if (paymentMethod === "bkash" && !bkashTrxId) {
+      setOrderError("Please enter your bKash Reference ID (TRXID).");
       return;
     }
 
@@ -226,7 +249,7 @@ export default function OrderDialog({
         <DialogContent
           forceMount
           onOpenAutoFocus={(event) => event.preventDefault()}
-          className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[760px] [&>button]:rounded-none [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
+          className="max-md:fixed max-md:inset-0 max-md:!left-0 max-md:!top-0 max-md:!translate-x-0 max-md:!translate-y-0 max-md:w-full max-md:h-auto max-md:max-h-none overflow-hidden rounded-none border-none !bg-transparent p-3 sm:p-4 shadow-none data-[state=open]:animate-none data-[state=closed]:animate-none md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[760px] md:p-0 md:bg-[#f2f1f0] md:shadow-[0_80px_180px_rgba(0,0,0,0.28)] [&>button]:hidden md:[&>button]:flex flex flex-col z-[100]"
         >
           <AnimatePresence
             initial={true}
@@ -235,29 +258,27 @@ export default function OrderDialog({
             {open && (
               <motion.div
                 key={openInstance}
-                initial={{ opacity: 0, y: 48, scale: 0.96, filter: "blur(6px)" }}
+                initial={{ opacity: 0, scale: 0.96 }}
                 animate={{
                   opacity: 1,
-                  y: 0,
                   scale: 1,
-                  filter: "blur(0px)",
                   transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] },
                 }}
                 exit={{
                   opacity: 0,
-                  y: 48,
                   scale: 0.96,
-                  filter: "blur(6px)",
                   transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
                 }}
-                className="min-h-full bg-[#f2f1f0] p-6 md:min-h-0 md:p-10"
+                className="relative flex flex-col w-full h-full md:h-auto max-md:rounded-[12px] bg-white md:bg-[#f2f1f0] max-md:shadow-2xl overflow-y-auto overflow-x-hidden p-6 md:p-10 z-[10]"
               >
-              <DialogHeader className="items-center border-b border-black/10 pb-6 text-center">
-                <DialogDescription className="text-[9px] uppercase tracking-[0.5em] font-bold text-brand-gold">
-                  Secure Order Request
-                </DialogDescription>
-                <DialogTitle className="font-display text-3xl md:text-5xl font-light uppercase tracking-tight leading-none text-black">
-                  Place <span className="font-bold">Order</span>
+                <div className="absolute top-4 right-4 z-50 md:hidden">
+                  <Button variant="ghost" size="icon" onClick={() => resetDialog(false)} className="rounded-full hover:bg-black/5 text-black border-none h-10 w-10">
+                    <X className="w-5 h-5" />
+                  </Button>
+                </div>
+              <DialogHeader className="items-center pb-2 text-center">
+                <DialogTitle className="text-3xl md:text-4xl font-semibold tracking-tight leading-none text-black">
+                  Place Order
                 </DialogTitle>
               </DialogHeader>
 
@@ -325,7 +346,7 @@ export default function OrderDialog({
                     className="mt-5 flex flex-col items-center gap-6"
                   >
                     {orderRef && (
-                      <div className="inline-flex flex-col items-center gap-1 border border-brand-gold/40 bg-white/70 px-5 py-3">
+                      <div className="inline-flex flex-col items-center gap-1 border border-brand-gold/40 bg-white/70 max-md:bg-white/10 px-5 py-3">
                         <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/45">
                           Order Number
                         </span>
@@ -336,84 +357,85 @@ export default function OrderDialog({
                     )}
                     <Button
                       onClick={() => resetDialog(false)}
-                      className="h-auto rounded-none bg-transparent px-0 py-1 text-[10px] uppercase tracking-[0.35em] text-black underline underline-offset-8 shadow-none hover:bg-transparent hover:text-brand-gold"
+                      className="h-auto rounded-none bg-transparent px-0 py-1 text-[10px] uppercase tracking-[0.35em] text-black max-md:hover:text-brand-gold underline underline-offset-8 shadow-none hover:bg-transparent hover:text-brand-gold"
                     >
                       Close
                     </Button>
                   </motion.div>
                 </motion.div>
               ) : (
-                <form onSubmit={placeOrder} className="mt-8 space-y-8">
-                  <div className="grid grid-cols-[92px_1fr] items-center gap-4 border border-black/10 bg-white/45 p-3 md:grid-cols-[140px_1fr] md:items-stretch md:p-5">
-                    <div className={`grid h-28 gap-px bg-black/10 md:h-auto md:aspect-[4/5] ${bundle.images.length > 1 ? "grid-cols-2" : "grid-cols-1"}`}>
-                      {bundle.images.slice(0, 2).map((image) => (
-                        <div key={image.alt} className="min-w-0 bg-[#ebe8e4] p-2">
-                          <img
-                            src={image.src}
-                            alt={image.alt}
-                            className="h-full w-full object-contain mix-blend-multiply"
-                          />
-                        </div>
-                      ))}
+                <form onSubmit={placeOrder} className="mt-8 space-y-8" noValidate>
+                  <div className="bg-black/5 rounded-[12px] p-4 flex items-center gap-4">
+                    <div className="relative shrink-0 w-16 h-16 md:w-20 md:h-20 bg-[#ebe8e4] rounded-[8px] p-2 flex items-center justify-center">
+                      <img
+                        src={bundle.images[0].src}
+                        alt={bundle.images[0].alt}
+                        className="h-full w-full object-contain mix-blend-multiply"
+                      />
+                      <div className="absolute -top-2 -right-2 bg-black/50 text-white rounded-full w-5 h-5 flex items-center justify-center text-[10px] font-bold shadow-sm">
+                        1
+                      </div>
                     </div>
-                    <div className="min-w-0">
-                      <span className="mb-2 block text-[8px] uppercase tracking-[0.24em] font-bold text-brand-gold md:text-[9px] md:tracking-[0.35em]">
-                        Selected Items
-                      </span>
-                      <h3 className="font-display text-xl font-light uppercase tracking-tight leading-none md:text-2xl">
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-[14px] md:text-[15px] font-semibold text-black leading-tight">
                         {bundle.title}
                       </h3>
-                      <p className="mt-2 text-[9px] uppercase tracking-[0.18em] leading-4 text-black/45 md:text-[10px] md:tracking-[0.25em] md:leading-5">
+                      <p className="mt-1 text-[11px] md:text-[12px] text-black/60">
                         {bundle.details}
                       </p>
+                    </div>
+                    <div className="text-right shrink-0">
+                      <span className="text-[14px] md:text-[15px] font-bold text-black block">
+                        ৳{bundle.price.toLocaleString()}
+                      </span>
                     </div>
                   </div>
 
                   <div className="grid gap-4 md:grid-cols-2">
                     <label className="space-y-2">
-                      <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
+                      <span className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-semibold text-black/60">
                         Full Name
                       </span>
                       <input
                         required
                         name="name"
-                        className="h-12 w-full rounded-none border border-black/10 bg-white/70 px-4 text-sm outline-none transition-colors focus:border-black"
+                        className="h-12 w-full rounded-none border border-black/15 bg-white/70 px-4 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
                         placeholder="Your name"
                       />
                     </label>
                     <label className="space-y-2">
-                      <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
+                      <span className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-semibold text-black/60">
                         Phone Number
                       </span>
                       <input
                         required
                         name="phone"
                         type="tel"
-                        className="h-12 w-full rounded-none border border-black/10 bg-white/70 px-4 text-sm outline-none transition-colors focus:border-black"
+                        className="h-12 w-full rounded-none border border-black/15 bg-white/70 px-4 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
                         placeholder="01XXXXXXXXX"
                       />
                     </label>
                   </div>
 
                   <label className="block space-y-2">
-                    <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
+                    <span className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-semibold text-black/60">
                       Delivery Address
                     </span>
                     <textarea
                       required
                       name="address"
-                      rows={4}
-                      className="w-full resize-none rounded-none border border-black/10 bg-white/70 px-4 py-3 text-sm outline-none transition-colors focus:border-black"
+                      rows={2}
+                      className="w-full resize-none rounded-none border border-black/15 bg-white/70 px-4 py-3 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
                       placeholder="House, road, area, city"
                     />
                   </label>
 
                   <div className="grid gap-3">
-                    <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
+                    <span className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-semibold text-black/60">
                       Delivery Charge
                     </span>
                     {qualifiesForFreeDelivery ? (
-                      <div className="border border-brand-gold/40 bg-white p-4">
+                      <div className="border border-brand-gold/40 bg-white max-md:bg-white/10 p-4">
                         <span className="block text-[10px] uppercase tracking-[0.28em] font-bold text-black">
                           Free Delivery
                         </span>
@@ -431,10 +453,10 @@ export default function OrderDialog({
                             key={option.label}
                             type="button"
                             onClick={() => setDeliveryCharge(option.charge)}
-                            className={`border p-4 text-left transition-all ${
+                            className={`border p-3 text-left transition-all ${
                               deliveryCharge === option.charge
-                                ? "border-black bg-white"
-                                : "border-black/10 bg-transparent hover:border-black/30"
+                                ? "border-brand-gold border-[1.5px] bg-brand-gold/5 rounded-[8px]"
+                                : "border-black/15 bg-transparent hover:border-black/30 rounded-[8px]"
                             }`}
                           >
                             <span className="block text-[10px] uppercase tracking-[0.28em] font-bold">
@@ -450,7 +472,7 @@ export default function OrderDialog({
                   </div>
 
                   <div className="grid gap-3">
-                    <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
+                    <span className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-semibold text-black/60">
                       Payment Method
                     </span>
                     <div className="grid gap-2 md:grid-cols-2">
@@ -462,10 +484,10 @@ export default function OrderDialog({
                           key={option.value}
                           type="button"
                           onClick={() => setPaymentMethod(option.value)}
-                          className={`border p-4 text-left transition-all ${
+                          className={`border p-3 text-left transition-all ${
                             paymentMethod === option.value
-                              ? "border-black bg-white"
-                              : "border-black/10 bg-transparent hover:border-black/30"
+                              ? "border-brand-gold border-[1.5px] bg-brand-gold/5 rounded-[8px]"
+                              : "border-black/15 bg-transparent hover:border-black/30 rounded-[8px]"
                           }`}
                         >
                           <span className="flex min-h-10 items-center justify-center text-center text-[10px] uppercase tracking-[0.28em] font-bold">
@@ -491,7 +513,7 @@ export default function OrderDialog({
                           transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
                           className="overflow-hidden"
                         >
-                          <div className="border border-[#e2136e]/25 bg-[#fff4f8] p-4">
+                          <div className="border border-[#e2136e]/25 bg-[#fff4f8] max-md:rounded-[8px] p-4">
                             <div className="flex items-center justify-between gap-3">
                               <div>
                                 <span className="flex items-center gap-2 text-[9px] uppercase tracking-[0.28em] font-bold text-[#e2136e]">
@@ -547,13 +569,13 @@ export default function OrderDialog({
                               <li>4. Enter your reference ID below.</li>
                             </ol>
                             <label className="mt-4 block space-y-2">
-                              <span className="text-[9px] uppercase tracking-[0.35em] font-bold text-black/45">
+                              <span className="text-[10px] md:text-[11px] uppercase tracking-[0.3em] font-semibold text-black/60">
                                 Reference ID (TRXID)
                               </span>
                               <input
                                 required
                                 name="bkashTrxId"
-                                className="h-12 w-full rounded-none border border-[#e2136e]/20 bg-white/80 px-4 text-sm uppercase outline-none transition-colors focus:border-[#e2136e]"
+                                className="h-12 w-full rounded-none border border-[#e2136e]/30 bg-white/80 px-4 text-[16px] font-normal uppercase outline-none transition-colors focus:border-[#e2136e] max-md:rounded-[8px]"
                                 placeholder="Example: 8N7B3KQ4LP"
                               />
                             </label>
@@ -569,27 +591,27 @@ export default function OrderDialog({
                     </div>
                   )}
 
-                  <div className="border-y border-black/10 py-4">
-                    <div className="flex justify-between text-[10px] uppercase tracking-[0.3em] text-black/45">
+                  <div className="bg-black/5 rounded-[12px] p-5">
+                    <div className="flex justify-between text-[11px] uppercase tracking-widest text-black/60 font-medium">
                       <span>Items</span>
-                      <span className="font-garet font-bold">৳{bundle.price.toLocaleString()}</span>
+                      <span className="font-semibold text-black">৳{bundle.price.toLocaleString()}</span>
                     </div>
-                    <div className="mt-3 flex justify-between text-[10px] uppercase tracking-[0.3em] text-black/45">
+                    <div className="mt-4 flex justify-between text-[11px] uppercase tracking-widest text-black/60 font-medium">
                       <span>Delivery</span>
-                      <span className="font-garet font-bold">
+                      <span className="font-semibold text-black">
                         {deliveryCharge === null ? "Select" : deliveryCharge === 0 ? "Free" : `৳${deliveryCharge}`}
                       </span>
                     </div>
-                    <div className="mt-4 flex items-end justify-between gap-4 border-t border-black/10 pt-4">
-                      <span className="text-[10px] uppercase tracking-[0.35em] font-bold text-black">
+                    <div className="mt-5 flex items-end justify-between gap-4 border-t border-black/10 pt-5">
+                      <span className="text-[12px] uppercase tracking-widest font-bold text-black">
                         Total
                       </span>
                       {deliveryCharge === null ? (
-                        <span className="max-w-[220px] text-right text-[9px] uppercase tracking-[0.22em] leading-5 font-bold text-red-700">
+                        <span className="max-w-[220px] text-right text-[10px] uppercase tracking-wider leading-5 font-semibold text-red-600">
                           Please select a delivery charge
                         </span>
                       ) : (
-                        <span className="font-garet text-3xl font-bold text-black">
+                        <span className="text-4xl font-semibold tracking-tight text-black leading-none">
                           ৳{(bundle.price + deliveryCharge).toLocaleString()}
                         </span>
                       )}
@@ -598,7 +620,7 @@ export default function OrderDialog({
 
                   <Button
                     disabled={orderSubmitting}
-                    className="h-14 w-full rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all disabled:cursor-not-allowed disabled:opacity-60"
+                    className="h-14 w-full rounded-[8px] bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all disabled:cursor-not-allowed disabled:opacity-60"
                   >
                     {orderSubmitting ? "Placing Order..." : "Place Order"}
                   </Button>

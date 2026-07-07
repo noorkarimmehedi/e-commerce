@@ -1,7 +1,7 @@
 import { Link, useLocation } from "wouter";
-import { ArrowUpRight, Instagram, Twitter, Mail, Menu, Globe, Clock, ShieldCheck, ShoppingBag } from "lucide-react";
+import { ArrowUpRight, Instagram, Twitter, Mail, Menu, Globe, Clock, ShieldCheck, ShoppingBag, X } from "lucide-react";
 import { useState, useEffect } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "@/contexts/cart-context";
@@ -12,6 +12,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
   const [time, setTime] = useState('');
   const { setIsOpen: setCartOpen, itemCount } = useCart();
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [isOpen]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -34,7 +45,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="bg-[#f2f1f0] border-b border-black/5 px-4 md:px-16">
           <div className="mx-auto flex h-9 max-w-[1440px] items-center justify-center md:justify-between">
             <div className="hidden md:flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-black/45">
-              <span>Seraphine Dispatch</span>
+              <span className="normal-case">Stepprs Dispatch</span>
               <span className="h-px w-10 bg-black/15" />
               <span>SS26</span>
             </div>
@@ -60,90 +71,95 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="hidden md:flex items-center gap-10 text-[10px] uppercase tracking-[0.3em] font-medium opacity-70">
               <Link href="/collection"><a className="hover:text-brand-gold transition-colors">Collection</a></Link>
               <Link href="/atelier"><a className="hover:text-brand-gold transition-colors">Atelier</a></Link>
-            </div>
-
-            <div className="md:hidden">
-              <Sheet open={isOpen} onOpenChange={setIsOpen}>
-                <SheetTrigger asChild>
-                  <Button variant="ghost" size="icon" className="group flex h-9 w-auto items-center justify-center rounded-none px-0 md:h-12">
-                    <span className="text-[9px] uppercase tracking-[0.24em] font-bold opacity-70 transition-opacity group-hover:opacity-100">Menu</span>
-                  </Button>
-                </SheetTrigger>
-                <SheetContent side="left" className="top-0 bottom-0 w-full h-screen max-h-screen bg-brand-ivory border-none p-0 overflow-hidden supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh [&>button]:hidden">
-                  {/* Background Branding */}
-                  <div className="absolute inset-0 flex items-center justify-center pointer-events-none opacity-[0.03] select-none z-0">
-                    <h2 className="text-[40vw] font-display font-light uppercase tracking-tighter rotate-90 leading-none">
-                      Seraphine
-                    </h2>
-                  </div>
-
-                  <div className="flex flex-col h-full relative z-10 p-8 md:p-24 justify-between">
-                    {/* Header */}
-                    <div className="flex justify-between items-center">
-                      <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold">Menu</span>
-                      <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setIsOpen(false)}
-                        className="rounded-none hover:bg-black hover:text-white transition-all border border-black/5"
-                      >
-                        <div className="relative w-6 h-6">
-                          <div className="absolute top-1/2 left-1/2 w-4 h-[1px] bg-current -translate-x-1/2 rotate-45" />
-                          <div className="absolute top-1/2 left-1/2 w-4 h-[1px] bg-current -translate-x-1/2 -rotate-45" />
+            </div>            <div className="md:hidden">
+              <Button variant="ghost" size="icon" className="group flex h-9 w-auto items-center justify-center rounded-none px-0 md:h-12" onClick={() => setIsOpen(true)}>
+                <span className="text-[9px] uppercase tracking-[0.24em] font-bold opacity-70 transition-opacity group-hover:opacity-100">Menu</span>
+              </Button>
+              <AnimatePresence initial={true}>
+                {isOpen && (
+                  <motion.div
+                    className="fixed inset-0 z-[100] w-full h-[100dvh] supports-[height:100dvh]:h-dvh p-3 sm:p-4 pointer-events-none"
+                  >
+                    <motion.div 
+                      className="absolute inset-0 bg-black/10 pointer-events-auto"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1, transition: { duration: 0.3 } }}
+                      exit={{ opacity: 0, transition: { duration: 0.3 } }}
+                      onClick={() => setIsOpen(false)}
+                    />
+                    
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
+                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)", transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] } }}
+                      exit={{ opacity: 0, scale: 0.96, filter: "blur(6px)", transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } }}
+                      className="relative w-full h-full flex flex-col rounded-[12px] bg-neutral-500/90 backdrop-blur-md shadow-2xl overflow-y-auto pointer-events-auto text-white"
+                    >
+                      <div className="flex flex-col min-h-full px-6 py-6 md:px-12 md:py-10 justify-between">
+                        {/* Header */}
+                        <div className="flex justify-end items-center">
+                          <Button
+                            variant="ghost"
+                            size="icon"
+                            onClick={() => setIsOpen(false)}
+                            className="rounded-full hover:bg-white/10 text-white transition-all h-10 w-10"
+                          >
+                            <X className="w-5 h-5" />
+                          </Button>
                         </div>
-                      </Button>
-                    </div>
 
-                    {/* Navigation Links */}
-                    <div className="flex flex-col gap-4 md:gap-10 py-12">
-                      {["Collection", "Atelier", "Journal", "Booking"].map((item, idx) => (
-                        <motion.div
-                          key={item}
-                          initial={{ opacity: 0, x: -50 }}
-                          animate={isOpen ? { opacity: 1, x: 0 } : {}}
-                          transition={{
-                            duration: 0.8,
-                            delay: idx * 0.1,
-                            ease: [0.22, 1, 0.36, 1]
-                          }}
-                        >
-                          <Link href={`/${item.toLowerCase()}`} onClick={() => setIsOpen(false)}>
-                            <a className="group flex items-baseline gap-4 md:gap-6">
-                              <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-brand-gold opacity-40 group-hover:opacity-100 transition-opacity">0{idx + 1}</span>
-                              <span className="text-5xl md:text-8xl font-display font-light uppercase tracking-tight text-black group-hover:translate-x-4 transition-transform duration-500">
-                                {item}
+                        {/* Navigation Links */}
+                        <div className="flex flex-col gap-6 md:gap-8 py-8 flex-1 justify-center px-2">
+                          {[
+                            { label: "Home", href: "/" },
+                            { label: "Best Sellers", href: "/best-sellers" },
+                            { label: "New Arrival", href: "/new-arrival" },
+                            { label: "Contact Us", href: "/contact-us" }
+                          ].map((item, idx) => (
+                            <motion.div
+                              key={item.label}
+                              initial={{ opacity: 0, y: 20 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              transition={{ duration: 0.6, delay: idx * 0.1 + 0.2, ease: [0.22, 1, 0.36, 1] }}
+                            >
+                              <Link href={item.href} onClick={() => setIsOpen(false)}>
+                                <a className="group flex items-baseline">
+                                  <span className="text-3xl font-sans font-medium tracking-tight text-white transition-opacity duration-300 hover:opacity-70">
+                                    {item.label}
+                                  </span>
+                                </a>
+                              </Link>
+                            </motion.div>
+                          ))}
+                        </div>
+
+                        {/* Footer Info */}
+                        <div className="space-y-6 mt-12 pb-4">
+                          <div className="h-px w-full bg-white/10" />
+                          <div className="flex justify-between items-center text-white/80 text-sm font-medium">
+                            <span className="flex items-center gap-3">
+                              Shipping to: 
+                              <span className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-md text-xs">
+                                <span>BD</span> Bangladesh
                               </span>
-                            </a>
-                          </Link>
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    {/* Footer Info */}
-                    <div className="space-y-12">
-                      <div className="h-px w-12 bg-black/10" />
-                      <div className="flex justify-between items-end">
-                        <div className="space-y-4">
-                          <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-brand-gold block">Dhaka Studio</span>
-                          <span className="text-[10px] uppercase tracking-[0.2em] font-medium opacity-40 block">{time} BST</span>
-                        </div>
-                        <div className="flex flex-col items-end gap-2">
-                          <span className="text-[9px] uppercase tracking-[0.4em] font-bold text-brand-gold">Archive</span>
-                          <span className="text-[10px] uppercase tracking-[0.2em] font-medium opacity-40">Vol. 2026</span>
+                            </span>
+                          </div>
+                          <div className="text-white/60 text-sm">
+                            © 2026 Stepprs. All rights reserved.
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </div>
-                </SheetContent>
-              </Sheet>
+                    </motion.div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </div>
 
           <div className="flex items-center justify-center">
             <Link href="/">
               <a className="flex flex-col items-center text-black">
-                <span className="font-display text-2xl font-medium uppercase tracking-[0.36em] text-black md:text-4xl md:tracking-[0.32em]">
-                  Seraphine
+                <span className="font-sans text-2xl font-extrabold normal-case tracking-tight text-red-600 md:text-4xl">
+                  Stepprs
                 </span>
                 <span className="mt-0.5 text-[7px] uppercase tracking-[0.35em] font-bold text-black/45 md:mt-1 md:text-[8px] md:tracking-[0.45em]">
                   Bangladesh
@@ -204,10 +220,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       {/* Luxury Swiss Grid Footer */}
       <footer className="border-t border-black/5 bg-brand-ivory text-black pt-24">
         {/* Main Grid Content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 max-w-[1440px] mx-auto px-8 md:px-16 gap-16 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-12 max-w-[1440px] mx-auto px-4 sm:px-8 md:px-16 gap-16 mb-24">
           {/* Brand Col */}
           <div className="md:col-span-4 space-y-8">
-            <span className="text-2xl font-display font-light uppercase tracking-widest text-brand-gold">Seraphine</span>
+            <span className="text-2xl font-display font-light normal-case tracking-widest text-brand-gold">Stepprs</span>
             <p className="text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] font-medium leading-[1.8] md:leading-[2.4] text-black/50 md:max-w-md md:text-balance leading-relaxed">
               Defining the future of luxury couture through Swiss modernist principles and master craftsmanship.
             </p>
@@ -255,16 +271,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Massive Logo Section */}
         <div className="border-t border-black/5 px-3 pt-10 pb-5 md:px-0 md:pt-12 md:pb-2 overflow-hidden relative group cursor-default">
-          <h2 className="text-[18vw] md:text-[25vw] font-display font-light uppercase tracking-normal md:tracking-tighter leading-none md:leading-[0.7] text-center text-black/5 select-none transition-all duration-1000 md:group-hover:text-brand-gold/10 md:group-hover:tracking-[0.1em]">
-            Seraphine
+          <h2 className="text-[18vw] md:text-[25vw] font-sans font-extrabold normal-case tracking-tighter leading-none md:leading-[0.7] text-center text-black/5 select-none transition-all duration-1000 md:group-hover:text-red-600/10 md:group-hover:tracking-normal">
+            Stepprs
           </h2>
         </div>
 
         {/* Bottom Bar */}
-        <div className="bg-white border-t border-black/5 px-8 md:px-16 py-8">
+        <div className="bg-white border-t border-black/5 px-4 sm:px-8 md:px-16 py-8">
           <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-[9px] uppercase tracking-[0.4em] text-black/40 text-center md:text-left">
-              Website by <a href="https://api.whatsapp.com/send/?phone=8801733670129" className="text-black font-bold">Arc Lab Technology</a> / © 2026 Seraphine Studio
+              Website by <a href="https://api.whatsapp.com/send/?phone=8801733670129" className="text-black font-bold">Arc Lab Technology</a> / © 2026 Stepprs Studio
             </div>
             <div className="flex gap-8 text-[9px] uppercase tracking-[0.4em] text-black/40">
               <div className="flex items-center gap-2"><Globe className="w-3 h-3" /> Dhaka</div>

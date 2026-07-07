@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { z } from "zod";
-import { insertSupabaseOrder, orderRequestSchema } from "./order-service";
+import { processOrder, orderRequestSchema } from "./order-service";
 import { getMetaUserDataFromRequest, sendMetaCapiEvent } from "./meta-capi";
 
 export async function registerRoutes(
@@ -48,7 +48,7 @@ export async function registerRoutes(
   app.post("/api/orders", async (req, res, next) => {
     try {
       const order = orderRequestSchema.parse(req.body);
-      const result = await insertSupabaseOrder(order);
+      const result = await processOrder(order);
 
       // Fire-and-forget Purchase CAPI (do not block checkout).
       void sendMetaCapiEvent({

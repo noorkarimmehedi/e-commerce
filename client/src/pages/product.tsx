@@ -7,92 +7,41 @@ import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-context";
 import Layout from "@/components/layout";
 import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
-import CustomerReviews from "@/components/customer-reviews";
 import { createEventId, trackMetaEvent } from "@/lib/meta";
-import makeupPen from "@assets/makeup_pen_4_in_1.png";
-import tintBordeaux from "@assets/peptide_lip_tint_bordeaux.png";
-import tintPlum from "@assets/peptide_lip_tint_plum.png";
-import tintRose from "@assets/peptide_lip_tint_rosy.png";
-import tintMauve from "@assets/peptide_lip_tint_mauve.png";
 
-const products = [
-  { id: 1, slug: "4-in-1-makeup-pen", title: "4-in-1 Makeup Pen", price: "৳999", amount: 999, image: makeupPen, description: "A compact 4-in-1 makeup pen designed for quick definition, soft detail, and a polished no makeup look in one everyday tool.", material: "Multi-use eye, brow, and lip definition", origin: "Seraphine Bangladesh", care: "Keep capped and store in a cool, dry place" },
-  { id: 2, slug: "bordeaux", title: "Bordeaux", price: "৳799", amount: 799, image: tintBordeaux, description: "A peptide lip tint with a warm burnt-red wash for soft color that still feels natural and easy.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
-  { id: 3, slug: "plum-veil", title: "Plum Veil", price: "৳799", amount: 799, image: tintPlum, description: "A sheer deep-berry tint that gives lips a plush veil of color while keeping the look effortless.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
-  { id: 4, slug: "rosy-bloom", title: "Rosy Bloom", price: "৳799", amount: 799, image: tintRose, description: "A fresh petal-pink tint made for soft daily glow, easy touch-ups, and a clean no makeup finish.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" },
-  { id: 5, slug: "mauve-nude", title: "Mauve Nude", price: "৳799", amount: 799, image: tintMauve, description: "A muted soft-rose tint for natural-looking lips with just enough color to brighten the face.", material: "Peptide lip tint", origin: "Seraphine Bangladesh", care: "Apply to clean lips and reapply as needed" }
+const productData = {
+  id: "massage-insoles",
+  title: "Stepprs Massage Insoles",
+  image: "/hero-insoles.png",
+  description: "Instant pain relief in every step. Engineered with targeted massage nodes, biomechanical arch support, and breathable vents. Trimmable for a perfect fit.",
+  origin: "Imported",
+};
+
+const bundles = [
+  { id: 1, title: "1 Pair", price: "৳500", amount: 500 },
+  { id: 2, title: "2 Pairs", price: "৳850", amount: 850 },
+  { id: 3, title: "3 Pairs", price: "৳1350", amount: 1350 },
 ];
 
-const makeupPenCarouselImages = [
+const insoleCarouselImages = [
   {
-    src: "/hero_mobile_no_makeup.png",
-    alt: "No makeup look with 4-in-1 Makeup Pen",
+    src: "/insoles.png",
+    alt: "Stepprs Massage Insoles - Biomechanical Arch Support",
     fit: "cover",
-  },
-  {
-    src: "/hf_20260311_145847_43310d40-2ddd-4227-9283-2c3fe9830d15.webp",
-    alt: "4-in-1 Makeup Pen detail",
-    fit: "contain",
-  },
-  {
-    src: "/hf_20260311_151900_cff2b5db-4d48-4ede-b8cf-67eaacfac089.webp",
-    alt: "4-in-1 Makeup Pen shade detail",
-    fit: "contain",
-  },
-  {
-    src: "/hf_20260311_155853_1d38cb61-6e7f-4e18-9f98-5b871c571abd.webp",
-    alt: "4-in-1 Makeup Pen finish",
-    fit: "contain",
-  },
-];
-
-const bordeauxCarouselImages = [
-  {
-    src: "/pbj-carousel-1_2480x%20(1).webp",
-    alt: "Bordeaux burnt red lip tint finish",
-    fit: "contain",
-  },
-];
-
-const plumVeilCarouselImages = [
-  {
-    src: "/imgi_131_Mobile-EspressoGrid-1_1024x.jpg",
-    alt: "Plum Veil deep berry lip tint finish",
-    fit: "contain",
-  },
-];
-
-const rosyBloomCarouselImages = [
-  {
-    src: "/imgi_130_PDP-Ribbon-1-M_1024x.jpg",
-    alt: "Rosy Bloom petal pink lip tint finish",
-    fit: "contain",
-  },
-];
-
-const mauveNudeCarouselImages = [
-  {
-    src: "/salty-tan-carousel-4_2480x.webp",
-    alt: "Mauve Nude soft rose lip tint finish",
-    fit: "contain",
-  },
-];
-
-const makeupPenVideos = [
-  { src: "/vid_01.mp4", label: "Makeup Pen video 1" },
-  { src: "/vid_02.mp4", label: "Makeup Pen video 2" },
-  { src: "/vid_03.mp4", label: "Makeup Pen video 3" },
+  }
 ];
 
 const formatTimelineDate = (date: Date) =>
   date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
 
-export default function ProductPage({ params }: { params: { id: string } }) {
-  const product = products.find((item) => item.slug === params.id || String(item.id) === params.id);
+export default function ProductPage({ params }: { params?: { id: string } }) {
   const { addToCart } = useCart();
   const [, setLocation] = useLocation();
   const [orderOpen, setOrderOpen] = useState(false);
   const [activeImage, setActiveImage] = useState(0);
+  const [selectedBundleIdx, setSelectedBundleIdx] = useState(0);
+  const selectedBundle = bundles[selectedBundleIdx];
+
   const [emblaRef, emblaApi] = useEmblaCarousel({
     align: "start",
     containScroll: false,
@@ -101,14 +50,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   });
 
   useEffect(() => {
-    if (product && params.id !== product.slug) {
-      setLocation(`/product/${product.slug}`, { replace: true });
-    }
-  }, [params.id, product, setLocation]);
-
-  useEffect(() => {
-    if (!product) return;
-
     const eventId = createEventId();
     trackMetaEvent({
       eventName: "ViewContent",
@@ -116,31 +57,25 @@ export default function ProductPage({ params }: { params: { id: string } }) {
       capi: true,
       customData: {
         currency: "BDT",
-        value: product.amount,
+        value: selectedBundle.amount,
         content_type: "product",
-        content_ids: [String(product.id)],
-        contents: [{ id: String(product.id), quantity: 1, item_price: product.amount }],
+        content_ids: [productData.id],
+        contents: [{ id: productData.id, quantity: 1, item_price: selectedBundle.amount }],
       },
     });
-  }, [product]);
+  }, [selectedBundle]);
 
   const goToImage = (idx: number) => {
     emblaApi?.scrollTo(idx);
   };
 
   const syncActiveImage = useCallback(() => {
-    if (!emblaApi) {
-      return;
-    }
-
+    if (!emblaApi) return;
     setActiveImage(emblaApi.selectedScrollSnap());
   }, [emblaApi]);
 
   useEffect(() => {
-    if (!emblaApi) {
-      return;
-    }
-
+    if (!emblaApi) return;
     emblaApi.scrollTo(0, true);
     setActiveImage(0);
     syncActiveImage();
@@ -153,61 +88,15 @@ export default function ProductPage({ params }: { params: { id: string } }) {
     };
   }, [emblaApi, syncActiveImage]);
 
-  if (!product) return <div>Product not found</div>;
+  const productImages = [
+    {
+      src: productData.image,
+      alt: productData.title,
+      fit: "cover",
+    },
+    ...insoleCarouselImages
+  ];
 
-  const productImages =
-    product.slug === "4-in-1-makeup-pen"
-      ? [
-          {
-            src: product.image,
-            alt: product.title,
-            fit: "contain",
-          },
-          ...makeupPenCarouselImages,
-        ]
-      : product.slug === "bordeaux"
-        ? [
-            {
-              src: product.image,
-              alt: product.title,
-              fit: "contain",
-          },
-          ...bordeauxCarouselImages,
-        ]
-      : product.slug === "plum-veil"
-        ? [
-            {
-              src: product.image,
-              alt: product.title,
-              fit: "contain",
-            },
-            ...plumVeilCarouselImages,
-          ]
-      : product.slug === "rosy-bloom"
-        ? [
-            {
-              src: product.image,
-              alt: product.title,
-              fit: "contain",
-            },
-            ...rosyBloomCarouselImages,
-          ]
-      : product.slug === "mauve-nude"
-        ? [
-            {
-              src: product.image,
-              alt: product.title,
-              fit: "contain",
-            },
-            ...mauveNudeCarouselImages,
-          ]
-      : [
-          {
-            src: product.image,
-            alt: product.title,
-            fit: "contain",
-          },
-        ];
   const today = new Date();
   const processedDate = new Date(today);
   processedDate.setDate(today.getDate() + 1);
@@ -220,17 +109,17 @@ export default function ProductPage({ params }: { params: { id: string } }) {
   ];
 
   const productOrder: OrderDialogBundle = {
-    title: product.title,
-    details: `1x ${product.title}`,
-    price: product.amount,
-    images: [{ src: product.image, alt: product.title }]
+    title: productData.title,
+    details: selectedBundle.title,
+    price: selectedBundle.amount,
+    images: [{ src: productData.image, alt: productData.title }]
   };
 
   return (
     <Layout>
       <div className="bg-brand-ivory min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-12">
-          {/* Visual Side - Immersive & Premium */}
+          {/* Visual Side */}
           <div className="lg:col-span-7 relative bg-neutral-100 overflow-hidden">
             <div className="group h-[64vh] min-h-[430px] lg:sticky lg:top-0 lg:h-screen">
               <motion.div
@@ -241,8 +130,8 @@ export default function ProductPage({ params }: { params: { id: string } }) {
               >
                 <div ref={emblaRef} className="h-full cursor-grab overflow-hidden active:cursor-grabbing">
                   <div className="flex h-full touch-pan-y">
-                    {productImages.map((image) => (
-                      <div key={image.src} className="relative h-full min-w-0 flex-[0_0_100%]">
+                    {productImages.map((image, i) => (
+                      <div key={image.src + i} className="relative h-full min-w-0 flex-[0_0_100%]">
                         <img
                           src={image.src}
                           alt={image.alt}
@@ -250,107 +139,83 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                           className={`absolute inset-0 h-full w-full select-none object-center brightness-95 contrast-105 transition-transform duration-[2s] group-hover:scale-105 ${
                             image.fit === "cover"
                               ? "object-cover"
-                              : "object-contain p-10 mix-blend-multiply md:p-24"
+                              : "object-contain mix-blend-multiply"
                           }`}
                         />
                       </div>
                     ))}
                   </div>
                 </div>
-                {productImages.length > 1 && (
-                  <>
-                    <div className="absolute inset-x-0 bottom-0 z-10 h-28 bg-gradient-to-t from-black/18 to-transparent pointer-events-none" />
-                    <div className="absolute inset-x-0 bottom-5 z-20 flex justify-center">
-                      <div className="flex items-center gap-3 border border-white/20 bg-black/15 px-4 py-3 backdrop-blur-sm">
-                        {productImages.map((image, idx) => (
-                          <button
-                            key={image.src}
-                            type="button"
-                            onClick={() => goToImage(idx)}
-                            aria-label={`Show product image ${idx + 1}`}
-                            className="group/dot flex h-5 w-5 items-center justify-center"
-                          >
-                            <span
-                              className={`block h-2 w-2 rounded-full transition-all duration-300 ${
-                                activeImage === idx
-                                  ? "w-6 rounded-full bg-brand-gold"
-                                  : "bg-white/70 group-hover/dot:bg-white"
-                              }`}
-                            />
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </>
-                )}
+
+                {/* Line Indicators */}
+                <div className="absolute bottom-8 left-0 right-0 flex justify-center gap-2 z-10">
+                  {productImages.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={() => goToImage(idx)}
+                      className={`h-[2px] transition-all duration-300 ${
+                        activeImage === idx ? 'w-8 bg-black' : 'w-8 bg-black/20'
+                      }`}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
               </motion.div>
 
               {/* Gold Frame Detail overlay */}
-              <div className="absolute inset-8 md:inset-16 border border-brand-gold/20 pointer-events-none" />
+              <div className="hidden md:block absolute inset-16 border border-brand-gold/20 pointer-events-none" />
 
-              {/* Back Link */}
-              <div className="absolute top-12 left-12 z-20">
-                <Link href="/">
-                  <a className="group flex items-center gap-4 text-[10px] uppercase tracking-[0.4em] text-white font-bold hover:text-brand-gold transition-colors">
-                    <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-2" />
-                    Back to Products
-                  </a>
-                </Link>
-              </div>
 
-              {/* Vertical Label */}
-              <div className="absolute bottom-12 left-12 z-20 hidden md:block opacity-40">
-                <div className="rotate-[-90deg] origin-left flex items-center gap-8">
-                  <span className="text-[9px] uppercase tracking-[0.6em] font-bold text-white whitespace-nowrap">Seraphine Studio / Beauty</span>
-                  <div className="w-12 h-px bg-white/40" />
-                </div>
-              </div>
             </div>
           </div>
 
-          {/* Details Side - Editorial Typography */}
+          {/* Details Side */}
           <motion.div
             className="lg:col-span-5 flex flex-col bg-brand-ivory"
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex-grow space-y-10 p-8 md:space-y-12 md:p-16 xl:p-20">
-              {/* Product Info */}
+            <div className="flex-grow space-y-10 px-4 py-8 md:space-y-12 md:p-16 xl:p-20">
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <span className="text-[10px] uppercase tracking-[0.6em] font-medium text-brand-gold">
-                    Beauty 2026 / Selected Product
-                  </span>
-                  <span className="text-[10px] uppercase tracking-[0.4em] font-bold opacity-30 italic">
-                    REF.{product.id.toString().padStart(4, '0')}
+                    Wellness / Insoles
                   </span>
                 </div>
 
-                <h1 className="max-w-full break-words font-display text-[clamp(1.9rem,9.8vw,2.55rem)] font-light uppercase leading-[0.92] tracking-tight text-black md:text-[clamp(3.65rem,5.5vw,5.5rem)]">
-                  {product.title}
+                <h1 className="max-w-full break-words font-sans text-4xl sm:text-5xl font-semibold tracking-tight text-black md:text-7xl whitespace-normal leading-tight">
+                  {productData.title}
                 </h1>
 
                 <div className="flex items-center gap-6">
-                  <span className="font-garet text-3xl font-bold text-black">{product.price}</span>
+                  <span className="font-sans text-2xl font-semibold text-black">{selectedBundle.price}</span>
                   <div className="h-px flex-grow bg-black/5" />
                 </div>
+                
+                <p className="text-xs font-medium leading-[1.8] text-black/60 md:text-sm">
+                  Transform every step with Stepprs Massage Insoles. Features targeted massage nodes, biomechanical arch support, and breathable vents for instant foot pain relief. Trimmable to fit any shoe perfectly.
+                </p>
               </div>
 
-              {/* Manifesto Description */}
-              <div className="space-y-6">
-                <p className="text-sm md:text-base uppercase leading-loose tracking-[0.15em] text-black/60 max-w-md">
-                  {product.description}
-                </p>
-                <div className="flex gap-12 pt-4">
-                  <div className="flex flex-col">
-                    <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-brand-gold mb-1">Origin</span>
-                    <span className="text-[10px] uppercase tracking-widest font-medium">{product.origin}</span>
-                  </div>
-                  <div className="flex flex-col">
-                    <span className="text-[9px] uppercase tracking-[0.3em] font-bold text-brand-gold mb-1">Time</span>
-                    <span className="text-[10px] uppercase tracking-widest font-medium">Everyday Beauty</span>
-                  </div>
+              {/* Bundle Selection */}
+              <div className="space-y-4">
+                <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-black/60">Select Bundle</span>
+                <div className="pt-4 grid grid-cols-3 gap-3">
+                  {bundles.map((bundle, idx) => (
+                    <button
+                      key={bundle.id}
+                      onClick={() => setSelectedBundleIdx(idx)}
+                      className={`relative flex flex-col items-center justify-center border p-4 text-center transition-all ${
+                        selectedBundleIdx === idx 
+                          ? 'border-black bg-black text-white' 
+                          : 'border-black/20 bg-transparent text-black hover:border-black/50'
+                      }`}
+                    >
+                      <span className="block text-[11px] uppercase tracking-widest font-bold mb-1">{bundle.title}</span>
+                      <span className="block text-[13px] font-garet">{bundle.price}</span>
+                    </button>
+                  ))}
                 </div>
               </div>
 
@@ -361,10 +226,10 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     onClick={() => {
                       addToCart(
                         {
-                          id: product.id,
-                          title: product.title,
-                          price: product.price,
-                          image: product.image
+                          id: Number(`${productData.id}${selectedBundle.id}`), // Using bundle ID for distinct cart items
+                          title: `${productData.title} (${selectedBundle.title})`,
+                          price: selectedBundle.price,
+                          image: productData.image
                         },
                         "Default"
                       );
@@ -399,30 +264,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                     </div>
                   </div>
                 </div>
-                {product.slug === "4-in-1-makeup-pen" && (
-                  <div className="grid grid-cols-3 gap-2 pt-2 md:gap-3">
-                    {makeupPenVideos.map((video) => (
-                      <div
-                        key={video.src}
-                        className="aspect-[9/14] overflow-hidden border border-black/10 bg-black/5"
-                      >
-                        <video
-                          src={video.src}
-                          aria-label={video.label}
-                          className="h-full w-full object-cover"
-                          autoPlay
-                          muted
-                          loop
-                          playsInline
-                          preload="metadata"
-                          onLoadedMetadata={(event) => {
-                            event.currentTarget.play().catch(() => undefined);
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
 
               {/* Product Specifications */}
@@ -433,16 +274,16 @@ export default function ProductPage({ params }: { params: { id: string } }) {
                   </span>
                   <span className="h-px flex-1 bg-black/10" />
                   <span className="font-garet text-[10px] font-bold uppercase tracking-[0.24em] text-black/35">
-                    05 Notes
+                    Features
                   </span>
                 </div>
                 <div className="grid gap-3">
                   {[
-                    { label: "Origin", val: product.origin },
-                    { label: "Use", val: "No makeup look" },
-                    { label: "Format", val: product.material },
-                    { label: "Care", val: product.care },
-                    { label: "Delivery", val: "Inside and outside Dhaka" }
+                    { label: "Core Feature", val: "Targeted Massage Nodes" },
+                    { label: "Support", val: "Biomechanical Arch Support" },
+                    { label: "Comfort", val: "Thick Heel Cup & Cushioning" },
+                    { label: "Fit", val: "Trimmable to Fit" },
+                    { label: "Material", val: "Breathable Vents" }
                   ].map((item) => (
                     <div
                       key={item.label}
@@ -461,83 +302,6 @@ export default function ProductPage({ params }: { params: { id: string } }) {
             </div>
           </motion.div>
         </div>
-
-        {/* YOU MAY ALSO LIKE SECTION */}
-        <section className="border-t border-black/5 bg-brand-ivory px-0 pb-24 pt-12 md:pb-40 md:pt-20">
-          <div className="max-w-[1440px] mx-auto">
-            <div className="mb-10 flex flex-col items-end justify-between gap-5 px-8 text-center md:mb-12 md:flex-row md:px-16 md:text-left">
-              <div className="space-y-2">
-                <span className="text-[10px] uppercase tracking-[0.6em] font-medium text-brand-gold block">Curated Selection</span>
-                <h2 className="text-4xl md:text-6xl font-display font-light uppercase tracking-tight text-black italic">
-                  You may also <span className="not-italic">Like</span>
-                </h2>
-              </div>
-              <Link href="/">
-                <a className="text-[10px] uppercase tracking-[0.4em] font-bold border-b border-black/20 pb-2 hover:text-brand-gold hover:border-brand-gold transition-all">
-                  View Full Archive
-                </a>
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-2 lg:grid-cols-2 gap-2 md:gap-4">
-              {products
-                .filter(p => p.id !== product.id)
-                .slice(0, 4)
-                .map((p, i) => (
-                  <motion.div
-                    key={p.id}
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                    className="group bg-brand-ivory"
-                  >
-                    <Link href={`/product/${p.slug}`}>
-                      <a className="block space-y-5">
-                        <div className="relative aspect-[3/4] overflow-hidden bg-neutral-100 shadow-sm">
-                          <img
-                            src={p.image}
-                            alt={p.title}
-                            className="h-full w-full object-contain p-8 mix-blend-multiply transition-transform duration-[1.5s] group-hover:scale-105 md:p-12"
-                          />
-                        </div>
-                        <div className="flex justify-between items-baseline px-4 md:px-8">
-                          <h3 className="text-lg md:text-xl font-display font-light uppercase tracking-tight text-black">{p.title}</h3>
-                          <span className="text-[9px] uppercase tracking-widest text-brand-gold font-bold">{p.price}</span>
-                        </div>
-                      </a>
-                    </Link>
-                    <div className="px-4 pt-5 md:px-8">
-                      <Button
-                        onClick={() =>
-                          addToCart(
-                            {
-                              id: p.id,
-                              title: p.title,
-                              price: p.price,
-                              image: p.image,
-                            },
-                            "Default",
-                          )
-                        }
-                        className="h-11 w-full rounded-none border border-black/15 bg-transparent text-[9px] font-bold uppercase tracking-[0.32em] text-black transition-all hover:bg-black hover:text-white"
-                      >
-                        Quick Add
-                      </Button>
-                    </div>
-                  </motion.div>
-                ))}
-            </div>
-
-            {product.slug === "4-in-1-makeup-pen" && (
-              <CustomerReviews
-                initialVisible={7}
-                showMoreCount={102}
-                className="bg-brand-ivory px-4 pt-16 md:px-16 md:pt-24"
-              />
-            )}
-          </div>
-        </section>
       </div>
       <OrderDialog
         open={orderOpen}

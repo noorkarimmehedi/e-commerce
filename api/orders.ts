@@ -1,4 +1,6 @@
 import type { IncomingMessage, ServerResponse } from "http";
+import fs from "fs";
+import path from "path";
 
 type OrderRequest = {
   bundleTitle: string;
@@ -75,66 +77,58 @@ function validateOrder(body: unknown): OrderRequest {
 }
 
 function createOrderRef() {
-  const orderNumber = Math.floor(1000 + Math.random() * 9000);
-  return `#${orderNumber}SB`;
+  const counterPath = path.resolve(process.cwd(), "order-counter.txt");
+  let orderNumber = 1000;
+  
+  if (fs.existsSync(counterPath)) {
+    try {
+      const stored = parseInt(fs.readFileSync(counterPath, "utf-8"), 10);
+      if (!isNaN(stored)) {
+        orderNumber = stored;
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+  
+  orderNumber += 1;
+  
+  try {
+    fs.writeFileSync(counterPath, orderNumber.toString(), "utf-8");
+  } catch (e) {
+    console.error("Failed to write order counter", e);
+  }
+  
+  return `#${orderNumber}`;
 }
 
-async function insertSupabaseOrder(order: OrderRequest) {
-  const supabaseUrl = process.env.SUPABASE_URL?.replace(/\/$/, "");
-  const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-  const tableName = process.env.SUPABASE_ORDERS_TABLE || "orders";
-
-  if (!supabaseUrl || !serviceRoleKey) {
-    throw new Error("Supabase environment variables are missing in Vercel");
-  }
-
+async function processOrder(order: OrderRequest) {
   const orderRef = createOrderRef();
-  const total = order.bundlePrice + order.deliveryCharge;
-  const now = new Date().toISOString();
-  const paymentDetails =
-    order.paymentMethod === "bkash"
-      ? `Payment Method: bKash Send Money | Reference ID (TRXID): ${order.bkashTrxId}`
-      : "Payment Method: Cash on Delivery";
-  const productDetails = `${order.bundleDetails} | ${paymentDetails}`;
-  const payload = {
-    ref: orderRef,
-    order_number: orderRef,
-    customer_name: order.customerName,
-    phone: order.phone,
-    address: order.address,
-    destination: order.address,
-    product: productDetails,
-    quantity: 1,
-    price: total,
-    merchandise: productDetails,
-    value: total,
-    status: "confirmed",
-    source: "website",
-    order_date: now,
-    bundle_title: order.bundleTitle,
-    bundle_price: order.bundlePrice,
-    delivery_charge: order.deliveryCharge,
-    total,
-  };
 
-  const response = await fetch(`${supabaseUrl}/rest/v1/${tableName}`, {
-    method: "POST",
-    headers: {
-      apikey: serviceRoleKey,
-      Authorization: `Bearer ${serviceRoleKey}`,
-      "Content-Type": "application/json",
-      Prefer: "return=representation",
-    },
-    body: JSON.stringify(payload),
-  });
-
-  if (!response.ok) {
-    const message = await response.text();
-    throw new Error(`Supabase insert failed: ${message}`);
+  try {
+    await fetch("https://suite.arclabtechnology.com/api/custom-orders/webhook", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": "stepprsbangladesh-098765"
+      },
+      body: JSON.stringify({
+        order_id: orderRef,
+        customer_name: order.customerName,
+        phone: order.phone,
+        address: order.address,
+        product: `${order.bundleTitle} - ${order.bundleDetails}`,
+        quantity: 1,
+        price: order.bundlePrice,
+        delivery_rate: order.deliveryCharge
+      })
+    });
+  } catch (webhookErr) {
+    console.error("Webhook failed:", webhookErr);
   }
 
-  const rows = await response.json();
-  return { orderRef, order: rows?.[0] ?? payload };
+  const total = order.bundlePrice + order.deliveryCharge;
+  return { orderRef, order: { ...order, total, status: "confirmed" } };
 }
 
 async function sendPurchaseCapi(opts: {
@@ -187,7 +181,7 @@ export default async function handler(
   try {
     const body = await readBody(req);
     const order = validateOrder(body);
-    const result = await insertSupabaseOrder(order);
+    const result = await processOrder(order);
     const total = order.bundlePrice + order.deliveryCharge;
 
     // Fire-and-forget Purchase CAPI (do not block checkout).
@@ -202,7 +196,7 @@ export default async function handler(
 
     sendJson(res, 201, result);
   } catch (error) {
-    console.error("Order insert failed:", error);
+    console.error("Order process failed:", error);
     sendJson(res, 500, {
       message:
         error instanceof Error
