@@ -89,12 +89,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     />
                     
                     <motion.div
-                      initial={{ opacity: 0, scale: 0.96, filter: "blur(6px)" }}
-                      animate={{ opacity: 1, scale: 1, filter: "blur(0px)", transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] } }}
-                      exit={{ opacity: 0, scale: 0.96, filter: "blur(6px)", transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } }}
-                      className="relative w-full h-full flex flex-col rounded-[12px] bg-neutral-500/90 backdrop-blur-md shadow-2xl overflow-y-auto pointer-events-auto text-white"
+                      initial={{ opacity: 0, scale: 0.96 }}
+                      animate={{ opacity: 1, scale: 1, transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] } }}
+                      exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } }}
+                      className="relative w-full h-full flex flex-col rounded-[12px] bg-neutral-500/60 backdrop-blur-md shadow-2xl overflow-hidden pointer-events-auto text-white"
                     >
-                      <div className="flex flex-col min-h-full px-6 py-6 md:px-12 md:py-10 justify-between">
+                      <div className="flex flex-col h-full px-6 py-6 md:px-12 md:py-10 justify-between overflow-y-auto">
                         {/* Header */}
                         <div className="flex justify-end items-center">
                           <Button

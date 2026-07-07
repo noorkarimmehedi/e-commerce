@@ -9,10 +9,9 @@ import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
 const cartEase = [0.22, 1, 0.36, 1] as const;
 
 const cartPanelVariants: Variants = {
-    closed: { opacity: 0, filter: "blur(6px)" },
+    closed: { opacity: 0 },
     open: {
         opacity: 1,
-        filter: "blur(0px)",
         transition: {
             duration: 0.58,
             ease: cartEase,
@@ -33,7 +32,7 @@ const cartSectionVariants: Variants = {
 
 function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuantity, itemCount, subtotal, openCheckout }: any) {
     return (
-        <div className="w-full h-full flex flex-col relative max-md:rounded-[12px] max-md:bg-neutral-500/90 max-md:backdrop-blur-md max-md:shadow-2xl overflow-hidden">
+        <div className="w-full h-full flex flex-col relative overflow-hidden">
             <motion.div
                 variants={cartPanelVariants}
                 initial="closed"
@@ -44,10 +43,10 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
                 <motion.div variants={cartSectionVariants} className="border-b border-black/5 max-md:border-white/10 p-5 md:p-8">
                     <div className="flex justify-between items-center">
                         <div className="space-y-1">
-                            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold block">
+                            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-black max-md:text-white block">
                                 Your Cart
                             </span>
-                            <span className="text-[9px] uppercase tracking-[0.3em] font-medium text-black/40 max-md:text-white/60">
+                            <span className="text-[9px] uppercase tracking-[0.3em] font-medium text-black max-md:text-white">
                                 {itemCount} {itemCount === 1 ? 'Item' : 'Items'}
                             </span>
                         </div>
@@ -74,7 +73,7 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
                                 className="flex flex-col items-center justify-center h-full p-12 text-center space-y-7"
                             >
                                 <div className="space-y-3">
-                                    <h3 className="text-2xl font-display font-light uppercase tracking-tight text-black max-md:text-white">
+                                    <h3 className="text-sm font-sans font-medium uppercase tracking-[0.2em] text-black max-md:text-white">
                                         Your cart is empty
                                     </h3>
                                     <p className="mx-auto max-w-[220px] text-[10px] uppercase tracking-[0.28em] leading-6 font-medium text-black/35 max-md:text-white/50">
@@ -109,7 +108,7 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
                                                 <img
                                                     src={item.image}
                                                     alt={item.title}
-                                                    className="w-full h-full object-cover grayscale brightness-90 group-hover:grayscale-0 transition-all duration-700"
+                                                    className="w-full h-full object-cover transition-all duration-700"
                                                 />
                                                 <div className="absolute inset-0 border border-black/5 max-md:border-white/10 rounded-[8px] md:rounded-none" />
                                             </div>
@@ -117,13 +116,13 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
                                             {/* Product Details */}
                                             <div className="flex-grow space-y-3 md:space-y-4">
                                                 <div className="space-y-1.5 md:space-y-2">
-                                                    <h3 className="text-base md:text-xl font-display font-light uppercase tracking-tight text-black max-md:text-white">
+                                                    <h3 className="text-base md:text-lg font-sans font-medium uppercase tracking-wide text-black max-md:text-white">
                                                         {item.title}
                                                     </h3>
                                                     <div className="flex items-center gap-4 text-[9px] uppercase tracking-[0.3em] font-medium text-black/40 max-md:text-white/50">
                                                         <span>Size: {item.size}</span>
                                                     </div>
-                                                    <span className="text-sm font-medium text-brand-gold">
+                                                    <span className="text-sm font-sans font-medium text-black max-md:text-white">
                                                         {item.price}
                                                     </span>
                                                 </div>
@@ -151,7 +150,7 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
                                                     {/* Remove Button */}
                                                     <button
                                                         onClick={() => removeFromCart(item.id)}
-                                                        className="text-[9px] uppercase tracking-[0.3em] font-bold text-black/30 max-md:text-white/40 hover:text-red-600 max-md:hover:text-red-400 transition-colors"
+                                                        className="text-[10px] uppercase tracking-[0.2em] font-sans font-bold text-black max-md:text-white hover:text-red-600 max-md:hover:text-red-400 transition-colors"
                                                     >
                                                         Remove
                                                     </button>
@@ -303,7 +302,7 @@ export default function CartDrawer() {
                                 initial={{ opacity: 0, scale: 0.96 }}
                                 animate={{ opacity: 1, scale: 1, transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] } }}
                                 exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } }}
-                                className="relative w-full h-full flex flex-col pointer-events-auto text-white"
+                                className="relative w-full h-full flex flex-col pointer-events-auto text-white rounded-[12px] bg-neutral-500/60 backdrop-blur-md shadow-2xl overflow-hidden"
                             >
                                 <CartInnerContent {...innerProps} />
                             </motion.div>
