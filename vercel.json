@@ -1,27 +1,5 @@
 {
-  "version": 2,
-  "builds": [
-    {
-      "src": "api/**/*.ts",
-      "use": "@vercel/node"
-    },
-    {
-      "src": "package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist/public"
-      }
-    }
-  ],
   "rewrites": [
-    {
-      "source": "/api/orders",
-      "destination": "/api/orders.ts"
-    },
-    {
-      "source": "/api/meta",
-      "destination": "/api/meta.ts"
-    },
     {
       "source": "/(.*)",
       "destination": "/index.html"
@@ -96,5 +74,6 @@
     }
   ],
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "outputDirectory": "dist/public"
 }

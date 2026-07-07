@@ -71,87 +71,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <div className="hidden md:flex items-center gap-10 text-[10px] uppercase tracking-[0.3em] font-medium opacity-70">
               <Link href="/collection"><a className="hover:text-brand-gold transition-colors">Collection</a></Link>
               <Link href="/atelier"><a className="hover:text-brand-gold transition-colors">Atelier</a></Link>
-            </div>            <div className="md:hidden">
+            </div>
+            <div className="md:hidden">
               <Button variant="ghost" size="icon" className="group flex h-9 w-auto items-center justify-center rounded-none px-0 md:h-12" onClick={() => setIsOpen(true)}>
                 <span className="text-[9px] uppercase tracking-[0.24em] font-bold opacity-70 transition-opacity group-hover:opacity-100">Menu</span>
               </Button>
-              <AnimatePresence initial={true}>
-                {isOpen && (
-                  <motion.div
-                    className="fixed inset-0 z-[100] w-full h-[100dvh] supports-[height:100dvh]:h-dvh p-3 sm:p-4 pointer-events-none"
-                  >
-                    <motion.div 
-                      className="absolute inset-0 bg-black/10 pointer-events-auto"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1, transition: { duration: 0.3 } }}
-                      exit={{ opacity: 0, transition: { duration: 0.3 } }}
-                      onClick={() => setIsOpen(false)}
-                    />
-                    
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.96 }}
-                      animate={{ opacity: 1, scale: 1, transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] } }}
-                      exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } }}
-                      className="relative w-full h-full flex flex-col rounded-[12px] bg-neutral-500/60 backdrop-blur-md shadow-2xl overflow-hidden pointer-events-auto text-white"
-                    >
-                      <div className="flex flex-col h-full px-6 py-6 md:px-12 md:py-10 justify-between overflow-y-auto">
-                        {/* Header */}
-                        <div className="flex justify-end items-center">
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            onClick={() => setIsOpen(false)}
-                            className="rounded-full hover:bg-white/10 text-white transition-all h-10 w-10"
-                          >
-                            <X className="w-5 h-5" />
-                          </Button>
-                        </div>
-
-                        {/* Navigation Links */}
-                        <div className="flex flex-col gap-6 md:gap-8 py-8 flex-1 justify-center px-2">
-                          {[
-                            { label: "Home", href: "/" },
-                            { label: "Best Sellers", href: "/best-sellers" },
-                            { label: "New Arrival", href: "/new-arrival" },
-                            { label: "Contact Us", href: "/contact-us" }
-                          ].map((item, idx) => (
-                            <motion.div
-                              key={item.label}
-                              initial={{ opacity: 0, y: 20 }}
-                              animate={{ opacity: 1, y: 0 }}
-                              transition={{ duration: 0.6, delay: idx * 0.1 + 0.2, ease: [0.22, 1, 0.36, 1] }}
-                            >
-                              <Link href={item.href} onClick={() => setIsOpen(false)}>
-                                <a className="group flex items-baseline">
-                                  <span className="text-3xl font-sans font-medium tracking-tight text-white transition-opacity duration-300 hover:opacity-70">
-                                    {item.label}
-                                  </span>
-                                </a>
-                              </Link>
-                            </motion.div>
-                          ))}
-                        </div>
-
-                        {/* Footer Info */}
-                        <div className="space-y-6 mt-12 pb-4">
-                          <div className="h-px w-full bg-white/10" />
-                          <div className="flex justify-between items-center text-white/80 text-sm font-medium">
-                            <span className="flex items-center gap-3">
-                              Shipping to: 
-                              <span className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-md text-xs">
-                                <span>BD</span> Bangladesh
-                              </span>
-                            </span>
-                          </div>
-                          <div className="text-white/60 text-sm">
-                            © 2026 Stepprs. All rights reserved.
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
             </div>
           </div>
 
@@ -198,6 +122,84 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
       </nav>
+
+      <AnimatePresence initial={true}>
+        {isOpen && (
+          <motion.div
+            className="fixed inset-0 z-[100] w-full h-[100dvh] supports-[height:100dvh]:h-dvh p-3 sm:p-4 pointer-events-none md:hidden"
+          >
+            <motion.div
+              className="absolute inset-0 bg-black/10 pointer-events-auto"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1, transition: { duration: 0.3 } }}
+              exit={{ opacity: 0, transition: { duration: 0.3 } }}
+              onClick={() => setIsOpen(false)}
+            />
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              animate={{ opacity: 1, scale: 1, transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] } }}
+              exit={{ opacity: 0, scale: 0.96, transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] } }}
+              className="relative w-full h-full flex flex-col pointer-events-auto text-white rounded-[12px] bg-neutral-500/60 backdrop-blur-md shadow-2xl overflow-hidden"
+            >
+              <div className="flex flex-col h-full px-6 py-6 md:px-12 md:py-10 justify-between overflow-y-auto">
+                {/* Header */}
+                <div className="flex justify-end items-center">
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={() => setIsOpen(false)}
+                    className="rounded-full hover:bg-white/10 text-white transition-all h-10 w-10"
+                  >
+                    <X className="w-5 h-5" />
+                  </Button>
+                </div>
+
+                {/* Navigation Links */}
+                <div className="flex flex-col gap-6 md:gap-8 py-8 flex-1 justify-center px-2">
+                  {[
+                    { label: "Home", href: "/" },
+                    { label: "Best Sellers", href: "/best-sellers" },
+                    { label: "New Arrival", href: "/new-arrival" },
+                    { label: "Contact Us", href: "/contact-us" }
+                  ].map((item, idx) => (
+                    <motion.div
+                      key={item.label}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.6, delay: idx * 0.1 + 0.2, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      <Link href={item.href} onClick={() => setIsOpen(false)}>
+                        <a className="group flex items-baseline">
+                          <span className="text-3xl font-sans font-medium tracking-tight text-white transition-opacity duration-300 hover:opacity-70">
+                            {item.label}
+                          </span>
+                        </a>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Footer Info */}
+                <div className="space-y-6 mt-12 pb-4">
+                  <div className="h-px w-full bg-white/10" />
+                  <div className="flex justify-between items-center text-white/80 text-sm font-medium">
+                    <span className="flex items-center gap-3">
+                      Shipping to:
+                      <span className="flex items-center gap-1.5 bg-white/10 px-2 py-1 rounded-md text-xs">
+                        <span>BD</span> Bangladesh
+                      </span>
+                    </span>
+                  </div>
+                  <div className="text-white/60 text-sm">
+                    © 2026 Stepprs. All rights reserved.
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Cart Drawer */}
       <CartDrawer />
