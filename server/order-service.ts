@@ -1,6 +1,5 @@
 import { z } from "zod";
-import fs from "fs";
-import path from "path";
+import { randomInt } from "crypto";
 
 export const orderRequestSchema = z.object({
   bundleTitle: z.string().min(1),
@@ -23,29 +22,10 @@ export const orderRequestSchema = z.object({
 export type OrderRequest = z.infer<typeof orderRequestSchema>;
 
 function createOrderRef() {
-  const counterPath = path.resolve(process.cwd(), "order-counter.txt");
-  let orderNumber = 1000;
-  
-  if (fs.existsSync(counterPath)) {
-    try {
-      const stored = parseInt(fs.readFileSync(counterPath, "utf-8"), 10);
-      if (!isNaN(stored)) {
-        orderNumber = stored;
-      }
-    } catch (e) {
-      // ignore
-    }
-  }
-  
-  orderNumber += 1;
-  
-  try {
-    fs.writeFileSync(counterPath, orderNumber.toString(), "utf-8");
-  } catch (e) {
-    console.error("Failed to write order counter", e);
-  }
-  
-  return `#${orderNumber}`;
+  const timestamp = Date.now().toString().slice(-8);
+  const suffix = randomInt(100, 1000).toString();
+
+  return `#${timestamp}${suffix}`;
 }
 
 export async function processOrder(order: OrderRequest) {

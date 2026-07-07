@@ -217,12 +217,12 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
               {/* Bundle Selection */}
               <div className="space-y-3 md:space-y-4">
                 <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-black/60">Select Bundle</span>
-                <div className="grid grid-cols-3 gap-3 md:pt-4">
+                <div className="grid grid-cols-3 gap-2 md:pt-3">
                   {bundles.map((bundle, idx) => (
                     <button
                       key={bundle.id}
                       onClick={() => setSelectedBundleIdx(idx)}
-                      className={`relative flex flex-col items-center justify-center border p-4 text-center transition-all ${
+                      className={`relative flex flex-col items-center justify-center border px-1 py-1.5 text-center transition-all md:px-3 md:py-2.5 ${
                         selectedBundleIdx === idx 
                           ? 'border-black bg-black text-white' 
                           : 'border-black/20 bg-transparent text-black hover:border-black/50'
