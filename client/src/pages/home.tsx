@@ -6,13 +6,13 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="w-full bg-[#fcfaf7] px-4 pt-0 pb-0 flex justify-center md:px-16 md:pt-8 md:pb-16 xl:px-20">
+      <section className="w-full bg-[#fcfaf7] pt-0 pb-0 flex justify-center md:pt-8 md:pb-16">
         <div className="w-full max-w-[800px] px-0">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1 }}
-            className="w-full aspect-[3/4] md:aspect-[4/5] bg-[#ececec] overflow-hidden relative group cursor-pointer"
+            className="w-full aspect-square md:aspect-[4/5] bg-[#ececec] overflow-hidden relative group cursor-pointer"
           >
             <Link href="/product/massage-insoles" className="block w-full h-full">
               <img 
@@ -27,7 +27,7 @@ export default function Home() {
 
       {/* The Collection Section */}
       <section className="w-full bg-[#fcfaf7] pb-32">
-        <div className="max-w-[1400px] mx-auto px-6 md:px-16">
+        <div className="max-w-[1400px] mx-auto px-4 md:px-16 xl:px-20">
           <motion.h2 
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
