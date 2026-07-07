@@ -269,14 +269,18 @@ export default function OrderDialog({
                   scale: 0.96,
                   transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
                 }}
-                className="relative flex flex-col w-full h-full md:h-auto max-md:rounded-[12px] bg-white md:bg-[#f2f1f0] max-md:shadow-2xl overflow-y-auto overflow-x-hidden p-6 md:p-10 z-[10]"
+                className={`relative flex w-full h-full md:h-auto max-md:rounded-[12px] bg-white md:bg-[#f2f1f0] max-md:shadow-2xl overflow-y-auto overflow-x-hidden z-[10] ${
+                  orderSubmitted
+                    ? "min-h-[calc(100dvh-1.5rem)] flex-col items-center justify-center p-6 md:min-h-[560px] md:p-10"
+                    : "flex-col p-6 md:p-10"
+                }`}
               >
                 <div className="absolute top-4 right-4 z-50 md:hidden">
                   <Button variant="ghost" size="icon" onClick={() => resetDialog(false)} className="rounded-full hover:bg-black/5 text-black border-none h-10 w-10">
                     <X className="w-5 h-5" />
                   </Button>
                 </div>
-              <DialogHeader className="items-center pb-2 text-center">
+              <DialogHeader className={orderSubmitted ? "sr-only" : "items-center pb-2 text-center"}>
                 <DialogTitle className="text-3xl md:text-4xl font-semibold tracking-tight leading-none text-black">
                   Place Order
                 </DialogTitle>
@@ -293,7 +297,7 @@ export default function OrderDialog({
                       transition: { staggerChildren: 0.09, delayChildren: 0.05 },
                     },
                   }}
-                  className="py-16 text-center"
+                  className="flex w-full flex-1 flex-col items-center justify-center px-2 py-12 text-center font-sans md:py-16"
                 >
                   <motion.span
                     variants={{
@@ -304,7 +308,7 @@ export default function OrderDialog({
                         transition: { duration: 0.55, ease: [0.22, 1, 0.36, 1] },
                       },
                     }}
-                    className="mx-auto mb-8 block h-px w-20 origin-center bg-brand-gold"
+                    className="mx-auto mb-7 block h-px w-16 origin-center bg-black/15"
                   />
                   <motion.h3
                     variants={{
@@ -316,7 +320,7 @@ export default function OrderDialog({
                         transition: { duration: 0.58, ease: [0.22, 1, 0.36, 1] },
                       },
                     }}
-                    className="font-display text-3xl font-light uppercase tracking-tight"
+                    className="font-sans text-3xl font-semibold tracking-[-0.04em] text-black md:text-4xl"
                   >
                     Order Confirmed
                   </motion.h3>
@@ -329,7 +333,7 @@ export default function OrderDialog({
                         transition: { duration: 0.48, ease: [0.22, 1, 0.36, 1] },
                       },
                     }}
-                    className="mx-auto mt-5 max-w-md text-[10px] uppercase tracking-[0.28em] leading-7 text-black/45"
+                    className="mx-auto mt-4 max-w-sm text-[15px] font-medium leading-7 tracking-[-0.02em] text-black/55"
                   >
                     Our studio team will contact you shortly to confirm delivery and payment.
                   </motion.p>
@@ -343,21 +347,21 @@ export default function OrderDialog({
                         transition: { duration: 0.52, ease: [0.22, 1, 0.36, 1] },
                       },
                     }}
-                    className="mt-5 flex flex-col items-center gap-6"
+                    className="mt-7 flex flex-col items-center gap-6"
                   >
                     {orderRef && (
-                      <div className="inline-flex flex-col items-center gap-1 border border-brand-gold/40 bg-white/70 max-md:bg-white/10 px-5 py-3">
-                        <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/45">
+                      <div className="inline-flex flex-col items-center gap-1 rounded-[8px] border border-black/10 bg-black/[0.03] px-6 py-3">
+                        <span className="text-[11px] font-medium tracking-[-0.01em] text-black/45">
                           Order Number
                         </span>
-                        <span className="font-garet text-sm font-bold uppercase tracking-[0.18em] text-brand-gold">
+                        <span className="font-sans text-sm font-semibold tracking-[-0.02em] text-black">
                           {orderRef}
                         </span>
                       </div>
                     )}
                     <Button
                       onClick={() => resetDialog(false)}
-                      className="h-auto rounded-none bg-transparent px-0 py-1 text-[10px] uppercase tracking-[0.35em] text-black max-md:hover:text-brand-gold underline underline-offset-8 shadow-none hover:bg-transparent hover:text-brand-gold"
+                      className="h-auto rounded-[8px] bg-black px-7 py-3 text-[13px] font-semibold tracking-[-0.02em] text-white shadow-none hover:bg-black/80"
                     >
                       Close
                     </Button>
