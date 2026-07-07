@@ -4,6 +4,12 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "wouter";
 import { ArrowLeft, ArrowDownRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { useCart } from "@/contexts/cart-context";
 import Layout from "@/components/layout";
 import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
@@ -277,27 +283,46 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     Features
                   </span>
                 </div>
-                <div className="grid gap-3">
+                <Accordion type="single" collapsible className="w-full">
                   {[
-                    { label: "Core Feature", val: "Targeted Massage Nodes" },
-                    { label: "Support", val: "Biomechanical Arch Support" },
-                    { label: "Comfort", val: "Thick Heel Cup & Cushioning" },
-                    { label: "Fit", val: "Trimmable to Fit" },
-                    { label: "Material", val: "Breathable Vents" }
+                    {
+                      label: "Core Feature",
+                      details: ["Targeted Massage Nodes"],
+                    },
+                    {
+                      label: "Support & Comfort",
+                      details: ["Biomechanical Arch Support", "Thick Heel Cup & Cushioning"],
+                    },
+                    {
+                      label: "Fit & Material",
+                      details: ["Trimmable to Fit", "Breathable Vents"],
+                    },
                   ].map((item) => (
-                    <div
+                    <AccordionItem
                       key={item.label}
-                      className="grid gap-2 border-b border-black/5 pb-3 last:border-b-0 last:pb-0 md:grid-cols-[110px_1fr] md:items-start md:gap-5"
+                      value={item.label.toLowerCase().replace(/\s+/g, "-")}
+                      className="border-black/5 last:border-b-0"
                     >
-                      <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/35">
+                      <AccordionTrigger className="py-4 text-left hover:no-underline [&>svg]:text-black/35">
+                        <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/35">
                         {item.label}
-                      </span>
-                      <span className="text-[11px] uppercase tracking-[0.16em] font-medium leading-6 text-black/75 md:text-[12px]">
-                        {item.val}
-                      </span>
-                    </div>
+                        </span>
+                      </AccordionTrigger>
+                      <AccordionContent className="pb-4 pt-0">
+                        <div className="grid gap-2">
+                          {item.details.map((detail) => (
+                            <span
+                              key={detail}
+                              className="block text-[11px] uppercase tracking-[0.16em] font-medium leading-6 text-black/75 md:text-[12px]"
+                            >
+                              {detail}
+                            </span>
+                          ))}
+                        </div>
+                      </AccordionContent>
+                    </AccordionItem>
                   ))}
-                </div>
+                </Accordion>
               </div>
             </div>
           </motion.div>

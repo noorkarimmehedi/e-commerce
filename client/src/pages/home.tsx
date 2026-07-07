@@ -6,8 +6,8 @@ export default function Home() {
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="w-full bg-[#fcfaf7] pt-8 pb-16 flex justify-center">
-        <div className="w-full max-w-[800px] px-4 md:px-0">
+      <section className="w-full bg-[#fcfaf7] pt-0 pb-0 flex justify-center md:pt-8 md:pb-16">
+        <div className="w-full max-w-[800px] px-0">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
