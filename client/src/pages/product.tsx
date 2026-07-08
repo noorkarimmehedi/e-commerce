@@ -9,6 +9,13 @@ import Layout from "@/components/layout";
 import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
 import { createEventId, trackMetaEvent } from "@/lib/meta";
 
+// Import product images for related section
+import makeupPen from "@assets/makeup_pen_4_in_1.png";
+import tintBordeaux from "@assets/peptide_lip_tint_bordeaux.png";
+import tintPlum from "@assets/peptide_lip_tint_plum.png";
+import tintRose from "@assets/peptide_lip_tint_rosy.png";
+import tintMauve from "@assets/peptide_lip_tint_mauve.png";
+
 const productData = {
   id: "massage-insoles",
   title: "Stepprs Massage Insoles",
@@ -21,6 +28,15 @@ const bundles = [
   { id: 1, title: "1 Pair", price: "৳500", amount: 500 },
   { id: 2, title: "2 Pairs", price: "৳850", amount: 850 },
   { id: 3, title: "3 Pairs", price: "৳1350", amount: 1350 },
+];
+
+const relatedProducts = [
+  { id: 1, slug: "4-in-1-makeup-pen", title: "4-in-1 Makeup Pen", price: "৳999", image: makeupPen, type: "Makeup Essential" },
+  { id: 2, slug: "bordeaux", title: "Bordeaux", price: "৳799", image: tintBordeaux, type: "Peptide Lip Tint" },
+  { id: 3, slug: "plum-veil", title: "Plum Veil", price: "৳799", image: tintPlum, type: "Peptide Lip Tint" },
+  { id: 4, slug: "rosy-bloom", title: "Rosy Bloom", price: "৳799", image: tintRose, type: "Peptide Lip Tint" },
+  { id: 5, slug: "mauve-nude", title: "Mauve Nude", price: "৳799", image: tintMauve, type: "Peptide Lip Tint" },
+  { id: 6, slug: "4-in-1-makeup-pen-2", title: "Everyday Edit", price: "৳899", image: makeupPen, type: "Value Set" },
 ];
 
 const insoleCarouselImages = [
@@ -398,6 +414,65 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
           </motion.div>
         </div>
       </div>
+      
+      {/* You May Also Like Section */}
+      <section className="w-full bg-brand-ivory border-t border-black/20 pt-6 pb-16">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-16 mb-4 md:mb-6">
+          <h2 className="text-[12px] md:text-sm font-sans uppercase tracking-[0.15em] text-black mb-5">
+            You May Also Like
+          </h2>
+          
+          <div className="grid grid-cols-3 gap-1.5 md:gap-2 pb-2">
+            <button className="bg-black text-white px-1 md:px-5 py-2.5 md:py-3 text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium text-center">
+              New Arrivals
+            </button>
+            <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
+              Best Sellers
+            </button>
+            <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
+              Essentials
+            </button>
+          </div>
+        </div>
+        
+        {/* Mobile: 2 per row with 1px gap, Desktop: 3 per row with standard gap */}
+        <div className="max-w-[1440px] mx-auto px-4 md:px-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-[1px] md:gap-8 bg-black/10 md:bg-transparent">
+          {relatedProducts.map((p, i) => (
+            <motion.div
+              key={p.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, delay: i * 0.1 }}
+              className="group flex cursor-pointer flex-col bg-brand-ivory"
+            >
+              <div className="relative aspect-[3/4] overflow-hidden bg-[#f2f1f0]">
+                <img
+                  src={p.image}
+                  className="h-full w-full object-contain mix-blend-multiply transition-transform duration-1000 group-hover:scale-105"
+                  alt={p.title}
+                />
+              </div>
+              <div className="px-3 md:px-0 pt-3 pb-4 md:pt-4 md:pb-6 flex flex-col gap-1 md:gap-1.5 border-t border-black/5">
+                <h3 className="text-[11px] md:text-lg font-display font-light uppercase tracking-tight leading-tight text-black line-clamp-1">
+                  {p.title}
+                </h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-[9px] md:text-[10px] font-garet font-bold">
+                    {p.price}
+                  </span>
+                  <span className="text-[7px] md:text-[9px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium opacity-30 line-clamp-1">
+                    {p.type}
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+          </div>
+        </div>
+      </section>
+
       <OrderDialog
         open={orderOpen}
         onOpenChange={setOrderOpen}
