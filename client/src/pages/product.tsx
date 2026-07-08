@@ -158,7 +158,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
       <div className="bg-brand-ivory min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           {/* Visual Side */}
-          <div className="lg:col-span-7 relative bg-brand-ivory overflow-hidden p-4 md:p-16 xl:p-20">
+          <div className="lg:col-span-7 relative bg-brand-ivory overflow-hidden p-[10px] md:p-16 xl:p-20">
             <div className="group mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] lg:sticky lg:top-0">
               <motion.div
                 initial={{ scale: 1.1, opacity: 0 }}
@@ -216,13 +216,8 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 1.2, delay: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="flex-grow space-y-6 px-4 py-6 md:space-y-12 md:p-16 xl:p-20">
+            <div className="flex-grow space-y-6 px-4 pt-2 pb-6 md:space-y-12 md:p-16 xl:p-20">
               <div className="space-y-4 md:space-y-6">
-                <div className="flex justify-between items-center">
-                  <span className="text-[10px] uppercase tracking-[0.6em] font-medium text-brand-gold">
-                    Wellness / Insoles
-                  </span>
-                </div>
 
                 <h1 className="max-w-full break-words font-sans text-4xl sm:text-5xl font-semibold tracking-tight text-black md:text-7xl whitespace-normal leading-tight">
                   {productData.title}
