@@ -220,12 +220,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Luxury Swiss Grid Footer */}
-      <footer className="border-t border-black/5 bg-brand-ivory text-black pt-24">
+      <footer className="border-t border-black/5 bg-brand-ivory text-black pt-12 md:pt-24">
         {/* Main Grid Content */}
-        <div className="grid grid-cols-1 md:grid-cols-12 max-w-[1440px] mx-auto px-4 sm:px-8 md:px-16 gap-16 mb-24">
+        <div className="grid grid-cols-1 md:grid-cols-12 max-w-[1440px] mx-auto px-4 sm:px-8 md:px-16 gap-16 mb-8 md:mb-24">
           {/* Brand Col */}
           <div className="md:col-span-4 space-y-8">
-            <span className="text-2xl font-display font-light normal-case tracking-widest text-brand-gold">Stepprs</span>
             <p className="text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] font-medium leading-[1.8] md:leading-[2.4] text-black/50 md:max-w-md md:text-balance leading-relaxed">
               Defining the future of luxury couture through Swiss modernist principles and master craftsmanship.
             </p>
@@ -246,16 +245,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </ul>
           </div>
 
-          {/* Contact Column */}
-          <div className="md:col-span-2 space-y-6">
-            <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold block">Maison</span>
-            <ul className="space-y-4 text-[10px] uppercase tracking-widest font-medium text-black/60">
-              <li><a href="#" className="hover:text-black transition-colors block">Legal</a></li>
-              <li><a href="#" className="hover:text-black transition-colors block">Press</a></li>
-              <li><a href="#" className="hover:text-black transition-colors block">Client Care</a></li>
-              <li><a href="#" className="hover:text-black transition-colors block">Studio Dhaka</a></li>
-            </ul>
-          </div>
+
 
           {/* Newsletter Column */}
           <div className="md:col-span-4 space-y-6">

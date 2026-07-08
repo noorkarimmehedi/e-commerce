@@ -65,6 +65,11 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
     skipSnaps: false,
   });
 
+  const [reelsRef] = useEmblaCarousel({
+    align: "center",
+    loop: true,
+  });
+
   useEffect(() => {
     const eventId = createEventId();
     trackMetaEvent({
@@ -136,13 +141,13 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
       <div className="bg-brand-ivory min-h-screen">
         <div className="grid grid-cols-1 lg:grid-cols-12">
           {/* Visual Side */}
-          <div className="lg:col-span-7 relative bg-neutral-100 overflow-hidden p-4 md:p-16 xl:p-20">
+          <div className="lg:col-span-7 relative bg-brand-ivory overflow-hidden p-4 md:p-16 xl:p-20">
             <div className="group mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[6px] lg:sticky lg:top-0">
               <motion.div
                 initial={{ scale: 1.1, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1] }}
-                className="h-full w-full bg-[#f2f1f0]"
+                className="h-full w-full bg-brand-ivory"
               >
                 <div ref={emblaRef} className="h-full cursor-grab overflow-hidden active:cursor-grabbing">
                   <div className="flex h-full touch-pan-y">
@@ -218,7 +223,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
 
               {/* Bundle Selection */}
               <div className="space-y-3 md:space-y-4">
-                <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-black/60">Select Bundle</span>
+                <span className="block text-[10px] uppercase tracking-[0.4em] font-bold text-black/60 pb-1 md:pb-2">Select Bundle</span>
                 <div className="grid grid-cols-3 gap-2 md:pt-3">
                   {bundles.map((bundle, idx) => (
                     <button
@@ -254,7 +259,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     }}
                     className="h-16 rounded-none bg-transparent border border-black/20 text-black text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-4 group"
                   >
-                    Add to Cart
+                    Add to Cart - {selectedBundle.price}
                   </Button>
                   <Button
                     onClick={() => setOrderOpen(true)}
@@ -351,6 +356,42 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                       </div>
                     );
                   })}
+                </div>
+              </div>
+
+              {/* Reels Section */}
+              <div className="pt-8 space-y-4 border-t border-black/5 mt-8 -mx-4 md:mx-0 overflow-hidden">
+                <div ref={reelsRef} className="w-full cursor-grab active:cursor-grabbing pb-4">
+                  <div className="flex touch-pan-y items-center">
+                    {[1, 2, 3].map((idx) => (
+                      <div key={idx} className="relative h-[340px] flex-[0_0_220px] mx-2 rounded-[8px] overflow-hidden bg-black shadow-lg group">
+                        <video 
+                          autoPlay 
+                          muted 
+                          loop 
+                          playsInline 
+                          preload="metadata"
+                          className="w-full h-full object-cover brightness-95"
+                        >
+                          <source src={`/vid_0${idx}.mp4`} type="video/mp4" />
+                        </video>
+                        
+                        {/* Frosted Glass Tagged Product Card */}
+                        <div className="absolute inset-x-2 bottom-2 p-3 bg-neutral-500/60 backdrop-blur-md text-white rounded-[10px] shadow-2xl flex flex-col gap-1.5 border border-white/10 opacity-90 transition-opacity group-hover:opacity-100">
+                          <div className="flex justify-between items-start">
+                            <span className="text-[9px] font-bold uppercase tracking-[0.1em] line-clamp-1 mr-1">{productData.title}</span>
+                            <span className="text-[9px] font-garet font-bold shrink-0">{selectedBundle.price}</span>
+                          </div>
+                          <button 
+                            onClick={() => setOrderOpen(true)} 
+                            className="mt-1 w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white py-2 rounded-[6px] text-[8px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center"
+                          >
+                            Shop Now
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>
