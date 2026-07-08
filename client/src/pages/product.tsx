@@ -391,17 +391,17 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                           <source src={`/vid_0${idx}.mp4`} type="video/mp4" />
                         </video>
                         
-                        {/* Frosted Glass Tagged Product Card */}
-                        <div className="absolute inset-x-2 bottom-2 p-3 bg-neutral-500/60 backdrop-blur-md text-white rounded-[8px] shadow-2xl flex flex-col gap-1.5 border border-white/10 opacity-90 transition-opacity group-hover:opacity-100">
-                          <div className="flex justify-between items-start">
-                            <span className="text-[9px] font-bold uppercase tracking-[0.1em] line-clamp-1 mr-1">{productData.title}</span>
-                            <span className="text-[9px] font-garet font-bold shrink-0">{selectedBundle.price}</span>
+                        {/* Compact Translucent Glass Card */}
+                        <div className="absolute inset-x-2 bottom-2 p-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-[8px] flex items-center justify-between shadow-lg opacity-80 transition-all duration-300 group-hover:opacity-100">
+                          <div className="flex flex-col justify-center px-1.5 overflow-hidden">
+                            <span className="text-[8px] font-bold uppercase tracking-[0.1em] text-white truncate">{productData.title}</span>
+                            <span className="text-[9px] font-garet font-bold text-white mt-0.5">{selectedBundle.price}</span>
                           </div>
                           <button 
                             onClick={() => setOrderOpen(true)} 
-                            className="mt-1 w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white py-2 rounded-[8px] text-[8px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center"
+                            className="shrink-0 bg-white/20 hover:bg-white text-white hover:text-black px-4 py-2 rounded-[8px] text-[8px] font-bold uppercase tracking-widest transition-colors backdrop-blur-sm"
                           >
-                            Shop Now
+                            Shop
                           </button>
                         </div>
                       </div>
