@@ -8,6 +8,7 @@ import { useCart } from "@/contexts/cart-context";
 import Layout from "@/components/layout";
 import OrderDialog, { type OrderDialogBundle } from "@/components/order-dialog";
 import { createEventId, trackMetaEvent } from "@/lib/meta";
+import { Counter } from "@/components/ui/animated-counter";
 
 // Import product images for related section
 import makeupPen from "@assets/makeup_pen_4_in_1.png";
@@ -158,7 +159,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
         <div className="grid grid-cols-1 lg:grid-cols-12">
           {/* Visual Side */}
           <div className="lg:col-span-7 relative bg-brand-ivory overflow-hidden p-4 md:p-16 xl:p-20">
-            <div className="group mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[6px] lg:sticky lg:top-0">
+            <div className="group mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] lg:sticky lg:top-0">
               <motion.div
                 initial={{ scale: 1.1, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
@@ -228,7 +229,10 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 </h1>
 
                 <div className="flex items-center gap-6">
-                  <span className="font-sans text-2xl font-semibold text-black">{selectedBundle.price}</span>
+                  <div className="flex items-center font-sans text-2xl font-semibold text-black">
+                    <span>৳</span>
+                    <Counter end={selectedBundle.amount} fontSize={24} className="text-black font-semibold !px-0" />
+                  </div>
                   <div className="h-px flex-grow bg-black/5" />
                 </div>
                 
@@ -245,7 +249,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     <button
                       key={bundle.id}
                       onClick={() => setSelectedBundleIdx(idx)}
-                      className={`relative flex flex-col items-center justify-center border px-1 py-1.5 text-center transition-all md:px-3 md:py-2.5 ${
+                      className={`relative flex flex-col items-center justify-center rounded-[8px] border px-1 py-1.5 text-center transition-all md:px-3 md:py-2.5 ${
                         selectedBundleIdx === idx 
                           ? 'border-black bg-black text-white' 
                           : 'border-black/20 bg-transparent text-black hover:border-black/50'
@@ -273,19 +277,19 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                         "Default"
                       );
                     }}
-                    className="h-16 rounded-none bg-transparent border border-black/20 text-black text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-4 group"
+                    className="h-16 rounded-[8px] bg-transparent border border-black/20 text-black text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-4 group"
                   >
-                    Add to Cart - {selectedBundle.price}
+                    <span className="flex items-center gap-1">Add to Cart - ৳<Counter end={selectedBundle.amount} fontSize={10} className="text-black group-hover:text-white transition-colors !px-0" /></span>
                   </Button>
                   <Button
                     onClick={() => setOrderOpen(true)}
-                    className="h-16 rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all flex items-center justify-center gap-4 group"
+                    className="h-16 rounded-[8px] bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all flex items-center justify-center gap-4 group"
                   >
                     Buy it Now
                     <ArrowDownRight className="w-5 h-5 stroke-[1px] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
                   </Button>
                 </div>
-                <div className="border border-black/10 bg-white/35 px-4 py-5 md:px-5">
+                <div className="border border-black/10 bg-white/35 rounded-[8px] px-4 py-5 md:px-5">
                   <div className="relative pb-1 pt-5">
                     <div className="absolute left-[12%] right-[12%] top-8 h-px bg-black/15" />
                     <div className="relative z-20 grid grid-cols-3 gap-3">
@@ -306,7 +310,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
               </div>
 
               {/* Product Specifications */}
-              <div className="border border-black/10 bg-white/35 p-5 md:p-6">
+              <div className="border border-black/10 bg-white/35 rounded-[8px] p-5 md:p-6">
                 <div className="mb-5 flex items-center justify-between gap-4 border-b border-black/10 pb-4">
                   <span className="text-[9px] uppercase tracking-[0.36em] font-bold text-brand-gold">
                     Details
@@ -393,14 +397,14 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                         </video>
                         
                         {/* Frosted Glass Tagged Product Card */}
-                        <div className="absolute inset-x-2 bottom-2 p-3 bg-neutral-500/60 backdrop-blur-md text-white rounded-[10px] shadow-2xl flex flex-col gap-1.5 border border-white/10 opacity-90 transition-opacity group-hover:opacity-100">
+                        <div className="absolute inset-x-2 bottom-2 p-3 bg-neutral-500/60 backdrop-blur-md text-white rounded-[8px] shadow-2xl flex flex-col gap-1.5 border border-white/10 opacity-90 transition-opacity group-hover:opacity-100">
                           <div className="flex justify-between items-start">
                             <span className="text-[9px] font-bold uppercase tracking-[0.1em] line-clamp-1 mr-1">{productData.title}</span>
                             <span className="text-[9px] font-garet font-bold shrink-0">{selectedBundle.price}</span>
                           </div>
                           <button 
                             onClick={() => setOrderOpen(true)} 
-                            className="mt-1 w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white py-2 rounded-[6px] text-[8px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center"
+                            className="mt-1 w-full bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white py-2 rounded-[8px] text-[8px] font-bold uppercase tracking-widest transition-colors flex items-center justify-center"
                           >
                             Shop Now
                           </button>
@@ -423,13 +427,13 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
           </h2>
           
           <div className="grid grid-cols-3 gap-1.5 md:gap-2 pb-2">
-            <button className="bg-black text-white px-1 md:px-5 py-2.5 md:py-3 text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium text-center">
+            <button className="bg-black text-white px-1 md:px-5 py-2.5 md:py-3 rounded-[8px] text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium text-center">
               New Arrivals
             </button>
-            <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
+            <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 rounded-[8px] text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
               Best Sellers
             </button>
-            <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
+            <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 rounded-[8px] text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
               Essentials
             </button>
           </div>

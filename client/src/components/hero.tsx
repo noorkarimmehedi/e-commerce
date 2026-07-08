@@ -91,7 +91,7 @@ export default function Hero() {
         <div className="absolute inset-x-0 bottom-0 z-10 h-28 bg-gradient-to-t from-black/18 to-transparent pointer-events-none" />
 
         <div className="absolute inset-x-0 bottom-5 z-20 flex justify-center">
-          <div className="flex items-center gap-3 border border-white/20 bg-black/15 px-4 py-3 backdrop-blur-sm">
+          <div className="flex items-center gap-3 border border-white/20 bg-black/15 px-4 py-3 backdrop-blur-sm rounded-[8px]">
             {HERO_IMAGES.map((image, idx) => (
               <button
                 key={image.src}

@@ -282,7 +282,7 @@ export default function BundleSection() {
                     ]
                   })
                 }
-                className="mt-8 h-14 w-full rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all flex items-center justify-center"
+                className="mt-8 h-14 w-full rounded-[8px] bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all flex items-center justify-center"
               >
                 Buy Classic Bundle
               </Button>
@@ -381,7 +381,7 @@ export default function BundleSection() {
                     ]
                   })
                 }
-                className="mt-8 h-14 w-full rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all flex items-center justify-center"
+                className="mt-8 h-14 w-full rounded-[8px] bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all flex items-center justify-center"
               >
                 Buy Quad Bundle
               </Button>
@@ -395,7 +395,7 @@ export default function BundleSection() {
           <DialogContent
             forceMount
             onOpenAutoFocus={(event) => event.preventDefault()}
-            className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[900px] [&>button]:rounded-none [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
+            className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[900px] [&>button]:rounded-[8px] [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
           >
             <AnimatePresence
               initial={true}
@@ -500,7 +500,7 @@ export default function BundleSection() {
                     )}
                     <Button
                       onClick={() => updateOrderOpen(false)}
-                      className="mt-10 h-12 rounded-none bg-black px-10 text-[10px] uppercase tracking-[0.35em] text-white hover:bg-brand-gold"
+                      className="mt-10 h-12 rounded-[8px] bg-black px-10 text-[10px] uppercase tracking-[0.35em] text-white hover:bg-brand-gold"
                     >
                       Close
                     </Button>
@@ -656,7 +656,7 @@ export default function BundleSection() {
 
                     <Button
                       disabled={orderSubmitting}
-                      className="h-14 w-full rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all disabled:cursor-not-allowed disabled:opacity-60"
+                      className="h-14 w-full rounded-[8px] bg-black text-white text-[10px] uppercase font-bold tracking-[0.35em] hover:bg-brand-gold transition-all disabled:cursor-not-allowed disabled:opacity-60"
                     >
                       {orderSubmitting ? "Placing Order..." : "Place Order"}
                     </Button>

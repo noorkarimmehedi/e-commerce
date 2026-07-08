@@ -54,7 +54,7 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
                             variant="ghost"
                             size="icon"
                             onClick={() => setIsOpen(false)}
-                            className="rounded-full md:rounded-none hover:bg-black hover:text-white max-md:hover:bg-white/10 max-md:text-white transition-all border-none md:border-solid md:border md:border-black/5 h-10 w-10"
+                            className="rounded-[8px] hover:bg-black hover:text-white max-md:hover:bg-white/10 max-md:text-white transition-all border-none md:border-solid md:border md:border-black/5 h-10 w-10"
                         >
                             <X className="w-4 h-4 max-md:w-5 max-md:h-5" />
                         </Button>
@@ -82,7 +82,7 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
                                 </div>
                                 <Button
                                     onClick={() => setIsOpen(false)}
-                                    className="h-auto rounded-none border-b border-black max-md:border-white bg-transparent px-0 py-2 text-[10px] uppercase font-bold tracking-[0.35em] text-black max-md:text-white shadow-none hover:bg-transparent hover:border-brand-gold hover:text-brand-gold"
+                                    className="h-auto rounded-[8px] border-b border-black max-md:border-white bg-transparent px-0 py-2 text-[10px] uppercase font-bold tracking-[0.35em] text-black max-md:text-white shadow-none hover:bg-transparent hover:border-brand-gold hover:text-brand-gold"
                                 >
                                     Continue Shopping
                                 </Button>
@@ -129,7 +129,7 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
 
                                                 {/* Quantity Controls */}
                                                 <div className="flex items-center justify-between">
-                                                    <div className="flex items-center border border-black/10 max-md:border-white/20 rounded-md md:rounded-none overflow-hidden">
+                                                    <div className="flex items-center border border-black/10 max-md:border-white/20 rounded-[8px] overflow-hidden">
                                                         <button
                                                             onClick={() => updateQuantity(item.id, item.quantity - 1)}
                                                         className="h-9 w-9 md:h-10 md:w-10 flex items-center justify-center hover:bg-black hover:text-white max-md:text-white max-md:hover:bg-white/10 transition-all"
@@ -194,7 +194,7 @@ function CartInnerContent({ items, isOpen, setIsOpen, removeFromCart, updateQuan
                         {/* Checkout Button */}
                         <Button
                             onClick={openCheckout}
-                            className="w-full h-12 md:h-14 rounded-[8px] md:rounded-none bg-black max-md:bg-white text-white max-md:text-black text-[9px] md:text-[10px] uppercase font-bold tracking-[0.26em] md:tracking-[0.4em] hover:bg-brand-gold max-md:hover:bg-brand-gold max-md:hover:text-white transition-all flex items-center justify-center gap-3 group"
+                            className="w-full h-12 md:h-14 rounded-[8px] bg-black max-md:bg-white text-white max-md:text-black text-[9px] md:text-[10px] uppercase font-bold tracking-[0.26em] md:tracking-[0.4em] hover:bg-brand-gold max-md:hover:bg-brand-gold max-md:hover:text-white transition-all flex items-center justify-center gap-3 group"
                         >
                             Proceed to Checkout
                             <ArrowDownRight className="w-4 h-4 md:w-5 md:h-5 stroke-[1px] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />

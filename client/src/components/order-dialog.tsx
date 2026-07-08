@@ -249,7 +249,7 @@ export default function OrderDialog({
         <DialogContent
           forceMount
           onOpenAutoFocus={(event) => event.preventDefault()}
-          className="max-md:fixed max-md:inset-0 max-md:!left-0 max-md:!top-0 max-md:!translate-x-0 max-md:!translate-y-0 max-md:w-full max-md:h-auto max-md:max-h-none overflow-hidden rounded-none border-none !bg-transparent p-3 sm:p-4 shadow-none data-[state=open]:animate-none data-[state=closed]:animate-none md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[760px] md:p-0 md:bg-[#f2f1f0] md:shadow-[0_80px_180px_rgba(0,0,0,0.28)] [&>button]:hidden md:[&>button]:flex flex flex-col z-[100]"
+          className="max-md:fixed max-md:inset-0 max-md:!left-0 max-md:!top-0 max-md:!translate-x-0 max-md:!translate-y-0 max-md:w-full max-md:h-auto max-md:max-h-none overflow-hidden rounded-none border-none !bg-transparent p-3 sm:p-4 shadow-none data-[state=open]:animate-none data-[state=closed]:animate-none md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[760px] md:p-0 md:bg-[#f2f1f0] md:shadow-[0_80px_180px_rgba(0,0,0,0.28)] [&>button]:hidden md:[&>button]:flex md:[&>button]:rounded-[8px] flex flex-col z-[100]"
         >
           <AnimatePresence
             initial={true}
@@ -403,7 +403,7 @@ export default function OrderDialog({
                       <input
                         required
                         name="name"
-                        className="h-12 w-full rounded-none border border-black/15 bg-white/70 px-4 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
+                        className="h-12 w-full rounded-[8px] border border-black/15 bg-white/70 px-4 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
                         placeholder="Your name"
                       />
                     </label>
@@ -415,7 +415,7 @@ export default function OrderDialog({
                         required
                         name="phone"
                         type="tel"
-                        className="h-12 w-full rounded-none border border-black/15 bg-white/70 px-4 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
+                        className="h-12 w-full rounded-[8px] border border-black/15 bg-white/70 px-4 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
                         placeholder="01XXXXXXXXX"
                       />
                     </label>
@@ -429,7 +429,7 @@ export default function OrderDialog({
                       required
                       name="address"
                       rows={2}
-                      className="w-full resize-none rounded-none border border-black/15 bg-white/70 px-4 py-3 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
+                      className="w-full resize-none rounded-[8px] border border-black/15 bg-white/70 px-4 py-3 text-[16px] font-normal outline-none transition-colors focus:border-black max-md:rounded-[8px]"
                       placeholder="House, road, area, city"
                     />
                   </label>
@@ -531,7 +531,7 @@ export default function OrderDialog({
                               <Button
                                 type="button"
                                 onClick={copyBkashNumber}
-                                className="h-11 rounded-none bg-[#e2136e] px-4 text-white hover:bg-black"
+                                className="h-11 rounded-[8px] bg-[#e2136e] px-4 text-white hover:bg-black"
                                 aria-label="Copy bKash number"
                                 title="Copy bKash number"
                               >
@@ -579,7 +579,7 @@ export default function OrderDialog({
                               <input
                                 required
                                 name="bkashTrxId"
-                                className="h-12 w-full rounded-none border border-[#e2136e]/30 bg-white/80 px-4 text-[16px] font-normal uppercase outline-none transition-colors focus:border-[#e2136e] max-md:rounded-[8px]"
+                                className="h-12 w-full rounded-[8px] border border-[#e2136e]/30 bg-white/80 px-4 text-[16px] font-normal uppercase outline-none transition-colors focus:border-[#e2136e] max-md:rounded-[8px]"
                                 placeholder="Example: 8N7B3KQ4LP"
                               />
                             </label>

@@ -107,7 +107,7 @@ export default function BookingForm({ onSubmitted }: { onSubmitted?: () => void 
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full h-16 rounded-none bg-black text-white text-[10px] uppercase font-bold tracking-[0.3em] hover:bg-neutral-900 transition-all">Submit Inquiry</Button>
+        <Button type="submit" className="w-full h-16 rounded-[8px] bg-black text-white text-[10px] uppercase font-bold tracking-[0.3em] hover:bg-neutral-900 transition-all">Submit Inquiry</Button>
       </form>
     </Form>
   );

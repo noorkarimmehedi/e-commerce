@@ -73,7 +73,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               <Link href="/atelier"><a className="hover:text-brand-gold transition-colors">Atelier</a></Link>
             </div>
             <div className="md:hidden">
-              <Button variant="ghost" size="icon" className="group flex h-9 w-auto items-center justify-center rounded-none px-0 md:h-12" onClick={() => setIsOpen(true)}>
+              <Button variant="ghost" size="icon" className="group flex h-9 w-auto items-center justify-center rounded-[8px] px-0 md:h-12" onClick={() => setIsOpen(true)}>
                 <span className="text-[9px] uppercase tracking-[0.24em] font-bold opacity-70 transition-opacity group-hover:opacity-100">Menu</span>
               </Button>
             </div>
@@ -97,7 +97,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Button
               variant="ghost"
               onClick={() => setCartOpen(true)}
-              className="group relative flex h-9 items-center justify-center rounded-none px-2 hover:bg-transparent md:h-12 md:px-3"
+              className="group relative flex h-9 items-center justify-center rounded-[8px] px-2 hover:bg-transparent md:h-12 md:px-3"
             >
               <span className="text-[9px] uppercase tracking-[0.24em] font-bold opacity-70 transition-opacity group-hover:opacity-100 md:text-[10px] md:tracking-[0.3em]">
                 Cart
@@ -115,7 +115,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
             </div>
 
-            <Button variant="ghost" className="hidden md:flex h-12 px-8 rounded-none border border-black/10 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-black hover:text-white transition-all">
+            <Button variant="ghost" className="hidden md:flex h-12 px-8 rounded-[8px] border border-black/10 text-[10px] uppercase tracking-[0.3em] font-bold hover:bg-black hover:text-white transition-all">
               Private Fitting
             </Button>
 

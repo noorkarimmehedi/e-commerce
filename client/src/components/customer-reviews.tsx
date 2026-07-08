@@ -275,11 +275,11 @@ export default function CustomerReviews({
             </div>
 
             <div className="grid grid-cols-2 gap-3 md:min-w-[360px]">
-              <button className="flex h-12 items-center justify-center gap-3 border border-black/35 px-4 text-[10px] uppercase tracking-[0.25em] font-bold text-black/60 transition-colors hover:border-black hover:text-black">
+              <button className="flex h-12 rounded-[8px] items-center justify-center gap-3 border border-black/35 px-4 text-[10px] uppercase tracking-[0.25em] font-bold text-black/60 transition-colors hover:border-black hover:text-black">
                 <SlidersHorizontal className="h-4 w-4 stroke-[1.4px]" />
                 Filters
               </button>
-              <button className="flex h-12 items-center justify-center gap-3 border border-black/35 px-4 text-[10px] uppercase tracking-[0.25em] font-bold text-black/60 transition-colors hover:border-black hover:text-black">
+              <button className="flex h-12 rounded-[8px] items-center justify-center gap-3 border border-black/35 px-4 text-[10px] uppercase tracking-[0.25em] font-bold text-black/60 transition-colors hover:border-black hover:text-black">
                 Most Recent
                 <ChevronDown className="h-4 w-4 stroke-[1.4px]" />
               </button>
@@ -297,7 +297,7 @@ export default function CustomerReviews({
           <button
             type="button"
             onClick={() => setShowAll((current) => !current)}
-            className="inline-flex h-12 min-w-56 items-center justify-center border border-black px-8 text-[10px] uppercase tracking-[0.35em] font-bold text-black transition-colors hover:bg-black hover:text-white"
+            className="inline-flex h-12 min-w-56 rounded-[8px] items-center justify-center border border-black px-8 text-[10px] uppercase tracking-[0.35em] font-bold text-black transition-colors hover:bg-black hover:text-white"
           >
             {showAll ? "Show Less" : `Show More (${remainingCount})`}
           </button>
