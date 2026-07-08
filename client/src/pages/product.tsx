@@ -277,13 +277,13 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                         "Default"
                       );
                     }}
-                    className="h-16 rounded-[8px] bg-transparent border border-black/20 text-black text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-4 group"
+                    className="h-12 px-2 rounded-[8px] bg-transparent border border-black/20 text-black text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-black hover:text-white transition-all flex items-center justify-center gap-2 group"
                   >
                     <span className="flex items-center gap-1">Add to Cart - ৳<Counter end={selectedBundle.amount} fontSize={10} className="text-black group-hover:text-white transition-colors !px-0" /></span>
                   </Button>
                   <Button
                     onClick={() => setOrderOpen(true)}
-                    className="h-16 rounded-[8px] bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all flex items-center justify-center gap-4 group"
+                    className="h-12 px-2 rounded-[8px] bg-black text-white text-[10px] uppercase font-bold tracking-[0.4em] hover:bg-brand-gold transition-all flex items-center justify-center gap-2 group"
                   >
                     Buy it Now
                     <ArrowDownRight className="w-5 h-5 stroke-[1px] transition-transform group-hover:translate-x-1 group-hover:-translate-y-1" />
