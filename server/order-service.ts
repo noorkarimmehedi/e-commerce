@@ -29,18 +29,18 @@ function createOrderRef() {
 }
 
 export async function processOrder(order: OrderRequest) {
-  const orderRef = createOrderRef();
   const total = order.bundlePrice + order.deliveryCharge;
+  let orderRef = "";
 
   try {
-    await fetch("https://suite.arclabtechnology.com/api/custom-orders/webhook", {
+    const response = await fetch("https://suite.arclabtechnology.com/api/custom-orders/webhook", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         "x-api-key": "stepprsbangladesh-098765"
       },
       body: JSON.stringify({
-        order_id: orderRef,
+        // We no longer send order_id, the dashboard generates it!
         customer_name: order.customerName,
         phone: order.phone,
         address: order.address,
@@ -50,8 +50,26 @@ export async function processOrder(order: OrderRequest) {
         delivery_rate: order.deliveryCharge
       })
     });
+
+    if (!response.ok) {
+      throw new Error(`Dashboard returned status ${response.status}`);
+    }
+
+    // Try to parse the JSON response from the dashboard
+    const data = await response.json().catch(() => ({}));
+    
+    // Check if the dashboard returned the new sequential ID
+    if (data && data.order_id) {
+      orderRef = data.order_id;
+    } else {
+      // Fallback: If the developer hasn't updated the dashboard yet, or it didn't return an ID
+      orderRef = createOrderRef();
+      console.warn("Dashboard didn't return an order_id. Used fallback:", orderRef);
+    }
   } catch (webhookErr) {
     console.error("Webhook failed:", webhookErr);
+    // Fallback: If the dashboard is completely down or returns a 500 error
+    orderRef = createOrderRef();
   }
 
   return { orderRef, order: { ...order, total, status: "confirmed" } };
