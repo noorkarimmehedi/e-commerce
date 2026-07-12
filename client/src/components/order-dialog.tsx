@@ -4,6 +4,7 @@ import { Check, Copy, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
 import { createEventId, trackMetaEvent } from "@/lib/meta";
+import { trackMerchantSuiteEvent } from "@/lib/merchant-suite";
 import {
   Dialog,
   DialogContent,
@@ -76,6 +77,7 @@ export default function OrderDialog({
   useEffect(() => {
     if (!previousOpen.current && open) {
       setOpenInstance((current) => current + 1);
+      trackMerchantSuiteEvent("checkout");
 
       const eventId = createEventId();
       trackMetaEvent({
@@ -100,6 +102,12 @@ export default function OrderDialog({
       setDeliveryCharge(0);
     }
   }, [open, qualifiesForFreeDelivery]);
+
+  useEffect(() => {
+    if (orderSubmitted) {
+      trackMerchantSuiteEvent("purchased");
+    }
+  }, [orderSubmitted]);
 
   const resetDialog = (nextOpen: boolean) => {
     if (!nextOpen) {

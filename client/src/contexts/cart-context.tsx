@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { createEventId, trackMetaEvent } from "@/lib/meta";
+import { trackMerchantSuiteEvent } from "@/lib/merchant-suite";
 
 export interface CartItem {
     id: string;
@@ -81,6 +82,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
         // Open cart drawer after adding
         setIsOpen(true);
+        trackMerchantSuiteEvent("cart");
 
         const value = Number(String(product.price).replace(/[^0-9.]/g, "")) || 0;
         const eventId = createEventId();

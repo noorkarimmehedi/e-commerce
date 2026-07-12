@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { apiRequest } from "@/lib/queryClient";
 import { createEventId, trackMetaEvent } from "@/lib/meta";
+import { trackMerchantSuiteEvent } from "@/lib/merchant-suite";
 import {
   Dialog,
   DialogContent,
@@ -76,6 +77,7 @@ export default function BundleSection() {
     setOrderRef("");
     setOrderClosing(false);
     setOrderOpen(true);
+    trackMerchantSuiteEvent("checkout");
 
     const eventId = createEventId();
     trackMetaEvent({
@@ -101,6 +103,12 @@ export default function BundleSection() {
     setOrderClosing(true);
     setOrderOpen(false);
   };
+
+  useEffect(() => {
+    if (orderSubmitted) {
+      trackMerchantSuiteEvent("purchased");
+    }
+  }, [orderSubmitted]);
 
   const placeOrder = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
