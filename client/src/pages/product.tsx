@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "wouter";
-import { ArrowDownRight, ArrowLeft } from "lucide-react";
+import { ArrowDownRight } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-context";
@@ -117,13 +116,6 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   return (
     <Layout>
       <div className="min-h-screen bg-brand-ivory">
-        <div className="px-4 py-5 md:px-16">
-          <Link href="/" className="inline-flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.35em] text-black/45 hover:text-black">
-            <ArrowLeft className="h-4 w-4" />
-            Back
-          </Link>
-        </div>
-
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-7 bg-brand-ivory p-[10px] md:p-16 xl:p-20">
               <motion.div

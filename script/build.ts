@@ -3,6 +3,7 @@ import { build as viteBuild } from "vite";
 import { copyFile, mkdir, readFile, rm } from "fs/promises";
 
 const productSlugs = [
+  "stepprs-massage-insoles",
   "massage-insoles",
   "4-in-1-makeup-pen",
   "bordeaux",
