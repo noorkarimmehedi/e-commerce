@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import useEmblaCarousel from "embla-carousel-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { ArrowDownRight, ChevronDown } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
@@ -71,6 +72,10 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const [selectedBundleIdx, setSelectedBundleIdx] = useState(0);
   const [availabilityBlocked, setAvailabilityBlocked] = useState(false);
   const [openFeature, setOpenFeature] = useState<string | null>(null);
+  const [reelsRef] = useEmblaCarousel({
+    align: "center",
+    loop: true,
+  });
   const { data: merchantProduct, isFetched, isError, refetch } = useQuery({
     queryKey: ["merchant-suite-product", slug],
     queryFn: () => fetchStorefrontProduct(slug),
@@ -351,8 +356,8 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
 
                 {/* Reels Section */}
                 <div className="pt-8 space-y-4 border-t border-black/5 mt-8 -mx-4 md:mx-0 overflow-hidden">
-                  <div className="w-full cursor-grab active:cursor-grabbing pb-4 overflow-hidden">
-                    <div className="flex touch-pan-y items-center overflow-x-auto no-scrollbar">
+                  <div ref={reelsRef} className="w-full cursor-grab active:cursor-grabbing pb-4">
+                    <div className="flex touch-pan-y items-center">
                       {[1, 2, 3].map((idx) => (
                         <div key={idx} className="relative h-[340px] flex-[0_0_220px] mx-2 rounded-[8px] overflow-hidden bg-black shadow-lg group">
                           <video
