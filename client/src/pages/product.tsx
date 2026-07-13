@@ -75,6 +75,13 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const [selectedBundleIdx, setSelectedBundleIdx] = useState(0);
   const [availabilityBlocked, setAvailabilityBlocked] = useState(false);
   const [openFeature, setOpenFeature] = useState<string | null>(null);
+  const [activeImage, setActiveImage] = useState(0);
+  const [galleryRef, galleryApi] = useEmblaCarousel({
+    align: "start",
+    containScroll: false,
+    loop: false,
+    skipSnaps: false,
+  });
   const [reelsRef] = useEmblaCarousel({
     align: "center",
     loop: true,
@@ -127,6 +134,26 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
     });
   }, [selectedBundle]);
 
+  useEffect(() => {
+    if (!galleryApi) return;
+
+    const syncActiveImage = () => setActiveImage(galleryApi.selectedScrollSnap());
+
+    galleryApi.scrollTo(0, true);
+    syncActiveImage();
+    galleryApi.on("select", syncActiveImage);
+    galleryApi.on("reInit", syncActiveImage);
+
+    return () => {
+      galleryApi.off("select", syncActiveImage);
+      galleryApi.off("reInit", syncActiveImage);
+    };
+  }, [galleryApi, displayGallery.length]);
+
+  const goToImage = (idx: number) => {
+    galleryApi?.scrollTo(idx);
+  };
+
   const today = new Date();
   const processedDate = new Date(today);
   processedDate.setDate(today.getDate() + 1);
@@ -157,19 +184,40 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 className="mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f2f1f0]"
               >
                 {displayGallery.length ? (
-                  <div className="flex h-full overflow-x-auto snap-x snap-mandatory no-scrollbar">
-                    {displayGallery.map((url) => (
-                      <div key={url} className="h-full min-w-full snap-center">
-                        <img
-                          src={url}
-                          alt={product.name}
-                          width={1080}
-                          height={1080}
-                          className="h-full w-full object-cover transition-transform duration-[2s] hover:scale-105"
-                        />
+                  <>
+                    <div ref={galleryRef} className="h-full cursor-grab overflow-hidden active:cursor-grabbing">
+                      <div className="flex h-full touch-pan-y">
+                        {displayGallery.map((url) => (
+                          <div key={url} className="relative h-full min-w-0 flex-[0_0_100%]">
+                            <img
+                              src={url}
+                              alt={product.name}
+                              width={1080}
+                              height={1080}
+                              draggable={false}
+                              className="absolute inset-0 h-full w-full select-none object-cover object-center transition-transform duration-[2s] hover:scale-105"
+                            />
+                          </div>
+                        ))}
                       </div>
-                    ))}
-                  </div>
+                    </div>
+
+                    {displayGallery.length > 1 ? (
+                      <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-2">
+                        {displayGallery.map((url, idx) => (
+                          <button
+                            key={url}
+                            type="button"
+                            onClick={() => goToImage(idx)}
+                            className={`h-[2px] transition-all duration-300 ${
+                              activeImage === idx ? "w-8 bg-black" : "w-8 bg-black/20"
+                            }`}
+                            aria-label={`Go to product image ${idx + 1}`}
+                          />
+                        ))}
+                      </div>
+                    ) : null}
+                  </>
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/25">
                     No image
