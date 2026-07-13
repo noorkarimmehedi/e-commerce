@@ -42,9 +42,7 @@ export default function ProductGrid() {
           Desktop : padded, generous column gaps
       ─────────────────────────────────────────────────────── */}
       {isLoading ? (
-        <div className="px-5 py-16 text-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/35 md:px-16">
-          Loading products...
-        </div>
+        <div className="px-5 py-16 md:px-16" aria-busy="true" aria-label="Products are loading" />
       ) : isError ? (
         <div className="px-5 py-16 text-center text-[10px] font-bold uppercase tracking-[0.35em] text-red-700 md:px-16">
           Could not load products.

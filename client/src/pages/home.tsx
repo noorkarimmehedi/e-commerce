@@ -37,14 +37,10 @@ export default function Home() {
                   className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 />
               </Link>
-            ) : (
+            ) : isLoading ? null : (
               <div className="flex h-full w-full items-center justify-center px-8 text-center">
                 <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-black/35">
-                  {isLoading
-                    ? "Loading products..."
-                    : isError
-                      ? "Could not load products."
-                      : "No products published yet."}
+                  {isError ? "Could not load products." : "No products published yet."}
                 </span>
               </div>
             )}
@@ -83,9 +79,7 @@ export default function Home() {
           </motion.h2>
 
           {isLoading ? (
-            <div className="py-16 text-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/35">
-              Loading products...
-            </div>
+            <div className="py-16" aria-busy="true" aria-label="Products are loading" />
           ) : isError ? (
             <div className="py-16 text-center text-[10px] font-bold uppercase tracking-[0.35em] text-red-700">
               Could not load products.
