@@ -181,7 +181,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 initial={{ scale: 1.04, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f2f1f0]"
+                className="relative mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f2f1f0]"
               >
                 {displayGallery.length ? (
                   <>
@@ -203,7 +203,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     </div>
 
                     {displayGallery.length > 1 ? (
-                      <div className="absolute bottom-8 left-0 right-0 z-10 flex justify-center gap-2">
+                      <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-2 md:bottom-8">
                         {displayGallery.map((url, idx) => (
                           <button
                             key={url}
