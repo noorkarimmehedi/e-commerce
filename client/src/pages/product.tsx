@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import { ArrowDownRight } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowDownRight, ChevronDown } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/contexts/cart-context";
@@ -34,6 +34,28 @@ const staticBundles = [
   { id: 3, title: "3 Pairs", price: "৳1350", amount: 1350 },
 ];
 
+const featureGroups = [
+  {
+    label: "Core Feature",
+    details: ["Targeted Massage Nodes"],
+  },
+  {
+    label: "Support & Comfort",
+    details: ["Biomechanical Arch Support", "Thick Heel Cup & Cushioning"],
+  },
+  {
+    label: "Fit & Material",
+    details: ["Trimmable to Fit", "Breathable Vents"],
+  },
+];
+
+const placeholderProducts = [1, 2, 3, 4, 5, 6].map((id) => ({
+  id,
+  title: `Product ${id}`,
+  price: "৳---",
+  type: "Demo",
+}));
+
 function getMerchantSlug(slug: string) {
   return slug === "massage-insoles" ? staticProduct.slug : slug || staticProduct.slug;
 }
@@ -48,6 +70,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const [orderOpen, setOrderOpen] = useState(false);
   const [selectedBundleIdx, setSelectedBundleIdx] = useState(0);
   const [availabilityBlocked, setAvailabilityBlocked] = useState(false);
+  const [openFeature, setOpenFeature] = useState<string | null>(null);
   const { data: merchantProduct, isFetched, isError, refetch } = useQuery({
     queryKey: ["merchant-suite-product", slug],
     queryFn: () => fetchStorefrontProduct(slug),
@@ -255,10 +278,174 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     </div>
                   </div>
                 </div>
+
+                {/* Product Specifications */}
+                <div className="border border-black/10 bg-white/35 rounded-[8px] p-5 md:p-6">
+                  <div className="mb-5 flex items-center justify-between gap-4 border-b border-black/10 pb-4">
+                    <span className="text-[9px] uppercase tracking-[0.36em] font-bold text-brand-gold">
+                      Details
+                    </span>
+                    <span className="h-px flex-1 bg-black/10" />
+                    <span className="font-garet text-[10px] font-bold uppercase tracking-[0.24em] text-black/35">
+                      Features
+                    </span>
+                  </div>
+                  <div className="w-full">
+                    {featureGroups.map((item) => {
+                      const isOpen = openFeature === item.label;
+
+                      return (
+                        <div key={item.label} className="border-b border-black/5 last:border-b-0">
+                          <button
+                            type="button"
+                            aria-expanded={isOpen}
+                            onClick={() => setOpenFeature(isOpen ? null : item.label)}
+                            className="flex w-full items-center justify-between py-4 text-left"
+                          >
+                            <span className="text-[8px] uppercase tracking-[0.28em] font-bold text-black/35">
+                              {item.label}
+                            </span>
+                            <motion.span
+                              animate={{ rotate: isOpen ? 180 : 0 }}
+                              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+                              className="text-black/35"
+                              aria-hidden="true"
+                            >
+                              <ChevronDown className="h-4 w-4" />
+                            </motion.span>
+                          </button>
+
+                          <AnimatePresence initial={false}>
+                            {isOpen && (
+                              <motion.div
+                                initial={{ height: 0, opacity: 0 }}
+                                animate={{ height: "auto", opacity: 1 }}
+                                exit={{ height: 0, opacity: 0 }}
+                                transition={{ duration: 0.42, ease: [0.22, 1, 0.36, 1] }}
+                                className="overflow-hidden"
+                              >
+                                <motion.div
+                                  initial={{ y: -6 }}
+                                  animate={{ y: 0 }}
+                                  exit={{ y: -6 }}
+                                  transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
+                                  className="grid gap-2 pb-4 pt-0"
+                                >
+                                  {item.details.map((detail) => (
+                                    <span
+                                      key={detail}
+                                      className="block text-[11px] uppercase tracking-[0.16em] font-medium leading-6 text-black/75 md:text-[12px]"
+                                    >
+                                      {detail}
+                                    </span>
+                                  ))}
+                                </motion.div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Reels Section */}
+                <div className="pt-8 space-y-4 border-t border-black/5 mt-8 -mx-4 md:mx-0 overflow-hidden">
+                  <div className="w-full cursor-grab active:cursor-grabbing pb-4 overflow-hidden">
+                    <div className="flex touch-pan-y items-center overflow-x-auto no-scrollbar">
+                      {[1, 2, 3].map((idx) => (
+                        <div key={idx} className="relative h-[340px] flex-[0_0_220px] mx-2 rounded-[8px] overflow-hidden bg-black shadow-lg group">
+                          <video
+                            autoPlay
+                            muted
+                            loop
+                            playsInline
+                            preload="metadata"
+                            className="w-full h-full object-cover brightness-95"
+                          >
+                            <source src={`/vid_0${idx}.mp4`} type="video/mp4" />
+                          </video>
+
+                          <div className="absolute inset-x-2 bottom-2 p-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-[8px] flex items-center justify-between shadow-lg opacity-80 transition-all duration-300 group-hover:opacity-100">
+                            <div className="flex flex-col justify-center px-1.5 overflow-hidden">
+                              <span className="text-[8px] font-bold uppercase tracking-[0.1em] text-white truncate">Product {idx}</span>
+                              <span className="text-[9px] font-garet font-bold text-white mt-0.5">Demo</span>
+                            </div>
+                            <button
+                              onClick={async () => {
+                                if (await verifyOrderable()) {
+                                  setOrderOpen(true);
+                                }
+                              }}
+                              className="shrink-0 bg-white/20 hover:bg-white text-white hover:text-black px-4 py-2 rounded-[8px] text-[8px] font-bold uppercase tracking-widest transition-colors backdrop-blur-sm"
+                            >
+                              Shop
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
               </div>
             </motion.div>
           </div>
       </div>
+
+      {/* You May Also Like Section */}
+      <section className="w-full bg-brand-ivory border-t border-black/20 pt-6 pb-16">
+        <div className="max-w-[1440px] mx-auto px-4 md:px-16 mb-4 md:mb-6">
+          <h2 className="text-[12px] md:text-sm font-sans uppercase tracking-[0.15em] text-black mb-5">
+            You May Also Like
+          </h2>
+
+          <div className="grid grid-cols-3 gap-1.5 md:gap-2 pb-2">
+            <button className="bg-black text-white px-1 md:px-5 py-2.5 md:py-3 rounded-[8px] text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium text-center">
+              New Arrivals
+            </button>
+            <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 rounded-[8px] text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
+              Best Sellers
+            </button>
+            <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 rounded-[8px] text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
+              Essentials
+            </button>
+          </div>
+        </div>
+
+        <div className="max-w-[1440px] mx-auto px-4 md:px-16">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-[1px] md:gap-8 bg-black/10 md:bg-transparent">
+            {placeholderProducts.map((p, i) => (
+              <motion.div
+                key={p.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="group flex cursor-pointer flex-col bg-brand-ivory"
+              >
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#f2f1f0] flex items-center justify-center">
+                  <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-black/25">
+                    No image
+                  </span>
+                </div>
+                <div className="px-3 md:px-0 pt-3 pb-4 md:pt-4 md:pb-6 flex flex-col gap-1 md:gap-1.5 border-t border-black/5">
+                  <h3 className="text-[11px] md:text-lg font-display font-light uppercase tracking-tight leading-tight text-black line-clamp-1">
+                    {p.title}
+                  </h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[9px] md:text-[10px] font-garet font-bold">
+                      {p.price}
+                    </span>
+                    <span className="text-[7px] md:text-[9px] uppercase tracking-[0.2em] md:tracking-[0.3em] font-medium opacity-30 line-clamp-1">
+                      {p.type}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <OrderDialog open={orderOpen} onOpenChange={setOrderOpen} bundle={orderBundle} />
     </Layout>
