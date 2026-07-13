@@ -89,8 +89,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const merchantAvailabilityKnown = isFetched || isError;
   const merchantUnavailable = merchantAvailabilityKnown && (!merchantProduct || !isProductOrderable(merchantProduct));
   const isUnavailable = availabilityBlocked || merchantUnavailable;
-  const displayProduct = merchantProduct || product;
-  const displayImage = getProductImage(displayProduct) || productImage;
+  const displayImage = getProductImage(merchantProduct || product) || productImage;
 
   const verifyOrderable = async () => {
     if (isUnavailable) {
@@ -135,10 +134,10 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   ];
 
   const orderBundle: OrderDialogBundle = {
-        title: displayProduct.name,
+        title: product.name,
         details: selectedBundle.title,
         price: selectedBundle.amount,
-        images: [{ src: displayImage, alt: displayProduct.name }],
+        images: [{ src: displayImage, alt: product.name }],
       };
 
   return (
@@ -155,7 +154,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 {displayImage ? (
                   <img
                     src={displayImage}
-                    alt={displayProduct.name}
+                    alt={product.name}
                     width={1080}
                     height={1080}
                     className="h-full w-full object-cover transition-transform duration-[2s] hover:scale-105"
@@ -177,7 +176,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
               <div className="flex-grow space-y-6 px-4 pb-10 pt-2 md:space-y-10 md:p-16 xl:p-20">
                 <div className="space-y-4 md:space-y-6">
                   <h1 className="max-w-full break-words font-sans text-4xl font-semibold leading-tight tracking-tight text-black sm:text-5xl md:text-7xl">
-                    {displayProduct.name}
+                    {product.name}
                   </h1>
 
                   <div className="flex items-center gap-6">
@@ -189,9 +188,9 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     <div className="h-px flex-grow bg-black/5" />
                   </div>
 
-                  {displayProduct.description ? (
+                  {product.description ? (
                     <p className="text-xs font-medium leading-[1.8] text-black/60 md:text-sm">
-                      {displayProduct.description}
+                      {product.description}
                     </p>
                   ) : null}
                 </div>
@@ -239,7 +238,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                         addToCart(
                           {
                             id: getProductNumericId(product),
-                            title: `${displayProduct.name} (${selectedBundle.title})`,
+                            title: `${product.name} (${selectedBundle.title})`,
                             price: selectedBundle.price,
                             image: displayImage,
                           },
