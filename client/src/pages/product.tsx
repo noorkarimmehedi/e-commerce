@@ -11,6 +11,7 @@ import { createEventId, trackMetaEvent } from "@/lib/meta";
 import { Counter } from "@/components/ui/animated-counter";
 import {
   fetchStorefrontProduct,
+  getProductImage,
   getProductNumericId,
   isProductOrderable,
   type StorefrontProduct,
@@ -61,6 +62,8 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const merchantAvailabilityKnown = isFetched || isError;
   const merchantUnavailable = merchantAvailabilityKnown && (!merchantProduct || !isProductOrderable(merchantProduct));
   const isUnavailable = availabilityBlocked || merchantUnavailable;
+  const displayProduct = merchantProduct || product;
+  const displayImage = getProductImage(displayProduct) || productImage;
 
   const verifyOrderable = async () => {
     if (isUnavailable) {
@@ -105,10 +108,10 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   ];
 
   const orderBundle: OrderDialogBundle = {
-        title: product.name,
+        title: displayProduct.name,
         details: selectedBundle.title,
         price: selectedBundle.amount,
-        images: [{ src: productImage, alt: product.name }],
+        images: [{ src: displayImage, alt: displayProduct.name }],
       };
 
   return (
@@ -129,13 +132,13 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 className="mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f2f1f0]"
               >
-                {productImage ? (
+                {displayImage ? (
                   <img
-                    src={productImage}
-                    alt={product.name}
+                    src={displayImage}
+                    alt={displayProduct.name}
                     width={1080}
                     height={1080}
-                    className="h-full w-full object-contain p-8 mix-blend-multiply transition-transform duration-[2s] hover:scale-105 md:p-16"
+                    className="h-full w-full object-cover transition-transform duration-[2s] hover:scale-105"
                   />
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/25">
@@ -154,7 +157,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
               <div className="flex-grow space-y-6 px-4 pb-10 pt-2 md:space-y-10 md:p-16 xl:p-20">
                 <div className="space-y-4 md:space-y-6">
                   <h1 className="max-w-full break-words font-sans text-4xl font-semibold leading-tight tracking-tight text-black sm:text-5xl md:text-7xl">
-                    {product.name}
+                    {displayProduct.name}
                   </h1>
 
                   <div className="flex items-center gap-6">
@@ -166,9 +169,9 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     <div className="h-px flex-grow bg-black/5" />
                   </div>
 
-                  {product.description ? (
+                  {displayProduct.description ? (
                     <p className="text-xs font-medium leading-[1.8] text-black/60 md:text-sm">
-                      {product.description}
+                      {displayProduct.description}
                     </p>
                   ) : null}
                 </div>
@@ -198,20 +201,11 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                   </div>
                 </div>
 
-                <div className="grid grid-cols-2 gap-3 rounded-[8px] border border-black/10 bg-white/35 p-4">
-                  <div>
-                    <span className="block text-[9px] font-bold uppercase tracking-[0.3em] text-black/35">Status</span>
-                    <span className="mt-2 block text-sm font-semibold text-black">
-                      {isUnavailable ? "Unavailable" : "Available"}
-                    </span>
+                {isUnavailable ? (
+                  <div className="rounded-[8px] border border-black/10 bg-white/35 p-4 text-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/45">
+                    Unavailable
                   </div>
-                  <div>
-                    <span className="block text-[9px] font-bold uppercase tracking-[0.3em] text-black/35">Stock</span>
-                    <span className="mt-2 block text-sm font-semibold text-black">
-                      {merchantProduct?.stock_quantity ?? selectedVariant?.stock_quantity ?? staticProduct.stock_quantity}
-                    </span>
-                  </div>
-                </div>
+                ) : null}
 
                 <div className="space-y-3 md:space-y-4">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -225,9 +219,9 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                         addToCart(
                           {
                             id: getProductNumericId(product),
-                            title: `${product.name} (${selectedBundle.title})`,
+                            title: `${displayProduct.name} (${selectedBundle.title})`,
                             price: selectedBundle.price,
-                            image: productImage,
+                            image: displayImage,
                           },
                           selectedBundle.title,
                         );
