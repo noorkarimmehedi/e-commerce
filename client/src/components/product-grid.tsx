@@ -1,23 +1,19 @@
 import { motion } from "framer-motion";
+import { useQuery } from "@tanstack/react-query";
 import { useLocation } from "wouter";
-
-// Import images
-import makeupPen from "@assets/makeup_pen_4_in_1.png";
-import tintBordeaux from "@assets/peptide_lip_tint_bordeaux.png";
-import tintPlum from "@assets/peptide_lip_tint_plum.png";
-import tintRose from "@assets/peptide_lip_tint_rosy.png";
-import tintMauve from "@assets/peptide_lip_tint_mauve.png";
-
-const products = [
-  { id: 1, slug: "4-in-1-makeup-pen", title: "4-in-1 Makeup Pen", price: "৳999", image: makeupPen, type: "Makeup Essential" },
-  { id: 2, slug: "bordeaux", title: "Bordeaux", price: "৳799", image: tintBordeaux, type: "Peptide Lip Tint" },
-  { id: 3, slug: "plum-veil", title: "Plum Veil", price: "৳799", image: tintPlum, type: "Peptide Lip Tint" },
-  { id: 4, slug: "rosy-bloom", title: "Rosy Bloom", price: "৳799", image: tintRose, type: "Peptide Lip Tint" },
-  { id: 5, slug: "mauve-nude", title: "Mauve Nude", price: "৳799", image: tintMauve, type: "Peptide Lip Tint" }
-];
+import {
+  fetchStorefrontProducts,
+  formatProductPrice,
+  getProductImage,
+  hasPublishedProducts,
+} from "@/lib/storefront-products";
 
 export default function ProductGrid() {
   const [, setLocation] = useLocation();
+  const { data: products = [], isLoading, isError } = useQuery({
+    queryKey: ["merchant-suite-products"],
+    queryFn: fetchStorefrontProducts,
+  });
 
   return (
     <section className="bg-brand-ivory">
@@ -45,54 +41,80 @@ export default function ProductGrid() {
           Mobile  : full-bleed, 1px separators between cards
           Desktop : padded, generous column gaps
       ─────────────────────────────────────────────────────── */}
-      <div
-        className="
-          grid grid-cols-2 lg:grid-cols-3
-          gap-[1px] bg-black/[0.07]
-          md:gap-6 lg:gap-8 md:bg-transparent md:px-16 md:pt-12 md:pb-0
-        "
-      >
-        {products.map((p, i) => (
-          <motion.div
-            key={p.id}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: i * 0.1 }}
-            onClick={() => setLocation(`/product/${p.slug}`)}
-            className="group flex cursor-pointer flex-col bg-brand-ivory"
-          >
-            {/* Image */}
-            <div className="relative aspect-[3/4] overflow-hidden bg-[#f2f1f0]">
-              <img
-                src={p.image}
-                className="h-full w-full object-contain p-8 mix-blend-multiply transition-transform duration-1000 group-hover:scale-105 md:p-12"
-                alt={p.title}
-              />
-              <div className="absolute bottom-3 right-3 opacity-0 transition-all duration-500 translate-y-1 group-hover:translate-y-0 group-hover:opacity-100">
-                <span className="bg-black/70 px-2.5 py-1 text-[7px] uppercase tracking-[0.4em] font-medium text-white backdrop-blur-sm md:text-[8px]">
-                  View
-                </span>
-              </div>
-            </div>
+      {isLoading ? (
+        <div className="px-5 py-16 text-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/35 md:px-16">
+          Loading products...
+        </div>
+      ) : isError ? (
+        <div className="px-5 py-16 text-center text-[10px] font-bold uppercase tracking-[0.35em] text-red-700 md:px-16">
+          Could not load products.
+        </div>
+      ) : !hasPublishedProducts(products) ? (
+        <div className="px-5 py-16 text-center md:px-16">
+          <p className="text-[10px] font-bold uppercase tracking-[0.35em] text-black/35">
+            No products published yet.
+          </p>
+        </div>
+      ) : (
+        <div
+          className="
+            grid grid-cols-2 lg:grid-cols-3
+            gap-[1px] bg-black/[0.07]
+            md:gap-6 lg:gap-8 md:bg-transparent md:px-16 md:pt-12 md:pb-0
+          "
+        >
+          {products.map((p, i) => {
+            const image = getProductImage(p);
 
-            {/* Product Info */}
-            <div className="px-3 md:px-0 pt-3 pb-4 md:pt-5 md:pb-8 border-t border-black/[0.07] flex flex-col gap-1.5">
-              <h3 className="text-[0.85rem] md:text-2xl font-display font-light uppercase tracking-tight leading-tight text-black">
-                {p.title}
-              </h3>
-              <div className="flex items-center justify-between">
-                <span className="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-gold font-medium">
-                  {p.price}
-                </span>
-                <span className="text-[7px] md:text-[9px] uppercase tracking-[0.35em] font-medium opacity-20">
-                  {p.type}
-                </span>
-              </div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+            return (
+              <motion.div
+                key={p.id || p.slug}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: i * 0.1 }}
+                onClick={() => setLocation(`/product/${p.slug}`)}
+                className="group flex cursor-pointer flex-col bg-brand-ivory"
+              >
+                {/* Image */}
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#f2f1f0]">
+                  {image ? (
+                    <img
+                      src={image}
+                      className="h-full w-full object-contain p-8 mix-blend-multiply transition-transform duration-1000 group-hover:scale-105 md:p-12"
+                      alt={p.name}
+                    />
+                  ) : (
+                    <div className="flex h-full w-full items-center justify-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/25">
+                      No image
+                    </div>
+                  )}
+                  <div className="absolute bottom-3 right-3 opacity-0 transition-all duration-500 translate-y-1 group-hover:translate-y-0 group-hover:opacity-100">
+                    <span className="bg-black/70 px-2.5 py-1 text-[7px] uppercase tracking-[0.4em] font-medium text-white backdrop-blur-sm md:text-[8px]">
+                      View
+                    </span>
+                  </div>
+                </div>
+
+                {/* Product Info */}
+                <div className="px-3 md:px-0 pt-3 pb-4 md:pt-5 md:pb-8 border-t border-black/[0.07] flex flex-col gap-1.5">
+                  <h3 className="text-[0.85rem] md:text-2xl font-display font-light uppercase tracking-tight leading-tight text-black">
+                    {p.name}
+                  </h3>
+                  <div className="flex items-center justify-between">
+                    <span className="text-[8px] md:text-[10px] uppercase tracking-widest text-brand-gold font-medium">
+                      {formatProductPrice(p.price)}
+                    </span>
+                    <span className="text-[7px] md:text-[9px] uppercase tracking-[0.35em] font-medium opacity-20">
+                      {p.available === false ? "Unavailable" : `${p.stock_quantity ?? 0} in stock`}
+                    </span>
+                  </div>
+                </div>
+              </motion.div>
+            );
+          })}
+        </div>
+      )}
 
       {/* Bottom breathing room */}
       <div className="h-14 md:h-24" />
