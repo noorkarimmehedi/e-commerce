@@ -41,6 +41,28 @@ export function hasPublishedProducts(products: StorefrontProduct[]) {
   return products.length > 0;
 }
 
+export function isProductOrderable(product: StorefrontProduct | null | undefined) {
+  if (!product || product.available === false) {
+    return false;
+  }
+
+  if (typeof product.stock_quantity === "number" && product.stock_quantity <= 0) {
+    return false;
+  }
+
+  if (product.variants?.length) {
+    return product.variants.some((variant) => {
+      if (variant.available === false) {
+        return false;
+      }
+
+      return typeof variant.stock_quantity !== "number" || variant.stock_quantity > 0;
+    });
+  }
+
+  return true;
+}
+
 export function formatProductPrice(price: StorefrontProduct["price"]) {
   const amount = Number(price);
 

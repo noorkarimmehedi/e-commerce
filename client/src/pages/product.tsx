@@ -11,15 +11,31 @@ import { createEventId, trackMetaEvent } from "@/lib/meta";
 import { Counter } from "@/components/ui/animated-counter";
 import {
   fetchStorefrontProduct,
-  formatProductPrice,
-  getProductAmount,
-  getProductImage,
   getProductNumericId,
-  type StorefrontVariant,
+  isProductOrderable,
+  type StorefrontProduct,
 } from "@/lib/storefront-products";
 
-function getVariantLabel(variant: StorefrontVariant, index: number) {
-  return variant.name || variant.title || variant.option || `Option ${index + 1}`;
+const staticProduct: StorefrontProduct = {
+  id: "stepprs-massage-insoles",
+  name: "Stepprs Massage Insoles",
+  slug: "stepprs-massage-insoles",
+  description: "Instant pain relief in every step. Engineered with targeted massage nodes, biomechanical arch support, and breathable vents. Trimmable for a perfect fit.",
+  image_url: "/hero-insoles.png",
+  price: 500,
+  compare_at_price: null,
+  available: true,
+  stock_quantity: 1,
+};
+
+const staticBundles = [
+  { id: 1, title: "1 Pair", price: "৳500", amount: 500 },
+  { id: 2, title: "2 Pairs", price: "৳850", amount: 850 },
+  { id: 3, title: "3 Pairs", price: "৳1350", amount: 1350 },
+];
+
+function getMerchantSlug(slug: string) {
+  return slug === "massage-insoles" ? staticProduct.slug : slug || staticProduct.slug;
 }
 
 function formatTimelineDate(date: Date) {
@@ -27,26 +43,41 @@ function formatTimelineDate(date: Date) {
 }
 
 export default function ProductPage({ params }: { params?: { id: string } }) {
-  const slug = params?.id || "";
+  const slug = getMerchantSlug(params?.id || "");
   const { addToCart } = useCart();
   const [orderOpen, setOrderOpen] = useState(false);
-  const [selectedVariantIdx, setSelectedVariantIdx] = useState(0);
-  const { data: product, isLoading, isError } = useQuery({
+  const [selectedBundleIdx, setSelectedBundleIdx] = useState(0);
+  const [availabilityBlocked, setAvailabilityBlocked] = useState(false);
+  const { data: merchantProduct, isFetched, isError, refetch } = useQuery({
     queryKey: ["merchant-suite-product", slug],
     queryFn: () => fetchStorefrontProduct(slug),
     enabled: Boolean(slug),
   });
 
-  const variants = product?.variants?.length ? product.variants : null;
-  const selectedVariant = variants?.[selectedVariantIdx] || null;
-  const selectedPrice = selectedVariant?.price ?? product?.price ?? 0;
-  const selectedAmount = getProductAmount(selectedPrice);
-  const productImage = product ? getProductImage(product) : "";
-  const isUnavailable = product?.available === false || selectedVariant?.available === false;
+  const product = staticProduct;
+  const selectedBundle = staticBundles[selectedBundleIdx];
+  const selectedVariant = merchantProduct?.variants?.[0] || null;
+  const productImage = product.image_url || "";
+  const merchantAvailabilityKnown = isFetched || isError;
+  const merchantUnavailable = merchantAvailabilityKnown && (!merchantProduct || !isProductOrderable(merchantProduct));
+  const isUnavailable = availabilityBlocked || merchantUnavailable;
+
+  const verifyOrderable = async () => {
+    if (isUnavailable) {
+      return false;
+    }
+
+    if (!merchantAvailabilityKnown) {
+      const result = await refetch();
+      const orderable = isProductOrderable(result.data);
+      setAvailabilityBlocked(!orderable);
+      return orderable;
+    }
+
+    return true;
+  };
 
   useEffect(() => {
-    if (!product) return;
-
     const eventId = createEventId();
     trackMetaEvent({
       eventName: "ViewContent",
@@ -54,13 +85,13 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
       capi: true,
       customData: {
         currency: "BDT",
-        value: selectedAmount,
+        value: selectedBundle.amount,
         content_type: "product",
         content_ids: [product.slug],
-        contents: [{ id: product.slug, quantity: 1, item_price: selectedAmount }],
+        contents: [{ id: product.slug, quantity: 1, item_price: selectedBundle.amount }],
       },
     });
-  }, [product, selectedAmount]);
+  }, [selectedBundle]);
 
   const today = new Date();
   const processedDate = new Date(today);
@@ -73,14 +104,12 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
     { title: "Delivered", date: formatTimelineDate(deliveredDate) },
   ];
 
-  const orderBundle: OrderDialogBundle | null = product
-    ? {
+  const orderBundle: OrderDialogBundle = {
         title: product.name,
-        details: selectedVariant ? getVariantLabel(selectedVariant, selectedVariantIdx) : "Default",
-        price: selectedAmount,
+        details: selectedBundle.title,
+        price: selectedBundle.amount,
         images: [{ src: productImage, alt: product.name }],
-      }
-    : null;
+      };
 
   return (
     <Layout>
@@ -92,18 +121,6 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
           </Link>
         </div>
 
-        {isLoading ? (
-          <div className="px-5 py-24 text-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/35">
-            Loading product...
-          </div>
-        ) : isError || !product ? (
-          <div className="px-5 py-24 text-center">
-            <h1 className="text-3xl font-semibold tracking-tight text-black">Product not found.</h1>
-            <p className="mt-4 text-[10px] font-bold uppercase tracking-[0.3em] text-black/35">
-              This product is not published yet.
-            </p>
-          </div>
-        ) : (
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-7 bg-brand-ivory p-[10px] md:p-16 xl:p-20">
               <motion.div
@@ -143,13 +160,9 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                   <div className="flex items-center gap-6">
                     <div className="flex items-center font-sans text-2xl font-semibold text-black">
                       <span>৳</span>
-                      <Counter end={selectedAmount} fontSize={24} className="text-black font-semibold !px-0" />
+                      <Counter end={selectedBundle.amount} fontSize={24} className="text-black font-semibold !px-0" />
                     </div>
-                    {product.compare_at_price ? (
-                      <span className="text-sm font-semibold text-black/35 line-through">
-                        {formatProductPrice(product.compare_at_price)}
-                      </span>
-                    ) : null}
+                    <span className="text-sm font-semibold text-black/35 line-through">৳599</span>
                     <div className="h-px flex-grow bg-black/5" />
                   </div>
 
@@ -160,34 +173,30 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                   ) : null}
                 </div>
 
-                {variants ? (
-                  <div className="space-y-3 md:space-y-4">
-                    <span className="block pb-1 text-[10px] font-bold uppercase tracking-[0.4em] text-black/60 md:pb-2">
-                      Select Option
-                    </span>
-                    <div className="grid grid-cols-2 gap-2 md:pt-3">
-                      {variants.map((variant, idx) => (
-                        <button
-                          key={variant.id || idx}
-                          type="button"
-                          onClick={() => setSelectedVariantIdx(idx)}
-                          className={`relative flex flex-col items-center justify-center rounded-[8px] border px-3 py-2.5 text-center transition-all ${
-                            selectedVariantIdx === idx
-                              ? "border-black bg-black text-white"
-                              : "border-black/20 bg-transparent text-black hover:border-black/50"
-                          }`}
-                        >
-                          <span className="mb-1 block text-[11px] font-bold uppercase tracking-widest">
-                            {getVariantLabel(variant, idx)}
-                          </span>
-                          <span className="block text-[13px] font-garet">
-                            {formatProductPrice(variant.price ?? product.price)}
-                          </span>
-                        </button>
-                      ))}
-                    </div>
+                <div className="space-y-3 md:space-y-4">
+                  <span className="block pb-1 text-[10px] font-bold uppercase tracking-[0.4em] text-black/60 md:pb-2">
+                    Select Bundle
+                  </span>
+                  <div className="grid grid-cols-3 gap-2 md:pt-3">
+                    {staticBundles.map((bundle, idx) => (
+                      <button
+                        key={bundle.id}
+                        type="button"
+                        onClick={() => setSelectedBundleIdx(idx)}
+                        className={`relative flex flex-col items-center justify-center rounded-[8px] border px-1 py-1.5 text-center transition-all md:px-3 md:py-2.5 ${
+                          selectedBundleIdx === idx
+                            ? "border-black bg-black text-white"
+                            : "border-black/20 bg-transparent text-black hover:border-black/50"
+                        }`}
+                      >
+                        <span className="mb-1 block text-[11px] font-bold uppercase tracking-widest">
+                          {bundle.title}
+                        </span>
+                        <span className="block text-[13px] font-garet">{bundle.price}</span>
+                      </button>
+                    ))}
                   </div>
-                ) : null}
+                </div>
 
                 <div className="grid grid-cols-2 gap-3 rounded-[8px] border border-black/10 bg-white/35 p-4">
                   <div>
@@ -199,7 +208,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                   <div>
                     <span className="block text-[9px] font-bold uppercase tracking-[0.3em] text-black/35">Stock</span>
                     <span className="mt-2 block text-sm font-semibold text-black">
-                      {selectedVariant?.stock_quantity ?? product.stock_quantity ?? 0}
+                      {merchantProduct?.stock_quantity ?? selectedVariant?.stock_quantity ?? staticProduct.stock_quantity}
                     </span>
                   </div>
                 </div>
@@ -207,16 +216,20 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 <div className="space-y-3 md:space-y-4">
                   <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                     <Button
-                      disabled={isUnavailable || selectedAmount <= 0}
-                      onClick={() => {
+                      disabled={isUnavailable || selectedBundle.amount <= 0}
+                      onClick={async () => {
+                        if (!(await verifyOrderable())) {
+                          return;
+                        }
+
                         addToCart(
                           {
                             id: getProductNumericId(product),
-                            title: selectedVariant ? `${product.name} (${getVariantLabel(selectedVariant, selectedVariantIdx)})` : product.name,
-                            price: formatProductPrice(selectedPrice),
+                            title: `${product.name} (${selectedBundle.title})`,
+                            price: selectedBundle.price,
                             image: productImage,
                           },
-                          selectedVariant ? getVariantLabel(selectedVariant, selectedVariantIdx) : "Default",
+                          selectedBundle.title,
                         );
                       }}
                       className="group flex h-12 items-center justify-center gap-2 rounded-[8px] border border-black/20 bg-transparent px-2 text-[10px] font-bold uppercase tracking-[0.4em] text-black transition-all hover:bg-black hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
@@ -224,8 +237,12 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                       Add to Cart
                     </Button>
                     <Button
-                      disabled={isUnavailable || selectedAmount <= 0}
-                      onClick={() => setOrderOpen(true)}
+                      disabled={isUnavailable || selectedBundle.amount <= 0}
+                      onClick={async () => {
+                        if (await verifyOrderable()) {
+                          setOrderOpen(true);
+                        }
+                      }}
                       className="group flex h-12 items-center justify-center gap-2 rounded-[8px] bg-black px-2 text-[10px] font-bold uppercase tracking-[0.4em] text-white transition-all hover:bg-brand-gold disabled:cursor-not-allowed disabled:opacity-50"
                     >
                       Buy it Now
@@ -255,7 +272,6 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
               </div>
             </motion.div>
           </div>
-        )}
       </div>
 
       <OrderDialog open={orderOpen} onOpenChange={setOrderOpen} bundle={orderBundle} />
