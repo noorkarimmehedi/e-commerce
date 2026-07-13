@@ -12,6 +12,7 @@ import { Counter } from "@/components/ui/animated-counter";
 import {
   fetchStorefrontProduct,
   findGeneratedStorefrontProduct,
+  getProductGallery,
   getProductImage,
   getProductNumericId,
   isProductOrderable,
@@ -91,7 +92,9 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const merchantAvailabilityKnown = isFetched || isError;
   const merchantUnavailable = merchantAvailabilityKnown && (!merchantProduct || !isProductOrderable(merchantProduct));
   const isUnavailable = availabilityBlocked || merchantUnavailable;
+  const gallery = getProductGallery(product);
   const displayImage = getProductImage(product) || productImage;
+  const displayGallery = gallery.length ? gallery : [displayImage].filter(Boolean);
 
   const verifyOrderable = async () => {
     if (isUnavailable) {
@@ -153,14 +156,20 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 className="mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f2f1f0]"
               >
-                {displayImage ? (
-                  <img
-                    src={displayImage}
-                    alt={product.name}
-                    width={1080}
-                    height={1080}
-                    className="h-full w-full object-cover transition-transform duration-[2s] hover:scale-105"
-                  />
+                {displayGallery.length ? (
+                  <div className="flex h-full overflow-x-auto snap-x snap-mandatory no-scrollbar">
+                    {displayGallery.map((url) => (
+                      <div key={url} className="h-full min-w-full snap-center">
+                        <img
+                          src={url}
+                          alt={product.name}
+                          width={1080}
+                          height={1080}
+                          className="h-full w-full object-cover transition-transform duration-[2s] hover:scale-105"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 ) : (
                   <div className="flex h-full w-full items-center justify-center text-[10px] font-bold uppercase tracking-[0.35em] text-black/25">
                     No image

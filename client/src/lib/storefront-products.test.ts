@@ -1,13 +1,38 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { findGeneratedStorefrontProduct, getProductImage, hasPublishedProducts, isProductOrderable } from "./storefront-products.ts";
+import { findGeneratedStorefrontProduct, getProductGallery, getProductImage, hasPublishedProducts, isProductOrderable } from "./storefront-products.ts";
 
 test("uses the first product image before falling back to image_url", () => {
   assert.equal(
     getProductImage({ image_url: "https://example.com/legacy.jpg", images: ["https://example.com/new.jpg"] }),
     "https://example.com/new.jpg",
   );
+});
+
+test("uses image_urls as the full gallery before image objects", () => {
+  assert.deepEqual(
+    getProductGallery({
+      image_url: "https://example.com/primary.jpg",
+      image_urls: ["https://example.com/front.jpg", "https://example.com/back.jpg"],
+      images: [{ url: "https://example.com/object.jpg" }],
+    }),
+    ["https://example.com/front.jpg", "https://example.com/back.jpg"],
+  );
+});
+
+test("uses image objects as the gallery before image_url", () => {
+  assert.deepEqual(
+    getProductGallery({
+      image_url: "https://example.com/primary.jpg",
+      images: [{ url: "https://example.com/front.jpg" }, { url: "https://example.com/back.jpg" }],
+    }),
+    ["https://example.com/front.jpg", "https://example.com/back.jpg"],
+  );
+});
+
+test("falls back to image_url as a one-image gallery", () => {
+  assert.deepEqual(getProductGallery({ image_url: "https://example.com/primary.jpg" }), ["https://example.com/primary.jpg"]);
 });
 
 test("falls back to image_url when product images are unavailable", () => {

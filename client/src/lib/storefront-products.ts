@@ -29,6 +29,7 @@ export type StorefrontProduct = {
   description?: string | null;
   url?: string | null;
   image_url?: string | null;
+  image_urls?: string[] | null;
   images?: ProductImage[] | null;
   price?: string | number | null;
   compare_at_price?: string | number | null;
@@ -37,14 +38,32 @@ export type StorefrontProduct = {
   variants?: StorefrontVariant[] | null;
 };
 
-export function getProductImage(product: Pick<StorefrontProduct, "images" | "image_url">) {
-  const firstImage = product.images?.find(Boolean);
-
-  if (typeof firstImage === "string") {
-    return firstImage;
+export function getProductGallery(product: Pick<StorefrontProduct, "image_urls" | "images" | "image_url">) {
+  if (product.image_urls?.length) {
+    return product.image_urls.filter(Boolean);
   }
 
-  return firstImage?.url || firstImage?.src || firstImage?.image_url || product.image_url || "";
+  const images = product.images
+    ?.map((image) => {
+      if (typeof image === "string") {
+        return image;
+      }
+
+      return image.url || image.src || image.image_url || "";
+    })
+    .filter(Boolean);
+
+  if (images?.length) {
+    return images;
+  }
+
+  return [product.image_url].filter(Boolean) as string[];
+}
+
+export function getProductImage(product: Pick<StorefrontProduct, "image_urls" | "images" | "image_url">) {
+  const [firstImage] = getProductGallery(product);
+
+  return firstImage || "";
 }
 
 export function hasPublishedProducts(products: StorefrontProduct[]) {

@@ -24,6 +24,10 @@ export const generatedStorefrontProducts: StorefrontProduct[] = [
         "is_primary": false
       }
     ],
+    "image_urls": [
+      "https://stieyrpctvgpsszntwfh.supabase.co/storage/v1/object/public/product-images/da1aecbc-a969-4b93-a5d3-40e7c80c8987/a2af0705-80e2-4018-8fab-06fd45460c20/3bd3f64b-c456-45c9-9cb3-880a441aaf38.webp",
+      "https://stieyrpctvgpsszntwfh.supabase.co/storage/v1/object/public/product-images/da1aecbc-a969-4b93-a5d3-40e7c80c8987/a2af0705-80e2-4018-8fab-06fd45460c20/f663f279-40fd-448f-8ac8-ba85bb589557.webp"
+    ],
     "price": 499,
     "compare_at_price": 599,
     "available": true,
