@@ -1,5 +1,8 @@
 export const STOREFRONT_ID = "da1aecbc-a969-4b93-a5d3-40e7c80c8987";
 export const STOREFRONT_API_BASE = `https://suite.arclabtechnology.com/api/public/storefronts/${STOREFRONT_ID}`;
+const PRODUCT_CACHE_PREFIX = "merchant-suite-product:";
+
+type StorefrontProductStorage = Pick<Storage, "getItem" | "setItem" | "removeItem">;
 
 type ProductImage = string | {
   id?: string | number;
@@ -72,6 +75,36 @@ export function hasPublishedProducts(products: StorefrontProduct[]) {
 
 export function findGeneratedStorefrontProduct(products: StorefrontProduct[], slug: string) {
   return products.find((product) => product.slug === slug) || null;
+}
+
+export function getCachedStorefrontProduct(storage: StorefrontProductStorage | undefined, slug: string) {
+  if (!storage) {
+    return null;
+  }
+
+  try {
+    const cached = storage.getItem(`${PRODUCT_CACHE_PREFIX}${slug}`);
+    if (!cached) {
+      return null;
+    }
+
+    const product = JSON.parse(cached) as StorefrontProduct;
+    return product?.slug === slug ? product : null;
+  } catch {
+    return null;
+  }
+}
+
+export function setCachedStorefrontProduct(storage: StorefrontProductStorage | undefined, product: StorefrontProduct) {
+  if (!storage) {
+    return;
+  }
+
+  storage.setItem(`${PRODUCT_CACHE_PREFIX}${product.slug}`, JSON.stringify(product));
+}
+
+export function removeCachedStorefrontProduct(storage: StorefrontProductStorage | undefined, slug: string) {
+  storage?.removeItem(`${PRODUCT_CACHE_PREFIX}${slug}`);
 }
 
 export function isProductOrderable(product: StorefrontProduct | null | undefined) {

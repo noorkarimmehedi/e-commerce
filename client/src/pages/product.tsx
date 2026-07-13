@@ -12,10 +12,13 @@ import { Counter } from "@/components/ui/animated-counter";
 import {
   fetchStorefrontProduct,
   findGeneratedStorefrontProduct,
+  getCachedStorefrontProduct,
   getProductGallery,
   getProductImage,
   getProductNumericId,
   isProductOrderable,
+  removeCachedStorefrontProduct,
+  setCachedStorefrontProduct,
   type StorefrontProduct,
 } from "@/lib/storefront-products";
 import { generatedStorefrontProducts } from "@/lib/generated-storefront-products";
@@ -76,6 +79,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const [availabilityBlocked, setAvailabilityBlocked] = useState(false);
   const [openFeature, setOpenFeature] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
+  const [cachedProduct, setCachedProduct] = useState<StorefrontProduct | null>(null);
   const [galleryRef, galleryApi] = useEmblaCarousel({
     align: "start",
     containScroll: false,
@@ -93,7 +97,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   });
 
   const generatedProduct = findGeneratedStorefrontProduct(generatedStorefrontProducts, slug) || staticProduct;
-  const product = merchantProduct || generatedProduct;
+  const product = merchantProduct || cachedProduct || generatedProduct;
   const selectedBundle = staticBundles[selectedBundleIdx];
   const selectedVariant = merchantProduct?.variants?.[0] || null;
   const productImage = product.image_url || "";
@@ -119,6 +123,22 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
 
     return true;
   };
+
+  useEffect(() => {
+    setCachedProduct(getCachedStorefrontProduct(window.localStorage, slug));
+  }, [slug]);
+
+  useEffect(() => {
+    if (!isFetched) return;
+
+    if (merchantProduct && isProductOrderable(merchantProduct)) {
+      setCachedStorefrontProduct(window.localStorage, merchantProduct);
+      setCachedProduct(merchantProduct);
+      return;
+    }
+
+    removeCachedStorefrontProduct(window.localStorage, slug);
+  }, [isFetched, merchantProduct, slug]);
 
   useEffect(() => {
     const eventId = createEventId();

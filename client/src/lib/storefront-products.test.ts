@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { findGeneratedStorefrontProduct, getProductGallery, getProductImage, hasPublishedProducts, isProductOrderable } from "./storefront-products.ts";
+import { findGeneratedStorefrontProduct, getCachedStorefrontProduct, getProductGallery, getProductImage, hasPublishedProducts, isProductOrderable, setCachedStorefrontProduct } from "./storefront-products.ts";
 
 test("uses the first product image before falling back to image_url", () => {
   assert.equal(
@@ -85,4 +85,27 @@ test("finds generated storefront product by slug", () => {
   );
 
   assert.equal(product?.name, "Two");
+});
+
+test("reads and writes cached storefront products by slug", () => {
+  const storage = new Map<string, string>();
+  const localStorageLike = {
+    getItem: (key: string) => storage.get(key) || null,
+    setItem: (key: string, value: string) => storage.set(key, value),
+    removeItem: (key: string) => storage.delete(key),
+  };
+
+  setCachedStorefrontProduct(localStorageLike, { name: "Cached", slug: "cached" });
+
+  assert.equal(getCachedStorefrontProduct(localStorageLike, "cached")?.name, "Cached");
+});
+
+test("returns null for corrupt cached storefront products", () => {
+  const localStorageLike = {
+    getItem: () => "not json",
+    setItem: () => undefined,
+    removeItem: () => undefined,
+  };
+
+  assert.equal(getCachedStorefrontProduct(localStorageLike, "cached"), null);
 });
