@@ -1,6 +1,10 @@
 import { build as esbuild } from "esbuild";
 import { build as viteBuild } from "vite";
-import { copyFile, mkdir, readFile, rm } from "fs/promises";
+import { copyFile, mkdir, readFile, rm, writeFile } from "fs/promises";
+
+const storefrontId = "da1aecbc-a969-4b93-a5d3-40e7c80c8987";
+const storefrontProductsUrl = `https://suite.arclabtechnology.com/api/public/storefronts/${storefrontId}/products`;
+const generatedProductsFile = "client/src/lib/generated-storefront-products.ts";
 
 const productSlugs = [
   "stepprs-massage-insoles",
@@ -42,8 +46,30 @@ const allowlist = [
   "zod-validation-error",
 ];
 
+async function generateStorefrontProducts() {
+  console.log("fetching storefront products...");
+
+  try {
+    const response = await fetch(storefrontProductsUrl);
+
+    if (!response.ok) {
+      throw new Error(`Merchant Suite returned ${response.status}`);
+    }
+
+    const data = await response.json();
+    const products = Array.isArray(data.products) ? data.products : [];
+    const source = `import type { StorefrontProduct } from "./storefront-products";\n\nexport const generatedStorefrontProducts: StorefrontProduct[] = ${JSON.stringify(products, null, 2)};\n`;
+
+    await writeFile(generatedProductsFile, source);
+  } catch (error) {
+    console.warn("Could not refresh generated storefront products. Using last generated data.", error);
+  }
+}
+
 async function buildAll() {
   await rm("dist", { recursive: true, force: true });
+
+  await generateStorefrontProducts();
 
   console.log("building client...");
   await viteBuild();

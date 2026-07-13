@@ -1,7 +1,15 @@
 export const STOREFRONT_ID = "da1aecbc-a969-4b93-a5d3-40e7c80c8987";
 export const STOREFRONT_API_BASE = `https://suite.arclabtechnology.com/api/public/storefronts/${STOREFRONT_ID}`;
 
-type ProductImage = string | { url?: string; src?: string; image_url?: string };
+type ProductImage = string | {
+  id?: string | number;
+  url?: string;
+  src?: string;
+  image_url?: string;
+  alt_text?: string | null;
+  sort_order?: number;
+  is_primary?: boolean;
+};
 
 export type StorefrontVariant = {
   id?: string | number;
@@ -11,6 +19,7 @@ export type StorefrontVariant = {
   price?: string | number;
   available?: boolean;
   stock_quantity?: number;
+  attributes?: Record<string, string | number | boolean | null>;
 };
 
 export type StorefrontProduct = {
@@ -18,6 +27,7 @@ export type StorefrontProduct = {
   name: string;
   slug: string;
   description?: string | null;
+  url?: string | null;
   image_url?: string | null;
   images?: ProductImage[] | null;
   price?: string | number | null;
@@ -39,6 +49,10 @@ export function getProductImage(product: Pick<StorefrontProduct, "images" | "ima
 
 export function hasPublishedProducts(products: StorefrontProduct[]) {
   return products.length > 0;
+}
+
+export function findGeneratedStorefrontProduct(products: StorefrontProduct[], slug: string) {
+  return products.find((product) => product.slug === slug) || null;
 }
 
 export function isProductOrderable(product: StorefrontProduct | null | undefined) {

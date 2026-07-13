@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { test } from "node:test";
 
-import { getProductImage, hasPublishedProducts, isProductOrderable } from "./storefront-products.ts";
+import { findGeneratedStorefrontProduct, getProductImage, hasPublishedProducts, isProductOrderable } from "./storefront-products.ts";
 
 test("uses the first product image before falling back to image_url", () => {
   assert.equal(
@@ -48,4 +48,16 @@ test("does not allow ordering when all variants are out of stock", () => {
 
 test("allows ordering when product is available with stock", () => {
   assert.equal(isProductOrderable({ name: "Test", slug: "test", available: true, stock_quantity: 1 }), true);
+});
+
+test("finds generated storefront product by slug", () => {
+  const product = findGeneratedStorefrontProduct(
+    [
+      { name: "One", slug: "one" },
+      { name: "Two", slug: "two" },
+    ],
+    "two",
+  );
+
+  assert.equal(product?.name, "Two");
 });

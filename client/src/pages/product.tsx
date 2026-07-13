@@ -11,11 +11,13 @@ import { createEventId, trackMetaEvent } from "@/lib/meta";
 import { Counter } from "@/components/ui/animated-counter";
 import {
   fetchStorefrontProduct,
+  findGeneratedStorefrontProduct,
   getProductImage,
   getProductNumericId,
   isProductOrderable,
   type StorefrontProduct,
 } from "@/lib/storefront-products";
+import { generatedStorefrontProducts } from "@/lib/generated-storefront-products";
 
 const staticProduct: StorefrontProduct = {
   id: "stepprs-massage-insoles",
@@ -82,14 +84,14 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
     enabled: Boolean(slug),
   });
 
-  const product = staticProduct;
+  const product = findGeneratedStorefrontProduct(generatedStorefrontProducts, slug) || staticProduct;
   const selectedBundle = staticBundles[selectedBundleIdx];
   const selectedVariant = merchantProduct?.variants?.[0] || null;
   const productImage = product.image_url || "";
   const merchantAvailabilityKnown = isFetched || isError;
   const merchantUnavailable = merchantAvailabilityKnown && (!merchantProduct || !isProductOrderable(merchantProduct));
   const isUnavailable = availabilityBlocked || merchantUnavailable;
-  const displayImage = getProductImage(merchantProduct || product) || productImage;
+  const displayImage = getProductImage(product) || productImage;
 
   const verifyOrderable = async () => {
     if (isUnavailable) {
