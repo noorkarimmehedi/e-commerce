@@ -92,7 +92,8 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
     enabled: Boolean(slug),
   });
 
-  const product = findGeneratedStorefrontProduct(generatedStorefrontProducts, slug) || staticProduct;
+  const generatedProduct = findGeneratedStorefrontProduct(generatedStorefrontProducts, slug) || staticProduct;
+  const product = merchantProduct || generatedProduct;
   const selectedBundle = staticBundles[selectedBundleIdx];
   const selectedVariant = merchantProduct?.variants?.[0] || null;
   const productImage = product.image_url || "";
@@ -102,6 +103,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const gallery = getProductGallery(product);
   const displayImage = getProductImage(product) || productImage;
   const displayGallery = gallery.length ? gallery : [displayImage].filter(Boolean);
+  const compareAtAmount = Number(product.compare_at_price);
 
   const verifyOrderable = async () => {
     if (isUnavailable) {
@@ -243,7 +245,9 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                       <span>৳</span>
                       <Counter end={selectedBundle.amount} fontSize={24} className="text-black font-semibold !px-0" />
                     </div>
-                    <span className="text-sm font-semibold text-black/35 line-through">৳599</span>
+                    {Number.isFinite(compareAtAmount) && compareAtAmount > selectedBundle.amount ? (
+                      <span className="text-sm font-semibold text-black/35 line-through">৳{compareAtAmount.toLocaleString()}</span>
+                    ) : null}
                     <div className="h-px flex-grow bg-black/5" />
                   </div>
 
