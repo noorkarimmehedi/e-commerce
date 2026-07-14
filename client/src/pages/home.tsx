@@ -172,12 +172,8 @@ export default function Home() {
       {/* Hero Section */}
       <section className="w-full bg-[#f6f6f6] pt-0 pb-0">
         <div className="w-full px-0">
-          <motion.div
+          <div
             ref={heroRef}
-            variants={reveal}
-            initial="hidden"
-            animate={heroInView ? "visible" : "hidden"}
-            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const, staggerChildren: 0.08, delayChildren: 0.1 }}
             className="relative min-h-[640px] w-full overflow-hidden bg-black md:min-h-[760px]"
           >
             <Link href="/product/stepprs-massage-insoles" className="absolute inset-0 block">
@@ -190,6 +186,9 @@ export default function Home() {
 
             <motion.div
               variants={reveal}
+              initial="hidden"
+              animate={heroInView ? "visible" : "hidden"}
+              transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const, staggerChildren: 0.08, delayChildren: 0.1 }}
               className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 pb-10 text-center text-white md:items-center md:justify-center md:text-center md:px-16 md:pb-0"
             >
               <motion.p
@@ -214,7 +213,7 @@ export default function Home() {
                 </Link>
               </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
 
