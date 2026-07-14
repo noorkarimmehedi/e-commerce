@@ -94,6 +94,33 @@ const justArrivedProducts = [
   },
 ];
 
+const specialProducts = [
+  {
+    id: 301,
+    title: "Top 10",
+    count: "10",
+    price: "Tk 1,290.00",
+    sizeLabel: "Default",
+    image: "/new4.webp",
+  },
+  {
+    id: 302,
+    title: "Accessories",
+    count: "12",
+    price: "Tk 890.00",
+    sizeLabel: "Default",
+    image: "/pexels-ekrulila-26316180_1.jpg",
+  },
+  {
+    id: 303,
+    title: "Bottoms",
+    count: "08",
+    price: "Tk 1,190.00",
+    sizeLabel: "Default",
+    image: "/new3.webp",
+  },
+];
+
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
@@ -131,7 +158,9 @@ export default function Home() {
   const [whatsNewRef, whatsNewInView] = useReveal();
   const [latestDropRef, latestDropInView] = useReveal();
   const [justArrivedRef, justArrivedInView] = useReveal();
-  const [collectionRef, collectionInView] = useReveal();
+  const [specialRef, specialInView] = useReveal();
+  const [editorialRef, editorialInView] = useReveal();
+  const [essentialsRef, essentialsInView] = useReveal();
   const whatsNewGridRef = useRef<HTMLDivElement>(null);
   const justArrivedGridRef = useRef<HTMLDivElement>(null);
 
@@ -191,6 +220,23 @@ export default function Home() {
   function quickAddJustArrived(
     event: MouseEvent<HTMLButtonElement>,
     product: (typeof justArrivedProducts)[number],
+  ) {
+    event.preventDefault();
+    event.stopPropagation();
+    addToCart(
+      {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        image: product.image,
+      },
+      product.sizeLabel,
+    );
+  }
+
+  function quickAddSpecial(
+    event: MouseEvent<HTMLButtonElement>,
+    product: (typeof specialProducts)[number],
   ) {
     event.preventDefault();
     event.stopPropagation();
@@ -482,51 +528,157 @@ export default function Home() {
         </motion.div>
       </section>
 
-      {/* The Collection Section */}
-      <section id="collection" className="w-full bg-[#f6f6f6] pb-24 pt-8 md:pt-12">
+      {/* Editorial Section */}
+      <section className="w-full bg-[#f6f6f6]">
         <motion.div
-          ref={collectionRef}
-          className="max-w-[1400px] mx-auto px-4 md:px-16 xl:px-20"
+          ref={editorialRef}
+          className="w-full"
           initial="hidden"
-          animate={collectionInView ? "visible" : "hidden"}
+          animate={editorialInView ? "visible" : "hidden"}
           transition={{ staggerChildren: 0.12 }}
         >
-          <motion.h2
-            variants={reveal}
-            transition={transition}
-            className="text-3xl md:text-4xl text-center font-normal mb-8 tracking-tight text-black"
-          >
-            The Collection
-          </motion.h2>
-
-          <div className="flex overflow-x-auto snap-x snap-mandatory justify-center no-scrollbar">
-            {/* Single Product Showcase */}
-            <motion.div
-              variants={reveal}
-              transition={transition}
-              className="flex flex-col group cursor-pointer w-full max-w-[500px]"
-            >
-              <Link href="/product/stepprs-massage-insoles" className="block w-full">
-                <div className="bg-[#e5e5e5] aspect-[4/5] flex items-center justify-center mb-5 overflow-hidden">
-                  <img
-                    src="/insoles.png"
-                    alt="Massage Insoles"
-                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                  />
-                </div>
-                <h3 className="text-2xl md:text-3xl font-normal text-black text-center">Stepprs Massage Insoles</h3>
-                <p className="text-lg md:text-xl text-black/60 text-center mt-3 uppercase tracking-widest text-[11px]">Bundle Options Available</p>
-
-                <div className="mt-6 w-full pb-8">
-                  <div className="bg-black w-full py-4 text-center text-[13px] font-medium tracking-widest text-white hover:bg-black/90 transition-colors duration-300 uppercase">
-                    Shop Now
-                  </div>
-                </div>
-              </Link>
-            </motion.div>
+          <div className="relative w-full overflow-hidden">
+            <img
+              src="/pexels-alessandra-shalbe-859114866-20446138_1.webp"
+              alt="Editorial collection"
+              loading="lazy"
+              className="w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/35" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+              <motion.h2
+                variants={reveal}
+                transition={transition}
+                className="text-[clamp(2rem,5vw,3rem)] font-bold leading-none tracking-[-0.04em] text-white"
+              >
+                The Curated Edit
+              </motion.h2>
+              <motion.p
+                variants={reveal}
+                transition={transition}
+                className="mt-4 max-w-lg text-sm leading-relaxed text-white/80 md:text-base"
+              >
+                Thoughtfully selected pieces to redefine your everyday wardrobe
+              </motion.p>
+              <motion.div variants={reveal} transition={transition} className="mt-8">
+                <Link
+                  href="/product/stepprs-massage-insoles"
+                  className="border-b-2 border-white pb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-60 md:text-base md:tracking-[0.24em]"
+                >
+                  EXPLORE THE EDIT
+                </Link>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
       </section>
+
+      {/* Essentials Section */}
+      <section className="w-full bg-[#f6f6f6] pb-12 pt-2 md:pb-20 md:pt-4">
+        <motion.div
+          ref={essentialsRef}
+          className="w-full"
+          initial="hidden"
+          animate={essentialsInView ? "visible" : "hidden"}
+          transition={{ staggerChildren: 0.12 }}
+        >
+          <div className="relative w-full overflow-hidden">
+            <img
+              src="/pexels-ekrulila-26316180_1.jpg"
+              alt="Daily essentials"
+              loading="lazy"
+              className="w-full object-cover"
+            />
+            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute inset-0 flex flex-col items-center justify-center p-6 text-center">
+              <motion.h2
+                variants={reveal}
+                transition={transition}
+                className="text-[clamp(2rem,5vw,3rem)] font-bold leading-none tracking-[-0.04em] text-white"
+              >
+                Daily Essentials
+              </motion.h2>
+              <motion.p
+                variants={reveal}
+                transition={transition}
+                className="mt-4 max-w-lg text-sm leading-relaxed text-white/80 md:text-base"
+              >
+                Minimal staples crafted for comfort and timeless style
+              </motion.p>
+              <motion.div variants={reveal} transition={transition} className="mt-8">
+                <Link
+                  href="/product/stepprs-massage-insoles"
+                  className="border-b-2 border-white pb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-white transition-opacity hover:opacity-60 md:text-base md:tracking-[0.24em]"
+                >
+                  SHOP ESSENTIALS
+                </Link>
+              </motion.div>
+            </div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* Special Collections Section */}
+      <section className="w-full bg-[#f6f6f6] pb-12 pt-2 md:pb-20 md:pt-4">
+        <motion.div
+          ref={specialRef}
+          className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12"
+          initial="hidden"
+          animate={specialInView ? "visible" : "hidden"}
+          transition={{ staggerChildren: 0.12 }}
+        >
+          <motion.div
+            variants={reveal}
+            transition={transition}
+            className="mb-7 flex items-start justify-between gap-6 pr-4 md:mb-12 md:pr-0"
+          >
+            <motion.h2 className="text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] text-black">
+              Our <span className="font-display italic">special</span> collections
+            </motion.h2>
+            <Link
+              href="/product/stepprs-massage-insoles"
+              className="mt-8 shrink-0 border-b-2 border-black pb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black transition-opacity hover:opacity-60 md:mt-2 md:text-base md:tracking-[0.24em]"
+            >
+              EXPLORE ALL
+            </Link>
+          </motion.div>
+
+          <motion.div
+            className="flex snap-x gap-3 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:grid md:grid-cols-3 md:gap-4 md:overflow-visible"
+          >
+            {specialProducts.map((product) => (
+              <motion.article
+                key={product.title}
+                variants={reveal}
+                transition={transition}
+                className="group min-w-[78vw] snap-start md:min-w-0"
+              >
+                <div className="h-full">
+                  <div className="relative aspect-[3/4] overflow-hidden bg-[#eeeeee]">
+                    <Link href="/product/stepprs-massage-insoles" className="block h-full">
+                      <img
+                        src={product.image}
+                        alt={product.title}
+                        loading="lazy"
+                        className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                      />
+                    </Link>
+                  </div>
+                  <Link href="/product/stepprs-massage-insoles" className="block px-0 pb-2 pt-5 text-center text-black md:pt-7">
+                    <h3 className="text-base font-bold uppercase leading-tight tracking-[0.06em] md:text-xl md:tracking-[0.08em]">
+                      {product.title}
+                      <sup className="ml-0.5 text-xs font-medium tracking-[0.1em] text-black/50 align-super md:text-sm">
+                        {product.count}
+                      </sup>
+                    </h3>
+                  </Link>
+                </div>
+              </motion.article>
+            ))}
+          </motion.div>
+        </motion.div>
+      </section>
+
     </Layout>
   );
 }
