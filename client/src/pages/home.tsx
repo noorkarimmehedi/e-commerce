@@ -199,7 +199,7 @@ export default function Home() {
               </motion.p>
               <motion.h1
                 variants={reveal}
-                className="max-w-[760px] text-[clamp(2.6rem,11vw,4rem)] font-light leading-[0.9] tracking-[-0.06em] md:text-[clamp(4rem,5vw,7rem)] md:leading-[0.88] md:tracking-[-0.08em]"
+                className="max-w-[760px] text-[clamp(2.6rem,11vw,4rem)] font-bold leading-[0.9] tracking-[-0.06em] md:text-[clamp(4rem,5vw,7rem)] md:leading-[0.88] md:tracking-[-0.08em]"
               >
                 Bold by<br />
                 design
