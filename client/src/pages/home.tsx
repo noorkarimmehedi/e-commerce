@@ -132,6 +132,29 @@ export default function Home() {
   const [latestDropRef, latestDropInView] = useReveal();
   const [justArrivedRef, justArrivedInView] = useReveal();
   const [collectionRef, collectionInView] = useReveal();
+  const whatsNewGridRef = useRef<HTMLDivElement>(null);
+  const justArrivedGridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const grids = [whatsNewGridRef.current, justArrivedGridRef.current];
+    const cleanups: Array<() => void> = [];
+    for (const el of grids) {
+      if (!el) continue;
+      const onWheel = (event: WheelEvent) => {
+        if (event.deltaX !== 0) return;
+        const canScrollLeft = el.scrollLeft > 0;
+        const canScrollRight = el.scrollLeft < el.scrollWidth - el.clientWidth - 1;
+        if ((event.deltaY > 0 && !canScrollRight) || (event.deltaY < 0 && !canScrollLeft)) {
+          return;
+        }
+        event.preventDefault();
+        el.scrollLeft += event.deltaY;
+      };
+      el.addEventListener("wheel", onWheel, { passive: false });
+      cleanups.push(() => el.removeEventListener("wheel", onWheel));
+    }
+    return () => cleanups.forEach((fn) => fn());
+  }, []);
 
   function quickAddJustArrived(
     event: MouseEvent<HTMLButtonElement>,
@@ -245,6 +268,7 @@ export default function Home() {
           </motion.div>
 
           <motion.div
+            ref={whatsNewGridRef}
             transition={{ staggerChildren: 0.08 }}
             className="mt-12 flex snap-x gap-4 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain md:mt-16 md:grid md:grid-cols-4 md:overflow-visible"
           >
@@ -379,6 +403,7 @@ export default function Home() {
           </motion.div>
 
           <motion.div
+            ref={justArrivedGridRef}
             transition={{ staggerChildren: 0.08 }}
             className="flex snap-x gap-3 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain md:grid md:grid-cols-4 md:gap-4 md:overflow-visible"
           >
