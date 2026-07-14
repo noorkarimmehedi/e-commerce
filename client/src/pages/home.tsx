@@ -42,9 +42,9 @@ export default function Home() {
             className="w-full aspect-square md:aspect-[4/5] bg-[#ececec] overflow-hidden relative group cursor-pointer"
           >
             <Link href="/product/stepprs-massage-insoles" className="block w-full h-full">
-              <img
-                src="/insoles.png"
-                alt="Massage Insoles Hero"
+                <img
+                 src={latestDropEarthyOlive}
+                 alt="Latest Fashion Drop"
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
               />
             </Link>
@@ -77,7 +77,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[13px] font-medium uppercase tracking-[0.28em] text-black md:text-base"
+              className="text-[11px] font-medium uppercase tracking-[0.24em] text-black md:text-[13px]"
             >
               Latest Drop
             </motion.h2>
@@ -90,7 +90,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-4">
             {latestDropProducts.map((product, index) => (
               <motion.article
                 key={product.title}
@@ -109,7 +109,7 @@ export default function Home() {
                       className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <div className="space-y-3 px-4 pb-5 pt-4 md:px-5 md:pb-6">
+                  <div className="space-y-2 px-3 pb-4 pt-3 md:px-4 md:pb-5">
                     <h3 className="line-clamp-2 min-h-[2.4em] text-[11px] font-medium uppercase leading-snug tracking-[0.1em] text-black md:text-[12px]">
                       {product.title}
                     </h3>
