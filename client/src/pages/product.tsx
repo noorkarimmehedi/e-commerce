@@ -109,8 +109,6 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const [activeReel, setActiveReel] = useState(0);
   const [cachedProduct, setCachedProduct] = useState<StorefrontProduct | null>(null);
   const shouldReduceMotion = useReducedMotion();
-  const [imageRef, imageInView] = useReveal();
-  const [detailsRef, detailsInView] = useReveal();
   const [mayAlsoRef, mayAlsoInView] = useReveal();
   const [galleryRef, galleryApi] = useEmblaCarousel({
     align: "start",
@@ -246,12 +244,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
       <div className="min-h-screen bg-brand-ivory">
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-7 bg-brand-ivory p-[10px] md:p-16 xl:p-20">
-              <motion.div
-                ref={imageRef}
-                variants={reveal}
-                initial="hidden"
-                animate={imageInView ? "visible" : "hidden"}
-                transition={transition}
+              <div
                 className="relative mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f6f6f6]"
               >
                 {displayGallery.length ? (
@@ -310,15 +303,10 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     No image
                   </div>
                 )}
-              </motion.div>
+              </div>
             </div>
 
-            <motion.div
-              ref={detailsRef}
-              variants={reveal}
-              initial="hidden"
-              animate={detailsInView ? "visible" : "hidden"}
-              transition={transition}
+            <div
               className="lg:col-span-5 flex flex-col bg-brand-ivory"
             >
               <div className="flex-grow space-y-6 px-4 pb-10 pt-2 md:space-y-10 md:p-16 xl:p-20">
@@ -554,18 +542,32 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                   </div>
                 </div>
               </div>
-            </motion.div>
+            </div>
           </div>
       </div>
 
       {/* You May Also Like Section */}
       <section className="w-full bg-brand-ivory border-t border-black/20 pt-6 pb-16">
-        <div className="max-w-[1440px] mx-auto px-4 md:px-16 mb-4 md:mb-6">
-          <h2 className="text-[12px] md:text-sm font-sans uppercase tracking-[0.15em] text-black mb-5">
+        <motion.div
+          ref={mayAlsoRef}
+          initial="hidden"
+          animate={mayAlsoInView ? "visible" : "hidden"}
+          transition={{ staggerChildren: 0.12 }}
+          className="mx-auto max-w-[1440px] px-4 md:px-16"
+        >
+          <motion.h2
+            variants={reveal}
+            transition={transition}
+            className="text-[12px] md:text-sm font-sans uppercase tracking-[0.15em] text-black mb-5 md:mb-6"
+          >
             You May Also Like
-          </h2>
+          </motion.h2>
 
-          <div className="grid grid-cols-3 gap-1.5 md:gap-2 pb-2">
+          <motion.div
+            variants={reveal}
+            transition={transition}
+            className="grid grid-cols-3 gap-1.5 md:gap-2 pb-2 mb-4 md:mb-6"
+          >
             <button className="bg-black text-white px-1 md:px-5 py-2.5 md:py-3 rounded-[8px] text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium text-center">
               New Arrivals
             </button>
@@ -575,24 +577,19 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
             <button className="border border-black/10 bg-white text-black/40 px-1 md:px-5 py-2.5 md:py-3 rounded-[8px] text-[8px] md:text-[9px] uppercase tracking-[0.1em] md:tracking-[0.2em] font-medium hover:text-black hover:border-black/30 transition-colors text-center">
               Essentials
             </button>
-          </div>
-        </div>
+          </motion.div>
 
-          <div className="max-w-[1440px] mx-auto px-4 md:px-16">
-            <motion.div
-              ref={mayAlsoRef}
-              variants={reveal}
-              initial="hidden"
-              animate={mayAlsoInView ? "visible" : "hidden"}
-              transition={{ ...transition, staggerChildren: 0.1 }}
-              className="grid grid-cols-2 md:grid-cols-3 gap-[1px] md:gap-8 bg-black/10 md:bg-transparent"
-            >
-              {placeholderProducts.map((p) => (
-                <motion.div
-                  key={p.id}
-                  variants={reveal}
-                  className="group flex cursor-pointer flex-col bg-brand-ivory"
-                >
+          <motion.div
+            transition={{ staggerChildren: 0.08 }}
+            className="grid grid-cols-2 md:grid-cols-3 gap-[1px] md:gap-8 bg-black/10 md:bg-transparent"
+          >
+            {placeholderProducts.map((p) => (
+              <motion.div
+                key={p.id}
+                variants={reveal}
+                transition={transition}
+                className="group flex cursor-pointer flex-col bg-brand-ivory"
+              >
                 <div className="relative aspect-[3/4] overflow-hidden bg-[#f6f6f6] flex items-center justify-center">
                   <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-black/25">
                     No image
@@ -614,7 +611,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
               </motion.div>
             ))}
           </motion.div>
-        </div>
+        </motion.div>
       </section>
 
       <OrderDialog open={orderOpen} onOpenChange={setOrderOpen} bundle={orderBundle} />
