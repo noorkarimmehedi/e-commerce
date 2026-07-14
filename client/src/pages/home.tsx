@@ -246,7 +246,7 @@ export default function Home() {
 
           <motion.div
             transition={{ staggerChildren: 0.08 }}
-            className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto pr-4 md:mt-16 md:grid md:grid-cols-4 md:overflow-visible md:pr-0"
+            className="mt-12 flex snap-x gap-4 overflow-x-auto touch-pan-x overscroll-x-contain md:mt-16 md:grid md:grid-cols-4 md:overflow-visible"
           >
             {whatsNewProducts.map((product, index) => (
               <motion.article
@@ -380,7 +380,7 @@ export default function Home() {
 
           <motion.div
             transition={{ staggerChildren: 0.08 }}
-            className="flex snap-x snap-mandatory gap-3 overflow-x-auto pr-4 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:pr-0"
+            className="flex snap-x gap-3 overflow-x-auto touch-pan-x overscroll-x-contain md:grid md:grid-cols-4 md:gap-4 md:overflow-visible"
           >
             {justArrivedProducts.map((product, index) => (
               <motion.article
