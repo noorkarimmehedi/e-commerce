@@ -41,7 +41,7 @@ test("renders a What's New section after the hero", () => {
 });
 
 test("styles Latest Drop header like the Just arrived header", () => {
-  const latestDropContainer = /Latest Drop Section[\s\S]*?<motion\.div\s+className="mx-auto max-w-\[1500px\] px-4 md:px-8 xl:px-12"/.test(homeSource);
+  const latestDropContainer = /Latest Drop Section[\s\S]*?<motion\.div[^>]*className="mx-auto max-w-\[1500px\] px-4 md:px-8 xl:px-12"/.test(homeSource);
   const latestDropHeading = /className="text-\[clamp\(2rem,5vw,2\.6rem\)\] font-bold leading-none tracking-\[-0\.04em\] text-black"[\s\S]*?>\s*Latest Drop/.test(homeSource);
   const discoverMoreLink = /className="mt-1\.5 shrink-0 border-b-2 border-black pb-1 text-\[11px\] font-medium uppercase tracking-\[0\.2em\] text-black transition-opacity hover:opacity-60 md:mt-2 md:text-base md:tracking-\[0\.24em\]"[\s\S]*?>\s*Discover More/.test(homeSource);
 
@@ -96,6 +96,7 @@ test("renders a full-bleed editorial hero", () => {
 test("uses reveal-style Framer animations on homepage sections", () => {
   assert.match(homeSource, /filter: "blur\(10px\)", transform: "translateY\(20%\)", opacity: 0/);
   assert.match(homeSource, /filter: "blur\(0\)", transform: "translateY\(0\)", opacity: 1/);
-  assert.match(homeSource, /whileInView="visible"/);
+  assert.match(homeSource, /useReveal/);
+  assert.match(homeSource, /animate=\{[^}]*InView \? "visible" : "hidden"\}/);
   assert.match(homeSource, /staggerChildren/);
 });

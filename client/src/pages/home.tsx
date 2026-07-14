@@ -1,6 +1,7 @@
 import Layout from "@/components/layout";
 import { useCart } from "@/contexts/cart-context";
 import { motion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { Link } from "wouter";
 
@@ -93,6 +94,29 @@ const justArrivedProducts = [
   },
 ];
 
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return [ref, inView] as const;
+}
+
 export default function Home() {
   const { addToCart } = useCart();
 
@@ -102,6 +126,12 @@ export default function Home() {
     hidden: { filter: "blur(10px)", transform: "translateY(20%)", opacity: 0 },
     visible: { filter: "blur(0)", transform: "translateY(0)", opacity: 1 },
   };
+
+  const [heroRef, heroInView] = useReveal();
+  const [whatsNewRef, whatsNewInView] = useReveal();
+  const [latestDropRef, latestDropInView] = useReveal();
+  const [justArrivedRef, justArrivedInView] = useReveal();
+  const [collectionRef, collectionInView] = useReveal();
 
   function quickAddJustArrived(
     event: MouseEvent<HTMLButtonElement>,
@@ -143,10 +173,11 @@ export default function Home() {
       <section className="w-full bg-[#f6f6f6] pt-0 pb-0">
         <div className="w-full px-0">
           <motion.div
+            ref={heroRef}
             variants={reveal}
             initial="hidden"
-            animate="visible"
-            transition={transition}
+            animate={heroInView ? "visible" : "hidden"}
+            transition={{ duration: 0.5, ease: [0.25, 0.1, 0.25, 1] as const, staggerChildren: 0.08, delayChildren: 0.1 }}
             className="relative min-h-[640px] w-full overflow-hidden bg-black md:min-h-[760px]"
           >
             <Link href="/product/stepprs-massage-insoles" className="absolute inset-0 block">
@@ -157,21 +188,32 @@ export default function Home() {
               />
             </Link>
 
-            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 pb-10 text-center text-white md:items-center md:justify-center md:text-center md:px-16 md:pb-0">
-              <p className="mb-6 text-xs font-medium uppercase tracking-[0.36em] md:mb-7 md:text-base md:tracking-[0.36em]">
+            <motion.div
+              variants={reveal}
+              className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 pb-10 text-center text-white md:items-center md:justify-center md:text-center md:px-16 md:pb-0"
+            >
+              <motion.p
+                variants={reveal}
+                className="mb-6 text-xs font-medium uppercase tracking-[0.36em] md:mb-7 md:text-base md:tracking-[0.36em]"
+              >
                 SS26 STATEMENT PIECES
-              </p>
-              <h1 className="max-w-[760px] text-[clamp(2.6rem,11vw,4rem)] font-light leading-[0.9] tracking-[-0.06em] md:text-[clamp(4rem,5vw,7rem)] md:leading-[0.88] md:tracking-[-0.08em]">
+              </motion.p>
+              <motion.h1
+                variants={reveal}
+                className="max-w-[760px] text-[clamp(2.6rem,11vw,4rem)] font-light leading-[0.9] tracking-[-0.06em] md:text-[clamp(4rem,5vw,7rem)] md:leading-[0.88] md:tracking-[-0.08em]"
+              >
                 Bold by<br />
                 design
-              </h1>
-              <Link
-                href="/product/stepprs-massage-insoles"
-                className="mt-6 inline-flex w-fit items-center justify-center rounded-full border-2 border-white px-8 py-3.5 text-xs font-medium uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-black md:mt-10 md:px-12 md:py-5 md:text-base"
-              >
-                DISCOVER MORE
-              </Link>
-            </div>
+              </motion.h1>
+              <motion.div variants={reveal}>
+                <Link
+                  href="/product/stepprs-massage-insoles"
+                  className="mt-6 inline-flex w-fit items-center justify-center rounded-full border-2 border-white px-8 py-3.5 text-xs font-medium uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-black md:mt-10 md:px-12 md:py-5 md:text-base"
+                >
+                  DISCOVER MORE
+                </Link>
+              </motion.div>
+            </motion.div>
           </motion.div>
         </div>
       </section>
@@ -179,10 +221,10 @@ export default function Home() {
       {/* What's New Section */}
       <section className="w-full overflow-hidden bg-[#f6f6f6] py-10 md:py-16">
         <motion.div
+          ref={whatsNewRef}
           className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12"
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate={whatsNewInView ? "visible" : "hidden"}
           transition={{ staggerChildren: 0.12 }}
         >
           <motion.p
@@ -251,10 +293,10 @@ export default function Home() {
       {/* Latest Drop Section */}
       <section className="w-full bg-[#f6f6f6] py-10 md:py-16">
         <motion.div
+          ref={latestDropRef}
           className="mx-auto max-w-[1500px] px-4 md:px-8 xl:px-12"
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate={latestDropInView ? "visible" : "hidden"}
           transition={{ staggerChildren: 0.12 }}
         >
           <motion.div
@@ -312,10 +354,10 @@ export default function Home() {
       {/* Just Arrived Section */}
       <section className="w-full bg-[#f6f6f6] pb-12 pt-2 md:pb-20 md:pt-4">
         <motion.div
+          ref={justArrivedRef}
           className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12"
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate={justArrivedInView ? "visible" : "hidden"}
           transition={{ staggerChildren: 0.12 }}
         >
           <motion.div
@@ -387,10 +429,10 @@ export default function Home() {
       {/* The Collection Section */}
       <section id="collection" className="w-full bg-[#f6f6f6] pb-24 pt-8 md:pt-12">
         <motion.div
+          ref={collectionRef}
           className="max-w-[1400px] mx-auto px-4 md:px-16 xl:px-20"
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          animate={collectionInView ? "visible" : "hidden"}
           transition={{ staggerChildren: 0.12 }}
         >
           <motion.h2
