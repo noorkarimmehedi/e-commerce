@@ -42,7 +42,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <div className="min-h-screen flex flex-col bg-brand-ivory text-black selection:bg-brand-gold selection:text-white">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 w-full border-b border-black/5 bg-brand-ivory/80 backdrop-blur-md transition-all duration-300">
-        <div className="bg-[#f2f1f0] border-b border-black/5 px-4 md:px-16">
+        <div className="bg-[#f6f6f6] border-b border-black/5 px-4 md:px-16">
           <div className="mx-auto flex h-9 max-w-[1440px] items-center justify-center md:justify-between">
             <div className="hidden md:flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-black/45">
               <span className="normal-case">Stepprs Dispatch</span>
@@ -82,8 +82,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           <div className="flex items-center justify-center">
             <Link href="/">
               <a className="flex flex-col items-center text-black">
-                <span className="font-sans text-2xl font-extrabold normal-case tracking-tight text-red-600 md:text-4xl">
-                  Stepprs
+                <span className="font-sans text-3xl font-normal normal-case tracking-[0.14em] text-black md:text-4xl md:tracking-[0.08em]">
+                  release
                 </span>
                 <span className="mt-0.5 text-[7px] uppercase tracking-[0.35em] font-bold text-black/45 md:mt-1 md:text-[8px] md:tracking-[0.45em]">
                   Bangladesh
@@ -264,7 +264,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         {/* Massive Logo Section */}
         <div className="border-t border-black/5 px-3 pt-10 pb-5 md:px-0 md:pt-12 md:pb-2 overflow-hidden relative group cursor-default">
           <h2 className="text-[18vw] md:text-[25vw] font-sans font-extrabold normal-case tracking-tighter leading-none md:leading-[0.7] text-center text-black/5 select-none transition-all duration-1000 md:group-hover:text-red-600/10 md:group-hover:tracking-normal">
-            Stepprs
+            release Bangladesh
           </h2>
         </div>
 
@@ -272,7 +272,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <div className="bg-white border-t border-black/5 px-4 sm:px-8 md:px-16 py-8">
           <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
             <div className="text-[9px] uppercase tracking-[0.4em] text-black/40 text-center md:text-left">
-              Website by <a href="https://api.whatsapp.com/send/?phone=8801733670129" className="text-black font-bold">Arc Lab Technology</a> / © 2026 Stepprs Studio
+              Website by <a href="https://api.whatsapp.com/send/?phone=8801733670129" className="text-black font-bold">Arc Lab Technology</a> / © 2026 release Bangladesh
             </div>
             <div className="flex gap-8 text-[9px] uppercase tracking-[0.4em] text-black/40">
               <div className="flex items-center gap-2"><Globe className="w-3 h-3" /> Dhaka</div>

@@ -220,7 +220,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 initial={{ scale: 1.04, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
-                className="relative mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f2f1f0]"
+                className="relative mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f6f6f6]"
               >
                 {displayGallery.length ? (
                   <>
@@ -555,7 +555,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 transition={{ duration: 0.6, delay: i * 0.1 }}
                 className="group flex cursor-pointer flex-col bg-brand-ivory"
               >
-                <div className="relative aspect-[3/4] overflow-hidden bg-[#f2f1f0] flex items-center justify-center">
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#f6f6f6] flex items-center justify-center">
                   <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-black/25">
                     No image
                   </span>

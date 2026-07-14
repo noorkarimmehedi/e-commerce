@@ -257,7 +257,7 @@ export default function OrderDialog({
         <DialogContent
           forceMount
           onOpenAutoFocus={(event) => event.preventDefault()}
-          className="max-md:fixed max-md:inset-0 max-md:!left-0 max-md:!top-0 max-md:!translate-x-0 max-md:!translate-y-0 max-md:w-full max-md:h-auto max-md:max-h-none overflow-hidden rounded-none border-none !bg-transparent p-3 sm:p-4 shadow-none data-[state=open]:animate-none data-[state=closed]:animate-none md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[760px] md:p-0 md:bg-[#f2f1f0] md:shadow-[0_80px_180px_rgba(0,0,0,0.28)] [&>button]:hidden md:[&>button]:flex md:[&>button]:rounded-[8px] flex flex-col z-[100]"
+          className="max-md:fixed max-md:inset-0 max-md:!left-0 max-md:!top-0 max-md:!translate-x-0 max-md:!translate-y-0 max-md:w-full max-md:h-auto max-md:max-h-none overflow-hidden rounded-none border-none !bg-transparent p-3 sm:p-4 shadow-none data-[state=open]:animate-none data-[state=closed]:animate-none md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[760px] md:p-0 md:bg-[#f6f6f6] md:shadow-[0_80px_180px_rgba(0,0,0,0.28)] [&>button]:hidden md:[&>button]:flex md:[&>button]:rounded-[8px] flex flex-col z-[100]"
         >
           <AnimatePresence
             initial={true}
@@ -277,7 +277,7 @@ export default function OrderDialog({
                   scale: 0.96,
                   transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
                 }}
-                className={`relative flex w-full h-full md:h-auto max-md:rounded-[12px] bg-white md:bg-[#f2f1f0] max-md:shadow-2xl overflow-y-auto overflow-x-hidden z-[10] ${
+                className={`relative flex w-full h-full md:h-auto max-md:rounded-[12px] bg-white md:bg-[#f6f6f6] max-md:shadow-2xl overflow-y-auto overflow-x-hidden z-[10] ${
                   orderSubmitted
                     ? "min-h-[calc(100dvh-1.5rem)] flex-col items-center justify-center p-6 md:min-h-[560px] md:p-10"
                     : "flex-col p-6 md:p-10"

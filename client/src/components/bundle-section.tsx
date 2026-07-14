@@ -160,7 +160,7 @@ export default function BundleSection() {
   };
 
   return (
-    <section id="bundles" className="scroll-mt-24 bg-[#f2f1f0] border-y border-black/5 px-4 pt-8 pb-10 md:px-16 md:pt-14 md:pb-16 overflow-hidden">
+    <section id="bundles" className="scroll-mt-24 bg-[#f6f6f6] border-y border-black/5 px-4 pt-8 pb-10 md:px-16 md:pt-14 md:pb-16 overflow-hidden">
       <div className="mx-auto max-w-[1440px]">
         <div className="grid gap-8 border-y border-black/10 py-8 md:grid-cols-[1fr_auto_1fr] md:items-end md:gap-10 md:py-10">
           <div className="flex items-center gap-4 text-[9px] uppercase tracking-[0.45em] font-bold text-brand-gold">
@@ -305,7 +305,7 @@ export default function BundleSection() {
             className="grid overflow-hidden border border-black/10 bg-brand-ivory md:grid-cols-[1.08fr_0.92fr]"
           >
             <div className="relative grid gap-px bg-black/10">
-              <div className="relative h-48 bg-[#f2f1f0] p-5 md:h-auto md:aspect-[16/9] md:p-10">
+              <div className="relative h-48 bg-[#f6f6f6] p-5 md:h-auto md:aspect-[16/9] md:p-10">
                 <img
                   src={makeupPen}
                   alt="4-in-1 Makeup Pen"
@@ -317,7 +317,7 @@ export default function BundleSection() {
               </div>
               <div className="grid grid-cols-4 gap-px bg-black/10">
                 {lipTints.map((tint) => (
-                  <div key={tint.name} className="relative h-32 bg-[#f2f1f0] p-1.5 md:h-auto md:aspect-[3/5] md:p-5">
+                  <div key={tint.name} className="relative h-32 bg-[#f6f6f6] p-1.5 md:h-auto md:aspect-[3/5] md:p-5">
                     <img
                       src={tint.image}
                       alt={`${tint.name} Peptide Lip Tint`}
@@ -403,7 +403,7 @@ export default function BundleSection() {
           <DialogContent
             forceMount
             onOpenAutoFocus={(event) => event.preventDefault()}
-            className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f2f1f0] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[900px] [&>button]:rounded-[8px] [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
+            className="bottom-0 top-0 h-screen max-h-screen translate-y-0 overflow-y-auto rounded-none border-none bg-[#f6f6f6] p-0 shadow-[0_80px_180px_rgba(0,0,0,0.28)] data-[state=open]:animate-none data-[state=closed]:animate-none supports-[height:100dvh]:h-dvh supports-[height:100dvh]:max-h-dvh md:bottom-auto md:top-[50%] md:h-auto md:max-h-[92dvh] md:translate-y-[-50%] md:max-w-[900px] [&>button]:rounded-[8px] [&>button]:border [&>button]:border-black/10 [&>button]:bg-white/70"
           >
             <AnimatePresence
               initial={true}
@@ -427,13 +427,13 @@ export default function BundleSection() {
                     filter: "blur(6px)",
                     transition: { duration: 0.42, ease: [0.22, 1, 0.36, 1] },
                   }}
-                  className="grid min-h-full bg-[#f2f1f0] md:min-h-0 md:grid-cols-[0.86fr_1.14fr]"
+                  className="grid min-h-full bg-[#f6f6f6] md:min-h-0 md:grid-cols-[0.86fr_1.14fr]"
                 >
               <div className="relative hidden bg-[#e7e3df] p-10 md:block">
                 <div className="absolute inset-6 border border-black/10" />
                 {selectedBundle.images.length > 2 ? (
                   <div className="relative z-10 grid h-full min-h-[620px] gap-px bg-black/10">
-                    <div className="bg-[#f2f1f0] p-8">
+                    <div className="bg-[#f6f6f6] p-8">
                       <img
                         src={selectedBundle.images[0].src}
                         alt={selectedBundle.images[0].alt}
@@ -445,7 +445,7 @@ export default function BundleSection() {
                     </div>
                     <div className="grid grid-cols-4 gap-px bg-black/10">
                       {selectedBundle.images.slice(1).map((image) => (
-                        <div key={image.alt} className="bg-[#f2f1f0] p-4">
+                        <div key={image.alt} className="bg-[#f6f6f6] p-4">
                           <img
                             src={image.src}
                             alt={image.alt}
@@ -458,7 +458,7 @@ export default function BundleSection() {
                 ) : (
                   <div className="relative z-10 grid h-full min-h-[620px] grid-cols-2 gap-px bg-black/10">
                     {selectedBundle.images.map((image) => (
-                      <div key={image.alt} className="bg-[#f2f1f0] p-5">
+                      <div key={image.alt} className="bg-[#f6f6f6] p-5">
                         <img
                           src={image.src}
                           alt={image.alt}

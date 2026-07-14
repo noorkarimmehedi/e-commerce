@@ -31,6 +31,37 @@ const latestDropProducts = [
   },
 ];
 
+const whatsNewProducts = [
+  {
+    id: 201,
+    title: "Black Blazer Dress",
+    price: "Tk 1,690.00",
+    sizeLabel: "Default",
+    image: "/new1.webp",
+  },
+  {
+    id: 202,
+    title: "Black High Leggings",
+    price: "Tk 990.00",
+    sizeLabel: "Default",
+    image: "/new2.webp",
+  },
+  {
+    id: 203,
+    title: "Clean White Trouser",
+    price: "Tk 799.00",
+    sizeLabel: "Default",
+    image: "/new3.webp",
+  },
+  {
+    id: 204,
+    title: "Cocoa Brown Trouser",
+    price: "Tk 799.00",
+    sizeLabel: "Default",
+    image: "/new4.webp",
+  },
+];
+
 const justArrivedProducts = [
   {
     id: 101,
@@ -38,7 +69,7 @@ const justArrivedProducts = [
     price: "Tk 1,690.00",
     sizeLabel: "Default",
     sizes: 5,
-    image: latestDropBlack,
+    image: "/new1.webp",
   },
   {
     id: 102,
@@ -46,7 +77,7 @@ const justArrivedProducts = [
     price: "Tk 990.00",
     sizeLabel: "Default",
     sizes: 4,
-    image: latestDropEarthyOlive,
+    image: "/new2.webp",
   },
   {
     id: 103,
@@ -54,7 +85,7 @@ const justArrivedProducts = [
     price: "Tk 799.00",
     sizeLabel: "Default",
     sizes: 5,
-    image: latestDropCleanWhite,
+    image: "/new3.webp",
   },
   {
     id: 104,
@@ -62,7 +93,7 @@ const justArrivedProducts = [
     price: "Tk 799.00",
     sizeLabel: "Default",
     sizes: 3,
-    image: latestDropCocoaBrown,
+    image: "/new4.webp",
   },
 ];
 
@@ -86,53 +117,139 @@ export default function Home() {
     );
   }
 
+  function quickAddWhatsNew(
+    event: MouseEvent<HTMLButtonElement>,
+    product: (typeof whatsNewProducts)[number],
+  ) {
+    event.preventDefault();
+    event.stopPropagation();
+    addToCart(
+      {
+        id: product.id,
+        title: product.title,
+        price: product.price,
+        image: product.image,
+      },
+      product.sizeLabel,
+    );
+  }
+
   return (
     <Layout>
       {/* Hero Section */}
-      <section className="w-full bg-[#fcfaf7] pt-0 pb-0 flex justify-center md:pt-8 md:pb-16">
-        <div className="w-full max-w-[800px] px-0">
+      <section className="w-full bg-[#f6f6f6] pt-0 pb-0">
+        <div className="w-full px-0">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 1 }}
-            className="w-full aspect-square md:aspect-[4/5] bg-[#ececec] overflow-hidden relative group cursor-pointer"
+            initial={{ opacity: 0, y: 48, clipPath: "inset(22% 0 0 0)" }}
+            animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            className="relative min-h-[640px] w-full overflow-hidden bg-black md:min-h-[760px]"
           >
-            <Link href="/product/stepprs-massage-insoles" className="block w-full h-full">
-                <img
-                 src={latestDropEarthyOlive}
-                 alt="Latest Fashion Drop"
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+            <Link href="/product/stepprs-massage-insoles" className="absolute inset-0 block">
+              <img
+                src="/hero1.webp"
+                alt="Latest Fashion Drop"
+                className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-105"
               />
             </Link>
 
-            {/* Action Buttons Overlay */}
-            <div className="absolute bottom-4 left-0 w-full px-4 md:px-8 flex flex-col items-center gap-2.5 z-10">
+            <div className="absolute inset-0 z-10 flex flex-col justify-end px-6 pb-10 text-white md:items-center md:justify-center md:text-center md:px-16 md:pb-0">
+              <p className="mb-8 text-sm font-medium uppercase tracking-[0.36em] md:mb-7 md:text-base md:tracking-[0.36em]">
+                SS26 STATEMENT PIECES
+              </p>
+              <h1 className="max-w-[760px] text-[clamp(4.5rem,14vw,10rem)] font-light leading-[0.88] tracking-[-0.08em] md:text-[clamp(4rem,5vw,7rem)]">
+                Bold by<br />
+                design
+              </h1>
               <Link
                 href="/product/stepprs-massage-insoles"
-                className="w-full max-w-[500px] bg-black text-white py-2.5 text-center text-lg md:text-xl font-medium tracking-wide hover:bg-black/90 transition-colors"
+                className="mt-9 inline-flex w-fit items-center justify-center rounded-full border-2 border-white px-10 py-5 text-sm font-medium uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-black md:mt-10 md:px-12 md:py-5 md:text-base"
               >
-                Shop now
+                DISCOVER MORE
               </Link>
-              <a
-                href="#collection"
-                className="w-full max-w-[500px] bg-white text-black py-2.5 text-center text-lg md:text-xl font-medium tracking-wide hover:bg-neutral-50 transition-colors"
-              >
-                Discover New Arrival
-              </a>
             </div>
           </motion.div>
         </div>
       </section>
 
+      {/* What's New Section */}
+      <section className="w-full overflow-hidden bg-[#f6f6f6] py-10 md:py-16">
+        <div className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12">
+          <motion.p
+            initial={{ opacity: 0, y: 44, clipPath: "inset(42% 0 0 0)" }}
+            whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            className="text-center text-sm font-bold uppercase tracking-[0.55em] text-black md:text-2xl"
+          >
+            WHAT'S NEW
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 24, clipPath: "inset(28% 0 0 0)" }}
+            whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            className="mt-9 flex gap-8 overflow-x-auto pr-4 text-[clamp(3rem,8vw,6.5rem)] font-light leading-none tracking-[-0.08em] md:mt-14 md:justify-center md:gap-12 md:overflow-visible md:pr-0"
+          >
+            <span className="shrink-0 text-black">Jackets</span>
+            <span className="shrink-0 text-black/25">Hoodies</span>
+            <span className="shrink-0 text-black/25">T-Shirt</span>
+          </motion.div>
+
+          <div className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto pr-4 md:mt-16 md:grid md:grid-cols-4 md:overflow-visible md:pr-0">
+            {whatsNewProducts.map((product, index) => (
+              <motion.article
+                key={product.title}
+                initial={{ opacity: 0, y: 60, clipPath: "inset(32% 0 0 0)" }}
+                whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+                viewport={{ once: true, margin: "-80px", amount: 0.2 }}
+                transition={{ duration: 1, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="group min-w-[78vw] snap-start md:min-w-0"
+              >
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#ededed]">
+                  <Link href="/product/stepprs-massage-insoles" className="block h-full">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </Link>
+                  <span className="absolute left-5 top-5 rounded-lg bg-white px-4 py-3 text-xs font-bold uppercase tracking-[0.35em] text-black md:left-6 md:top-6 md:px-5 md:py-4 md:text-lg">
+                    LAST FEW
+                  </span>
+                  <button
+                    type="button"
+                    aria-label={`Quick add ${product.title} from What's New to cart`}
+                    onClick={(event) => quickAddWhatsNew(event, product)}
+                    className="absolute bottom-5 right-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-4xl font-extralight leading-none text-white shadow-2xl shadow-black/20 transition-transform duration-300 hover:scale-105 md:h-20 md:w-20 md:rounded-3xl md:text-6xl"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <Link href="/product/stepprs-massage-insoles" className="block pb-2 pt-5 text-black md:pt-7">
+                  <h3 className="text-lg font-black uppercase leading-tight tracking-[0.08em] md:min-h-[2.4em] md:text-2xl">
+                    {product.title}
+                  </h3>
+                  <p className="mt-3 text-xl font-normal tracking-[0.01em] text-black md:text-2xl">{product.price}</p>
+                </Link>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Latest Drop Section */}
-      <section className="w-full bg-[#fcfaf7] py-10 md:py-16">
+      <section className="w-full bg-[#f6f6f6] py-10 md:py-16">
         <div className="mx-auto max-w-[1500px] px-4 md:px-8 xl:px-12">
           <div className="mb-7 flex items-start justify-between gap-6 md:mb-12">
             <motion.h2
-              initial={{ opacity: 0, y: 12 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 44, clipPath: "inset(42% 0 0 0)" }}
+              whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               className="text-[clamp(2.4rem,6vw,5rem)] font-light leading-[0.95] tracking-[-0.06em] text-black"
             >
               Latest Drop
@@ -150,11 +267,11 @@ export default function Home() {
             {latestDropProducts.map((product, index) => (
               <motion.article
                 key={product.title}
-                initial={{ opacity: 0, y: 18 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
-                className="group border border-black/10 bg-[#fcfaf7]"
+                initial={{ opacity: 0, y: 60, clipPath: "inset(32% 0 0 0)" }}
+                whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+                viewport={{ once: true, margin: "-80px", amount: 0.2 }}
+                transition={{ duration: 1, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                className="group border border-black/10 bg-[#f6f6f6]"
               >
                 <Link href="/product/stepprs-massage-insoles" className="block h-full">
                   <div className="aspect-[3/4] overflow-hidden bg-[#e5e5e5]">
@@ -179,14 +296,14 @@ export default function Home() {
       </section>
 
       {/* Just Arrived Section */}
-      <section className="w-full bg-[#fcfaf7] pb-12 pt-2 md:pb-20 md:pt-4">
+      <section className="w-full bg-[#f6f6f6] pb-12 pt-2 md:pb-20 md:pt-4">
         <div className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12">
           <div className="mb-7 flex items-start justify-between gap-6 pr-4 md:mb-12 md:pr-0">
             <motion.h2
-              initial={{ opacity: 0, y: 16 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              initial={{ opacity: 0, y: 44, clipPath: "inset(42% 0 0 0)" }}
+              whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+              viewport={{ once: true, amount: 0.2 }}
+              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               className="text-[clamp(2.4rem,6vw,5rem)] font-light leading-[0.95] tracking-[-0.06em] text-black"
             >
               Just arrived
@@ -204,10 +321,10 @@ export default function Home() {
             {justArrivedProducts.map((product, index) => (
               <motion.article
                 key={product.title}
-                initial={{ opacity: 0, y: 22 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-80px" }}
-                transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                initial={{ opacity: 0, y: 60, clipPath: "inset(32% 0 0 0)" }}
+                whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+                viewport={{ once: true, margin: "-80px", amount: 0.2 }}
+                transition={{ duration: 1, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
                 className="group min-w-[78vw] snap-start md:min-w-0"
               >
                 <div className="h-full">
@@ -247,12 +364,12 @@ export default function Home() {
       </section>
 
       {/* The Collection Section */}
-      <section id="collection" className="w-full bg-[#fcfaf7] pb-24 pt-8 md:pt-12">
+      <section id="collection" className="w-full bg-[#f6f6f6] pb-24 pt-8 md:pt-12">
         <div className="max-w-[1400px] mx-auto px-4 md:px-16 xl:px-20">
           <motion.h2
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.8 }}
+            initial={{ opacity: 0, y: 24, clipPath: "inset(28% 0 0 0)" }}
+            whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             className="text-3xl md:text-4xl text-center font-normal mb-8 tracking-tight text-black"
           >
             The Collection
@@ -261,9 +378,9 @@ export default function Home() {
           <div className="flex overflow-x-auto snap-x snap-mandatory justify-center no-scrollbar">
             {/* Single Product Showcase */}
             <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.1 }}
+              initial={{ opacity: 0, y: 36, clipPath: "inset(18% 0 0 0)" }}
+              whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
+              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col group cursor-pointer w-full max-w-[500px]"
             >
               <Link href="/product/stepprs-massage-insoles" className="block w-full">

@@ -57,7 +57,7 @@ export const Component = () => {
         </div>
       </div>
 
-      <div className="relative flex w-full items-center justify-center border-y border-black/5 bg-[#f2f1f0] py-8 md:py-12">
+      <div className="relative flex w-full items-center justify-center border-y border-black/5 bg-[#f6f6f6] py-8 md:py-12">
         <div className="image-auto-slider-mask w-full">
           <div className="image-auto-slider-track flex w-max gap-4 md:gap-6">
             {duplicatedImages.map((image, index) => (

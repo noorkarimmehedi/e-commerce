@@ -75,7 +75,7 @@ export default function ProductGrid() {
                 className="group flex cursor-pointer flex-col bg-brand-ivory"
               >
                 {/* Image */}
-                <div className="relative aspect-[3/4] overflow-hidden bg-[#f2f1f0]">
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#f6f6f6]">
                   {image ? (
                     <img
                       src={image}

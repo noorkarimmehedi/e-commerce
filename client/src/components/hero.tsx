@@ -67,7 +67,7 @@ export default function Hero() {
         initial={{ scale: 1.1, opacity: 0 }}
         animate={{ scale: 1, opacity: 1 }}
         transition={{ duration: 2, ease: [0.22, 1, 0.36, 1] }}
-        className="relative mx-auto aspect-square w-full max-w-[min(100%,780px)] overflow-hidden bg-[#f4efea] md:max-w-[min(100%,880px)]"
+        className="relative mx-auto aspect-square w-full max-w-[min(100%,780px)] overflow-hidden bg-[#f6f6f6] md:max-w-[min(100%,880px)]"
       >
         <div ref={emblaRef} className="h-full overflow-hidden">
           <div className="flex h-full touch-pan-y">

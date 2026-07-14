@@ -31,7 +31,7 @@ export default function BookingSection() {
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, amount: 0.3 }}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-            className="relative aspect-[3/2] overflow-hidden border-b border-black/10 bg-[#fff7f7] md:border-b-0 md:border-r"
+            className="relative aspect-[3/2] overflow-hidden border-b border-black/10 bg-[#f6f6f6] md:border-b-0 md:border-r"
           >
             <img
               src={peptideImage}
