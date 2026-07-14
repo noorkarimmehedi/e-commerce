@@ -1,6 +1,33 @@
 import Layout from "@/components/layout";
 import { motion } from "framer-motion";
 import { Link } from "wouter";
+import latestDropCleanWhite from "@assets/image_1768632422582.png";
+import latestDropEarthyOlive from "@assets/image_1768632401640.png";
+import latestDropBlack from "@assets/image_1768632436038.png";
+import latestDropCocoaBrown from "@assets/image_1768632387917.png";
+
+const latestDropProducts = [
+  {
+    title: "Linen Baggy Trouser - Clean White",
+    price: "Tk 799.00",
+    image: latestDropCleanWhite,
+  },
+  {
+    title: "Linen Baggy Trouser - Earthy Olive",
+    price: "Tk 799.00",
+    image: latestDropEarthyOlive,
+  },
+  {
+    title: "Linen Baggy Trouser - Black",
+    price: "Tk 799.00",
+    image: latestDropBlack,
+  },
+  {
+    title: "Linen Baggy Trouser - Cocoa Brown",
+    price: "Tk 799.00",
+    image: latestDropCocoaBrown,
+  },
+];
 
 export default function Home() {
   return (
@@ -38,6 +65,60 @@ export default function Home() {
               </a>
             </div>
           </motion.div>
+        </div>
+      </section>
+
+      {/* Latest Drop Section */}
+      <section className="w-full bg-[#fcfaf7] py-10 md:py-16">
+        <div className="mx-auto max-w-[1400px] px-4 md:px-16 xl:px-20">
+          <div className="mb-10 flex items-center justify-between gap-4 md:mb-14">
+            <motion.h2
+              initial={{ opacity: 0, y: 12 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+              className="text-[13px] font-medium uppercase tracking-[0.28em] text-black md:text-base"
+            >
+              Latest Drop
+            </motion.h2>
+
+            <Link
+              href="/product/stepprs-massage-insoles"
+              className="border border-black px-3 py-1.5 text-[10px] font-medium uppercase tracking-[0.18em] text-black transition-colors hover:bg-black hover:text-white md:px-4 md:py-2 md:text-[11px]"
+            >
+              Discover More
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 gap-3 md:gap-6 lg:grid-cols-4">
+            {latestDropProducts.map((product, index) => (
+              <motion.article
+                key={product.title}
+                initial={{ opacity: 0, y: 18 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-80px" }}
+                transition={{ duration: 0.55, delay: index * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="group border border-black/10 bg-[#fcfaf7]"
+              >
+                <Link href="/product/stepprs-massage-insoles" className="block h-full">
+                  <div className="aspect-[3/4] overflow-hidden bg-[#e5e5e5]">
+                    <img
+                      src={product.image}
+                      alt={product.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
+                    />
+                  </div>
+                  <div className="space-y-3 px-4 pb-5 pt-4 md:px-5 md:pb-6">
+                    <h3 className="line-clamp-2 min-h-[2.4em] text-[11px] font-medium uppercase leading-snug tracking-[0.1em] text-black md:text-[12px]">
+                      {product.title}
+                    </h3>
+                    <p className="text-sm font-bold tracking-tight text-black md:text-base">{product.price}</p>
+                  </div>
+                </Link>
+              </motion.article>
+            ))}
+          </div>
         </div>
       </section>
 
