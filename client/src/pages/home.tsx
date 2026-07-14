@@ -303,7 +303,7 @@ export default function Home() {
                 className="max-w-[760px] text-[clamp(2.6rem,11vw,4rem)] font-bold leading-[0.9] tracking-[-0.06em] md:text-[clamp(4rem,5vw,7rem)] md:leading-[0.88] md:tracking-[-0.08em]"
               >
                 Bold by<br />
-                design
+                <span className="font-display italic tracking-[0.55em]">design</span>
               </motion.h1>
               <motion.div variants={reveal}>
                 <Link
