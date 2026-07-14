@@ -263,7 +263,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Massive Logo Section */}
           <div className="border-t border-white/10 px-3 pt-10 pb-5 md:px-0 md:pt-12 md:pb-2 overflow-hidden relative group cursor-default">
-            <h2 className="text-[18vw] md:text-[25vw] font-sans font-extrabold normal-case tracking-tighter leading-none md:leading-[0.7] text-center text-white/5 select-none transition-all duration-1000 md:group-hover:text-brand-gold/10 md:group-hover:tracking-normal">
+            <h2 className="text-[18vw] md:text-[25vw] font-sans font-extrabold normal-case tracking-tighter leading-none md:leading-[0.7] text-center text-white/15 select-none transition-all duration-1000 md:group-hover:text-brand-gold/30 md:group-hover:tracking-normal">
             House of Dhaka
           </h2>
         </div>

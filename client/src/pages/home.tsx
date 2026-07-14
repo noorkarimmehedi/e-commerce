@@ -3,31 +3,27 @@ import { useCart } from "@/contexts/cart-context";
 import { motion } from "framer-motion";
 import type { MouseEvent } from "react";
 import { Link } from "wouter";
-import latestDropCleanWhite from "@assets/image_1768632422582.png";
-import latestDropEarthyOlive from "@assets/image_1768632401640.png";
-import latestDropBlack from "@assets/image_1768632436038.png";
-import latestDropCocoaBrown from "@assets/image_1768632387917.png";
 
 const latestDropProducts = [
   {
     title: "Linen Baggy Trouser - Clean White",
     price: "Tk 799.00",
-    image: latestDropCleanWhite,
+    image: "/new1.webp",
   },
   {
     title: "Linen Baggy Trouser - Earthy Olive",
     price: "Tk 799.00",
-    image: latestDropEarthyOlive,
+    image: "/new2.webp",
   },
   {
     title: "Linen Baggy Trouser - Black",
     price: "Tk 799.00",
-    image: latestDropBlack,
+    image: "/new3.webp",
   },
   {
     title: "Linen Baggy Trouser - Cocoa Brown",
     price: "Tk 799.00",
-    image: latestDropCocoaBrown,
+    image: "/new4.webp",
   },
 ];
 
