@@ -302,7 +302,7 @@ export default function Home() {
           <motion.div
             ref={whatsNewGridRef}
             transition={{ staggerChildren: 0.08 }}
-            className="mt-12 flex snap-x gap-4 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain md:mt-16 md:grid md:grid-cols-4 md:overflow-visible"
+            className="mt-12 flex snap-x gap-4 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:mt-16 md:grid md:grid-cols-4 md:overflow-visible"
           >
             {whatsNewProducts.map((product, index) => (
               <motion.article
@@ -437,7 +437,7 @@ export default function Home() {
           <motion.div
             ref={justArrivedGridRef}
             transition={{ staggerChildren: 0.08 }}
-            className="flex snap-x gap-3 overflow-x-auto overflow-y-hidden touch-pan-x overscroll-x-contain md:grid md:grid-cols-4 md:gap-4 md:overflow-visible"
+            className="flex snap-x gap-3 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:grid md:grid-cols-4 md:gap-4 md:overflow-visible"
           >
             {justArrivedProducts.map((product, index) => (
               <motion.article
