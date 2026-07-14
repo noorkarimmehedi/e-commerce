@@ -348,14 +348,14 @@ export default function Home() {
           <motion.div
             ref={whatsNewGridRef}
             transition={{ staggerChildren: 0.08 }}
-            className="mt-12 flex snap-x gap-4 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:mt-16 md:grid md:grid-cols-4 md:overflow-visible"
+            className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:mt-16 md:grid md:grid-cols-4 md:overflow-visible"
           >
             {whatsNewProducts.map((product, index) => (
               <motion.article
                 key={product.title}
                 variants={reveal}
                 transition={transition}
-                className="group min-w-[78vw] snap-start md:min-w-0"
+                className="group min-w-[78vw] snap-start snap-always md:min-w-0"
               >
                 <div className="relative aspect-[3/4] overflow-hidden bg-[#ededed]">
                   <Link href="/product/stepprs-massage-insoles" className="block h-full">
@@ -483,14 +483,14 @@ export default function Home() {
           <motion.div
             ref={justArrivedGridRef}
             transition={{ staggerChildren: 0.08 }}
-            className="flex snap-x gap-3 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:grid md:grid-cols-4 md:gap-4 md:overflow-visible"
+            className="flex snap-x snap-mandatory gap-3 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:grid md:grid-cols-4 md:gap-4 md:overflow-visible"
           >
             {justArrivedProducts.map((product, index) => (
               <motion.article
                 key={product.title}
                 variants={reveal}
                 transition={transition}
-                className="group min-w-[78vw] snap-start md:min-w-0"
+                className="group min-w-[78vw] snap-start snap-always md:min-w-0"
               >
                 <div className="h-full">
                   <div className="relative aspect-[3/4] overflow-hidden bg-[#eeeeee]">
@@ -644,14 +644,14 @@ export default function Home() {
           </motion.div>
 
           <motion.div
-            className="flex snap-x gap-3 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:grid md:grid-cols-3 md:gap-4 md:overflow-visible"
+            className="flex snap-x snap-mandatory gap-3 overflow-x-auto overflow-y-hidden [touch-action:pan-x_pan-y] overscroll-x-contain md:grid md:grid-cols-3 md:gap-4 md:overflow-visible"
           >
             {specialProducts.map((product) => (
               <motion.article
                 key={product.title}
                 variants={reveal}
                 transition={transition}
-                className="group min-w-[78vw] snap-start md:min-w-0"
+                className="group min-w-[78vw] snap-start snap-always md:min-w-0"
               >
                 <div className="h-full">
                   <div className="relative aspect-[3/4] overflow-hidden bg-[#eeeeee]">

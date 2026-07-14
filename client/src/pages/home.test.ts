@@ -14,7 +14,7 @@ test("renders a Just arrived section after Latest Drop", () => {
   assert.match(homeSource, /VIEW ALL/);
   assert.match(homeSource, /Available in \{product\.sizes\} size/);
   assert.match(homeSource, /text-\[clamp\(2rem,5vw,2\.6rem\)\]/);
-  assert.match(homeSource, /flex snap-x snap-mandatory gap-3 overflow-x-auto pr-4 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:pr-0/);
+  assert.match(homeSource, /flex snap-x snap-mandatory gap-3 overflow-x-auto overflow-y-hidden \[touch-action:pan-x_pan-y\] overscroll-x-contain md:grid md:grid-cols-4 md:gap-4 md:overflow-visible/);
 });
 
 test("renders a What's New section after the hero", () => {
