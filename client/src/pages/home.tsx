@@ -150,8 +150,40 @@ export default function Home() {
         event.preventDefault();
         el.scrollLeft += event.deltaY;
       };
+      let startX = 0;
+      let startY = 0;
+      let startScrollLeft = 0;
+      let dir: "v" | "h" | null = null;
+      const onTouchStart = (event: TouchEvent) => {
+        if (event.touches.length !== 1) {
+          dir = null;
+          return;
+        }
+        startX = event.touches[0].clientX;
+        startY = event.touches[0].clientY;
+        startScrollLeft = el.scrollLeft;
+        dir = null;
+      };
+      const onTouchMove = (event: TouchEvent) => {
+        if (dir === null && event.touches.length === 1) {
+          const dx = event.touches[0].clientX - startX;
+          const dy = event.touches[0].clientY - startY;
+          if (Math.abs(dx) > 8 || Math.abs(dy) > 8) {
+            dir = Math.abs(dy) > Math.abs(dx) ? "v" : "h";
+          }
+        }
+        if (dir === "v") {
+          el.scrollLeft = startScrollLeft;
+        }
+      };
       el.addEventListener("wheel", onWheel, { passive: false });
-      cleanups.push(() => el.removeEventListener("wheel", onWheel));
+      el.addEventListener("touchstart", onTouchStart, { passive: true });
+      el.addEventListener("touchmove", onTouchMove, { passive: true });
+      cleanups.push(() => {
+        el.removeEventListener("wheel", onWheel);
+        el.removeEventListener("touchstart", onTouchStart);
+        el.removeEventListener("touchmove", onTouchMove);
+      });
     }
     return () => cleanups.forEach((fn) => fn());
   }, []);
