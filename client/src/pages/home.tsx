@@ -186,7 +186,7 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-9 grid grid-cols-3 gap-2 text-center text-[clamp(1.5rem,4vw,2.6rem)] font-bold leading-none tracking-[-0.04em] md:mt-14 md:flex md:justify-center md:gap-12"
+            className="mt-9 grid grid-cols-3 gap-2 text-center text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] md:mt-14 md:flex md:justify-center md:gap-12"
           >
             <span className="text-black">Jackets</span>
             <span className="text-black/25">Hoodies</span>
