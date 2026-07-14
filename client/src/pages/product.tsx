@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowDownRight, ChevronDown } from "lucide-react";
@@ -63,6 +63,33 @@ const placeholderProducts = [1, 2, 3, 4, 5, 6].map((id) => ({
   type: "Demo",
 }));
 
+const transition = { duration: 1, ease: [0.25, 0.1, 0.25, 1] as const };
+const reveal = {
+  hidden: { filter: "blur(10px)", transform: "translateY(20%)", opacity: 0 },
+  visible: { filter: "blur(0)", transform: "translateY(0)", opacity: 1 },
+};
+
+function useReveal() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: "0px 0px -10% 0px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  return [ref, inView] as const;
+}
+
 function getMerchantSlug(slug: string) {
   return slug === "massage-insoles" ? staticProduct.slug : slug || staticProduct.slug;
 }
@@ -82,6 +109,9 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const [activeReel, setActiveReel] = useState(0);
   const [cachedProduct, setCachedProduct] = useState<StorefrontProduct | null>(null);
   const shouldReduceMotion = useReducedMotion();
+  const [imageRef, imageInView] = useReveal();
+  const [detailsRef, detailsInView] = useReveal();
+  const [mayAlsoRef, mayAlsoInView] = useReveal();
   const [galleryRef, galleryApi] = useEmblaCarousel({
     align: "start",
     containScroll: false,
@@ -217,9 +247,11 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
           <div className="grid grid-cols-1 lg:grid-cols-12">
             <div className="lg:col-span-7 bg-brand-ivory p-[10px] md:p-16 xl:p-20">
               <motion.div
-                initial={{ scale: 1.04, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+                ref={imageRef}
+                variants={reveal}
+                initial="hidden"
+                animate={imageInView ? "visible" : "hidden"}
+                transition={transition}
                 className="relative mx-auto aspect-square w-full max-w-[1080px] overflow-hidden rounded-[8px] bg-[#f6f6f6]"
               >
                 {displayGallery.length ? (
@@ -282,10 +314,12 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
             </div>
 
             <motion.div
+              ref={detailsRef}
+              variants={reveal}
+              initial="hidden"
+              animate={detailsInView ? "visible" : "hidden"}
+              transition={transition}
               className="lg:col-span-5 flex flex-col bg-brand-ivory"
-              initial={{ opacity: 0, x: 40 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
             >
               <div className="flex-grow space-y-6 px-4 pb-10 pt-2 md:space-y-10 md:p-16 xl:p-20">
                 <div className="space-y-4 md:space-y-6">
@@ -544,17 +578,21 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
           </div>
         </div>
 
-        <div className="max-w-[1440px] mx-auto px-4 md:px-16">
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-[1px] md:gap-8 bg-black/10 md:bg-transparent">
-            {placeholderProducts.map((p, i) => (
-              <motion.div
-                key={p.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: i * 0.1 }}
-                className="group flex cursor-pointer flex-col bg-brand-ivory"
-              >
+          <div className="max-w-[1440px] mx-auto px-4 md:px-16">
+            <motion.div
+              ref={mayAlsoRef}
+              variants={reveal}
+              initial="hidden"
+              animate={mayAlsoInView ? "visible" : "hidden"}
+              transition={{ ...transition, staggerChildren: 0.1 }}
+              className="grid grid-cols-2 md:grid-cols-3 gap-[1px] md:gap-8 bg-black/10 md:bg-transparent"
+            >
+              {placeholderProducts.map((p) => (
+                <motion.div
+                  key={p.id}
+                  variants={reveal}
+                  className="group flex cursor-pointer flex-col bg-brand-ivory"
+                >
                 <div className="relative aspect-[3/4] overflow-hidden bg-[#f6f6f6] flex items-center justify-center">
                   <span className="text-[10px] font-bold uppercase tracking-[0.35em] text-black/25">
                     No image
@@ -575,7 +613,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 </div>
               </motion.div>
             ))}
-          </div>
+          </motion.div>
         </div>
       </section>
 
