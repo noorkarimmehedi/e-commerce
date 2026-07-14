@@ -475,39 +475,45 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     <div className="flex touch-pan-y items-center">
                       {[1, 2, 3].map((idx, reelIdx) => (
                         <div key={idx} className="relative h-[340px] flex-[0_0_220px] mx-2 rounded-[8px] overflow-hidden bg-black shadow-lg group">
-                          <motion.video
-                            autoPlay
-                            muted
-                            loop
-                            playsInline
-                            preload="metadata"
+                          <motion.div
                             initial={false}
-                            animate={shouldReduceMotion ? { opacity: 1, scale: 1 } : {
-                              opacity: activeReel === reelIdx ? 1 : 0.9,
-                              scale: activeReel === reelIdx ? 1.03 : 1,
+                            animate={shouldReduceMotion ? { opacity: 1, scale: 1, y: 0 } : {
+                              opacity: activeReel === reelIdx ? 1 : 0.72,
+                              scale: activeReel === reelIdx ? 1 : 0.92,
+                              y: activeReel === reelIdx ? 0 : 8,
                             }}
+                            whileHover={shouldReduceMotion ? undefined : { opacity: 1, scale: 0.98, y: 0 }}
                             transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                            className="w-full h-full object-cover brightness-95"
+                            className="absolute inset-0"
                           >
-                            <source src={`/vid_0${idx}.mp4`} type="video/mp4" />
-                          </motion.video>
-
-                          <div className="absolute inset-x-2 bottom-2 p-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-[8px] flex items-center justify-between shadow-lg opacity-80 transition-all duration-300 group-hover:opacity-100">
-                            <div className="flex flex-col justify-center px-1.5 overflow-hidden">
-                              <span className="text-[8px] font-bold uppercase tracking-[0.1em] text-white truncate">Product {idx}</span>
-                              <span className="text-[9px] font-garet font-bold text-white mt-0.5">Demo</span>
-                            </div>
-                            <button
-                              onClick={async () => {
-                                if (await verifyOrderable()) {
-                                  setOrderOpen(true);
-                                }
-                              }}
-                              className="shrink-0 bg-white/20 hover:bg-white text-white hover:text-black px-4 py-2 rounded-[8px] text-[8px] font-bold uppercase tracking-widest transition-colors backdrop-blur-sm"
+                            <video
+                              autoPlay
+                              muted
+                              loop
+                              playsInline
+                              preload="metadata"
+                              className="w-full h-full object-cover brightness-95"
                             >
-                              Shop
-                            </button>
-                          </div>
+                              <source src={`/vid_0${idx}.mp4`} type="video/mp4" />
+                            </video>
+
+                            <div className="absolute inset-x-2 bottom-2 p-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-[8px] flex items-center justify-between shadow-lg opacity-80 transition-all duration-300 group-hover:opacity-100">
+                              <div className="flex flex-col justify-center px-1.5 overflow-hidden">
+                                <span className="text-[8px] font-bold uppercase tracking-[0.1em] text-white truncate">Product {idx}</span>
+                                <span className="text-[9px] font-garet font-bold text-white mt-0.5">Demo</span>
+                              </div>
+                              <button
+                                onClick={async () => {
+                                  if (await verifyOrderable()) {
+                                    setOrderOpen(true);
+                                  }
+                                }}
+                                className="shrink-0 bg-white/20 hover:bg-white text-white hover:text-black px-4 py-2 rounded-[8px] text-[8px] font-bold uppercase tracking-widest transition-colors backdrop-blur-sm"
+                              >
+                                Shop
+                              </button>
+                            </div>
+                          </motion.div>
                         </div>
                       ))}
                     </div>
