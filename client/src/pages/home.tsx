@@ -207,7 +207,7 @@ export default function Home() {
               <motion.div variants={reveal}>
                 <Link
                   href="/product/stepprs-massage-insoles"
-                  className="mt-6 inline-flex w-fit items-center justify-center rounded-full border-2 border-white px-8 py-3.5 text-xs font-medium uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-black md:mt-10 md:px-12 md:py-5 md:text-base"
+                  className="mt-6 inline-flex w-fit items-center justify-center rounded-[4px] border-2 border-white px-5 py-2.5 text-xs font-medium uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-black md:mt-10 md:px-7 md:py-3 md:text-base"
                 >
                   DISCOVER MORE
                 </Link>
