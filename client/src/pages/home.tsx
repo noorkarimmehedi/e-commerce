@@ -219,9 +219,9 @@ export default function Home() {
                     type="button"
                     aria-label={`Quick add ${product.title} from What's New to cart`}
                     onClick={(event) => quickAddWhatsNew(event, product)}
-                    className="absolute bottom-5 right-5 flex h-11 w-11 items-center justify-center rounded-[6px] bg-black text-3xl font-extralight leading-none text-white shadow-2xl shadow-black/20 transition-transform duration-300 hover:scale-105 md:h-14 md:w-14 md:rounded-[6px] md:text-4xl"
-                  >
-                    +
+                      className="absolute bottom-4 right-4 flex h-10 w-10 items-center justify-center rounded-full bg-black text-2xl font-extralight leading-none text-white shadow-xl shadow-black/20 transition-transform duration-300 hover:scale-105 md:bottom-5 md:right-5 md:h-12 md:w-12 md:text-3xl"
+                    >
+                      +
                   </button>
                 </div>
 
@@ -246,7 +246,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(1.9rem,3.4vw,3.1rem)] font-light leading-[0.95] tracking-[-0.04em] text-black"
+              className="text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] text-black"
             >
               Latest Drop
             </motion.h2>
@@ -279,10 +279,10 @@ export default function Home() {
                     />
                   </div>
                   <div className="space-y-2 px-3 pb-4 pt-3 md:px-4 md:pb-5">
-                    <h3 className="line-clamp-2 min-h-[2.4em] text-[11px] font-medium uppercase leading-snug tracking-[0.1em] text-black md:text-[12px]">
+                    <h3 className="line-clamp-2 min-h-[2.4em] text-sm font-bold uppercase leading-tight tracking-[0.06em] md:min-h-[2.35em] md:text-base md:tracking-[0.08em]">
                       {product.title}
                     </h3>
-                    <p className="text-sm font-bold tracking-tight text-black md:text-base">{product.price}</p>
+                    <p className="mt-4 text-xl font-normal tracking-[0.02em] md:text-2xl">{product.price}</p>
                   </div>
                 </Link>
               </motion.article>
@@ -300,7 +300,7 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(1.9rem,3.4vw,3.1rem)] font-light leading-[0.95] tracking-[-0.04em] text-black"
+              className="text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] text-black"
             >
               Just arrived
             </motion.h2>
