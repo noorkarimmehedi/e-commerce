@@ -153,17 +153,17 @@ export default function Home() {
               />
             </Link>
 
-            <div className="absolute inset-0 z-10 flex flex-col justify-end px-6 pb-10 text-white md:items-center md:justify-center md:text-center md:px-16 md:pb-0">
-              <p className="mb-8 text-sm font-medium uppercase tracking-[0.36em] md:mb-7 md:text-base md:tracking-[0.36em]">
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center px-6 pb-10 text-center text-white md:items-center md:justify-center md:text-center md:px-16 md:pb-0">
+              <p className="mb-6 text-xs font-medium uppercase tracking-[0.36em] md:mb-7 md:text-base md:tracking-[0.36em]">
                 SS26 STATEMENT PIECES
               </p>
-              <h1 className="max-w-[760px] text-[clamp(4.5rem,14vw,10rem)] font-light leading-[0.88] tracking-[-0.08em] md:text-[clamp(4rem,5vw,7rem)]">
+              <h1 className="max-w-[760px] text-[clamp(2.6rem,11vw,4rem)] font-light leading-[0.9] tracking-[-0.06em] md:text-[clamp(4rem,5vw,7rem)] md:leading-[0.88] md:tracking-[-0.08em]">
                 Bold by<br />
                 design
               </h1>
               <Link
                 href="/product/stepprs-massage-insoles"
-                className="mt-9 inline-flex w-fit items-center justify-center rounded-full border-2 border-white px-10 py-5 text-sm font-medium uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-black md:mt-10 md:px-12 md:py-5 md:text-base"
+                className="mt-6 inline-flex w-fit items-center justify-center rounded-full border-2 border-white px-8 py-3.5 text-xs font-medium uppercase tracking-[0.28em] text-white transition-colors hover:bg-white hover:text-black md:mt-10 md:px-12 md:py-5 md:text-base"
               >
                 DISCOVER MORE
               </Link>
@@ -190,11 +190,11 @@ export default function Home() {
             whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
             viewport={{ once: true }}
             transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
-            className="mt-9 flex gap-8 overflow-x-auto pr-4 text-[clamp(3rem,8vw,6.5rem)] font-light leading-none tracking-[-0.08em] md:mt-14 md:justify-center md:gap-12 md:overflow-visible md:pr-0"
+            className="mt-9 grid grid-cols-3 gap-2 text-center text-[clamp(1.5rem,4vw,2.6rem)] font-bold leading-none tracking-[-0.04em] md:mt-14 md:flex md:justify-center md:gap-12"
           >
-            <span className="shrink-0 text-black">Jackets</span>
-            <span className="shrink-0 text-black/25">Hoodies</span>
-            <span className="shrink-0 text-black/25">T-Shirt</span>
+            <span className="text-black">Jackets</span>
+            <span className="text-black/25">Hoodies</span>
+            <span className="text-black/25">T-Shirt</span>
           </motion.div>
 
           <div className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto pr-4 md:mt-16 md:grid md:grid-cols-4 md:overflow-visible md:pr-0">
@@ -216,21 +216,21 @@ export default function Home() {
                       className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     />
                   </Link>
-                  <span className="absolute left-5 top-5 rounded-lg bg-white px-4 py-3 text-xs font-bold uppercase tracking-[0.35em] text-black md:left-6 md:top-6 md:px-5 md:py-4 md:text-lg">
+                  <span className="absolute left-5 top-5 bg-neutral-500/60 text-xs font-bold uppercase tracking-[0.35em] text-white backdrop-blur-md md:left-6 md:top-6 md:text-lg">
                     LAST FEW
                   </span>
                   <button
                     type="button"
                     aria-label={`Quick add ${product.title} from What's New to cart`}
                     onClick={(event) => quickAddWhatsNew(event, product)}
-                    className="absolute bottom-5 right-5 flex h-14 w-14 items-center justify-center rounded-2xl bg-black text-4xl font-extralight leading-none text-white shadow-2xl shadow-black/20 transition-transform duration-300 hover:scale-105 md:h-20 md:w-20 md:rounded-3xl md:text-6xl"
+                    className="absolute bottom-5 right-5 flex h-11 w-11 items-center justify-center rounded-[6px] bg-black text-3xl font-extralight leading-none text-white shadow-2xl shadow-black/20 transition-transform duration-300 hover:scale-105 md:h-14 md:w-14 md:rounded-[6px] md:text-4xl"
                   >
                     +
                   </button>
                 </div>
 
                 <Link href="/product/stepprs-massage-insoles" className="block pb-2 pt-5 text-black md:pt-7">
-                  <h3 className="text-lg font-black uppercase leading-tight tracking-[0.08em] md:min-h-[2.4em] md:text-2xl">
+                  <h3 className="text-lg font-medium uppercase leading-tight tracking-[0.08em] md:min-h-[2.4em] md:text-2xl">
                     {product.title}
                   </h3>
                   <p className="mt-3 text-xl font-normal tracking-[0.01em] text-black md:text-2xl">{product.price}</p>
@@ -250,14 +250,14 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(2.4rem,6vw,5rem)] font-light leading-[0.95] tracking-[-0.06em] text-black"
+              className="text-[clamp(1.9rem,3.4vw,3.1rem)] font-light leading-[0.95] tracking-[-0.04em] text-black"
             >
               Latest Drop
             </motion.h2>
 
             <Link
               href="/product/stepprs-massage-insoles"
-              className="mt-2 shrink-0 border-b-2 border-black pb-1.5 text-[13px] font-medium uppercase tracking-[0.22em] text-black transition-opacity hover:opacity-60 md:mt-5 md:text-2xl md:tracking-[0.28em]"
+              className="mt-1.5 shrink-0 border-b-2 border-black pb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black transition-opacity hover:opacity-60 md:mt-2 md:text-base md:tracking-[0.24em]"
             >
               Discover More
             </Link>
@@ -271,7 +271,7 @@ export default function Home() {
                 whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
                 viewport={{ once: true, margin: "-80px", amount: 0.2 }}
                 transition={{ duration: 1, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
-                className="group border border-black/10 bg-[#f6f6f6]"
+                className="group bg-[#f6f6f6]"
               >
                 <Link href="/product/stepprs-massage-insoles" className="block h-full">
                   <div className="aspect-[3/4] overflow-hidden bg-[#e5e5e5]">
@@ -304,14 +304,14 @@ export default function Home() {
               whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
-              className="text-[clamp(2.4rem,6vw,5rem)] font-light leading-[0.95] tracking-[-0.06em] text-black"
+              className="text-[clamp(1.9rem,3.4vw,3.1rem)] font-light leading-[0.95] tracking-[-0.04em] text-black"
             >
               Just arrived
             </motion.h2>
 
             <Link
               href="/product/stepprs-massage-insoles"
-              className="mt-2 shrink-0 border-b-2 border-black pb-1.5 text-[13px] font-medium uppercase tracking-[0.22em] text-black transition-opacity hover:opacity-60 md:mt-5 md:text-2xl md:tracking-[0.28em]"
+              className="mt-1.5 shrink-0 border-b-2 border-black pb-1 text-[11px] font-medium uppercase tracking-[0.2em] text-black transition-opacity hover:opacity-60 md:mt-2 md:text-base md:tracking-[0.24em]"
             >
               VIEW ALL
             </Link>
