@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { ArrowDownRight, ChevronDown } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
@@ -80,6 +80,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const [openFeature, setOpenFeature] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
   const [cachedProduct, setCachedProduct] = useState<StorefrontProduct | null>(null);
+  const shouldReduceMotion = useReducedMotion();
   const [galleryRef, galleryApi] = useEmblaCarousel({
     align: "start",
     containScroll: false,
@@ -209,15 +210,22 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                   <>
                     <div ref={galleryRef} className="h-full cursor-grab overflow-hidden active:cursor-grabbing">
                       <div className="flex h-full touch-pan-y">
-                        {displayGallery.map((url) => (
-                          <div key={url} className="relative h-full min-w-0 flex-[0_0_100%]">
-                            <img
+                        {displayGallery.map((url, idx) => (
+                          <div key={url} className="relative h-full min-w-0 flex-[0_0_100%] overflow-hidden">
+                            <motion.img
                               src={url}
                               alt={product.name}
                               width={1080}
                               height={1080}
                               draggable={false}
-                              className="absolute inset-0 h-full w-full select-none object-cover object-center transition-transform duration-[2s] hover:scale-105"
+                              initial={false}
+                              animate={shouldReduceMotion ? { opacity: 1, scale: 1 } : {
+                                opacity: activeImage === idx ? 1 : 0.55,
+                                scale: activeImage === idx ? 1 : 0.96,
+                              }}
+                              whileHover={shouldReduceMotion ? undefined : { scale: activeImage === idx ? 1.035 : 0.98 }}
+                              transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                              className="absolute inset-0 h-full w-full select-none object-cover object-center"
                             />
                           </div>
                         ))}
@@ -227,15 +235,24 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                     {displayGallery.length > 1 ? (
                       <div className="absolute bottom-4 left-0 right-0 z-10 flex justify-center gap-2 md:bottom-8">
                         {displayGallery.map((url, idx) => (
-                          <button
+                          <motion.button
                             key={url}
                             type="button"
                             onClick={() => goToImage(idx)}
-                            className={`h-[2px] transition-all duration-300 ${
-                              activeImage === idx ? "w-8 bg-black" : "w-8 bg-black/20"
-                            }`}
+                            className="relative h-3 w-8 overflow-hidden"
                             aria-label={`Go to product image ${idx + 1}`}
-                          />
+                          >
+                            <span className="absolute left-0 top-1/2 h-[2px] w-full -translate-y-1/2 bg-black/20" />
+                            <motion.span
+                              className="absolute left-0 top-1/2 h-[2px] w-full origin-left -translate-y-1/2 bg-black"
+                              initial={false}
+                              animate={{
+                                opacity: activeImage === idx ? 1 : 0,
+                                scaleX: activeImage === idx ? 1 : 0.2,
+                              }}
+                              transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                            />
+                          </motion.button>
                         ))}
                       </div>
                     ) : null}
