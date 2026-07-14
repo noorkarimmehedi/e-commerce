@@ -13,7 +13,7 @@ test("renders a Just arrived section after Latest Drop", () => {
   assert.ok(justArrivedIndex > latestDropIndex);
   assert.match(homeSource, /VIEW ALL/);
   assert.match(homeSource, /Available in \{product\.sizes\} size/);
-  assert.match(homeSource, /text-\[clamp\(1\.9rem,3\.4vw,3\.1rem\)\]/);
+  assert.match(homeSource, /text-\[clamp\(2rem,5vw,2\.6rem\)\]/);
   assert.match(homeSource, /flex snap-x snap-mandatory gap-3 overflow-x-auto pr-4 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:pr-0/);
 });
 
@@ -41,8 +41,8 @@ test("renders a What's New section after the hero", () => {
 });
 
 test("styles Latest Drop header like the Just arrived header", () => {
-  const latestDropContainer = /Latest Drop Section \*\/}\n      <section className="w-full bg-\[#f6f6f6\] py-10 md:py-16">\n        <div className="mx-auto max-w-\[1500px\] px-4 md:px-8 xl:px-12">/.test(homeSource);
-  const latestDropHeading = /className="text-\[clamp\(1\.9rem,3\.4vw,3\.1rem\)\] font-light leading-\[0\.95\] tracking-\[-0\.04em\] text-black"[\s\S]*?>\s*Latest Drop/.test(homeSource);
+  const latestDropContainer = /Latest Drop Section[\s\S]*?<motion\.div\s+className="mx-auto max-w-\[1500px\] px-4 md:px-8 xl:px-12"/.test(homeSource);
+  const latestDropHeading = /className="text-\[clamp\(2rem,5vw,2\.6rem\)\] font-bold leading-none tracking-\[-0\.04em\] text-black"[\s\S]*?>\s*Latest Drop/.test(homeSource);
   const discoverMoreLink = /className="mt-1\.5 shrink-0 border-b-2 border-black pb-1 text-\[11px\] font-medium uppercase tracking-\[0\.2em\] text-black transition-opacity hover:opacity-60 md:mt-2 md:text-base md:tracking-\[0\.24em\]"[\s\S]*?>\s*Discover More/.test(homeSource);
 
   assert.equal(latestDropContainer, true);
@@ -94,7 +94,8 @@ test("renders a full-bleed editorial hero", () => {
 });
 
 test("uses reveal-style Framer animations on homepage sections", () => {
-  assert.match(homeSource, /initial=\{\{ opacity: 0, y: 60, clipPath: "inset\(32% 0 0 0\)" \}\}/);
-  assert.match(homeSource, /whileInView=\{\{ opacity: 1, y: 0, clipPath: "inset\(0% 0 0 0\)" \}\}/);
-  assert.match(homeSource, /transition=\{\{ duration: 1, delay: index \* 0\.1, ease: \[0\.22, 1, 0\.36, 1\] \}\}/);
+  assert.match(homeSource, /filter: "blur\(10px\)", transform: "translateY\(20%\)", opacity: 0/);
+  assert.match(homeSource, /filter: "blur\(0\)", transform: "translateY\(0\)", opacity: 1/);
+  assert.match(homeSource, /whileInView="visible"/);
+  assert.match(homeSource, /staggerChildren/);
 });

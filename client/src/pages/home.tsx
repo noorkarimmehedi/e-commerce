@@ -96,6 +96,13 @@ const justArrivedProducts = [
 export default function Home() {
   const { addToCart } = useCart();
 
+  const transition = { duration: 1, ease: [0.25, 0.1, 0.25, 1] as const };
+
+  const reveal = {
+    hidden: { filter: "blur(10px)", transform: "translateY(20%)", opacity: 0 },
+    visible: { filter: "blur(0)", transform: "translateY(0)", opacity: 1 },
+  };
+
   function quickAddJustArrived(
     event: MouseEvent<HTMLButtonElement>,
     product: (typeof justArrivedProducts)[number],
@@ -136,9 +143,10 @@ export default function Home() {
       <section className="w-full bg-[#f6f6f6] pt-0 pb-0">
         <div className="w-full px-0">
           <motion.div
-            initial={{ opacity: 0, y: 48, clipPath: "inset(22% 0 0 0)" }}
-            animate={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-            transition={{ duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
+            variants={reveal}
+            initial="hidden"
+            animate="visible"
+            transition={transition}
             className="relative min-h-[640px] w-full overflow-hidden bg-black md:min-h-[760px]"
           >
             <Link href="/product/stepprs-massage-insoles" className="absolute inset-0 block">
@@ -170,22 +178,24 @@ export default function Home() {
 
       {/* What's New Section */}
       <section className="w-full overflow-hidden bg-[#f6f6f6] py-10 md:py-16">
-        <div className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12">
+        <motion.div
+          className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ staggerChildren: 0.12 }}
+        >
           <motion.p
-            initial={{ opacity: 0, y: 44, clipPath: "inset(42% 0 0 0)" }}
-            whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-            viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
+            variants={reveal}
+            transition={transition}
             className="text-center text-sm font-bold uppercase tracking-[0.55em] text-black md:text-2xl"
           >
             WHAT'S NEW
           </motion.p>
 
           <motion.div
-            initial={{ opacity: 0, y: 24, clipPath: "inset(28% 0 0 0)" }}
-            whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.08, ease: [0.22, 1, 0.36, 1] }}
+            variants={reveal}
+            transition={transition}
             className="mt-9 grid grid-cols-3 gap-2 text-center text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] md:mt-14 md:flex md:justify-center md:gap-12"
           >
             <span className="text-black">Jackets</span>
@@ -193,14 +203,15 @@ export default function Home() {
             <span className="text-black/25">T-Shirt</span>
           </motion.div>
 
-          <div className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto pr-4 md:mt-16 md:grid md:grid-cols-4 md:overflow-visible md:pr-0">
+          <motion.div
+            transition={{ staggerChildren: 0.08 }}
+            className="mt-12 flex snap-x snap-mandatory gap-4 overflow-x-auto pr-4 md:mt-16 md:grid md:grid-cols-4 md:overflow-visible md:pr-0"
+          >
             {whatsNewProducts.map((product, index) => (
               <motion.article
                 key={product.title}
-                initial={{ opacity: 0, y: 60, clipPath: "inset(32% 0 0 0)" }}
-                whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-                viewport={{ once: true, margin: "-80px", amount: 0.2 }}
-                transition={{ duration: 1, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                variants={reveal}
+                transition={transition}
                 className="group min-w-[78vw] snap-start md:min-w-0"
               >
                 <div className="relative aspect-[3/4] overflow-hidden bg-[#ededed]">
@@ -233,19 +244,25 @@ export default function Home() {
                 </Link>
               </motion.article>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Latest Drop Section */}
       <section className="w-full bg-[#f6f6f6] py-10 md:py-16">
-        <div className="mx-auto max-w-[1500px] px-4 md:px-8 xl:px-12">
-          <div className="mb-7 flex items-start justify-between gap-6 md:mb-12">
+        <motion.div
+          className="mx-auto max-w-[1500px] px-4 md:px-8 xl:px-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ staggerChildren: 0.12 }}
+        >
+          <motion.div
+            variants={reveal}
+            transition={transition}
+            className="mb-7 flex items-start justify-between gap-6 md:mb-12"
+          >
             <motion.h2
-              initial={{ opacity: 0, y: 44, clipPath: "inset(42% 0 0 0)" }}
-              whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               className="text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] text-black"
             >
               Latest Drop
@@ -257,16 +274,17 @@ export default function Home() {
             >
               Discover More
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-4">
+          <motion.div
+            transition={{ staggerChildren: 0.08 }}
+            className="grid grid-cols-2 gap-2 md:gap-4 lg:grid-cols-4"
+          >
             {latestDropProducts.map((product, index) => (
               <motion.article
                 key={product.title}
-                initial={{ opacity: 0, y: 60, clipPath: "inset(32% 0 0 0)" }}
-                whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-                viewport={{ once: true, margin: "-80px", amount: 0.2 }}
-                transition={{ duration: 1, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                variants={reveal}
+                transition={transition}
                 className="group bg-[#f6f6f6]"
               >
                 <Link href="/product/stepprs-massage-insoles" className="block h-full">
@@ -287,19 +305,25 @@ export default function Home() {
                 </Link>
               </motion.article>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Just Arrived Section */}
       <section className="w-full bg-[#f6f6f6] pb-12 pt-2 md:pb-20 md:pt-4">
-        <div className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12">
-          <div className="mb-7 flex items-start justify-between gap-6 pr-4 md:mb-12 md:pr-0">
+        <motion.div
+          className="mx-auto max-w-[1500px] pl-4 md:px-8 xl:px-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ staggerChildren: 0.12 }}
+        >
+          <motion.div
+            variants={reveal}
+            transition={transition}
+            className="mb-7 flex items-start justify-between gap-6 pr-4 md:mb-12 md:pr-0"
+          >
             <motion.h2
-              initial={{ opacity: 0, y: 44, clipPath: "inset(42% 0 0 0)" }}
-              whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
               className="text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] text-black"
             >
               Just arrived
@@ -311,16 +335,17 @@ export default function Home() {
             >
               VIEW ALL
             </Link>
-          </div>
+          </motion.div>
 
-          <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pr-4 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:pr-0">
+          <motion.div
+            transition={{ staggerChildren: 0.08 }}
+            className="flex snap-x snap-mandatory gap-3 overflow-x-auto pr-4 md:grid md:grid-cols-4 md:gap-4 md:overflow-visible md:pr-0"
+          >
             {justArrivedProducts.map((product, index) => (
               <motion.article
                 key={product.title}
-                initial={{ opacity: 0, y: 60, clipPath: "inset(32% 0 0 0)" }}
-                whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-                viewport={{ once: true, margin: "-80px", amount: 0.2 }}
-                transition={{ duration: 1, delay: index * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                variants={reveal}
+                transition={transition}
                 className="group min-w-[78vw] snap-start md:min-w-0"
               >
                 <div className="h-full">
@@ -355,17 +380,22 @@ export default function Home() {
                 </div>
               </motion.article>
             ))}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* The Collection Section */}
       <section id="collection" className="w-full bg-[#f6f6f6] pb-24 pt-8 md:pt-12">
-        <div className="max-w-[1400px] mx-auto px-4 md:px-16 xl:px-20">
+        <motion.div
+          className="max-w-[1400px] mx-auto px-4 md:px-16 xl:px-20"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ staggerChildren: 0.12 }}
+        >
           <motion.h2
-            initial={{ opacity: 0, y: 24, clipPath: "inset(28% 0 0 0)" }}
-            whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+            variants={reveal}
+            transition={transition}
             className="text-3xl md:text-4xl text-center font-normal mb-8 tracking-tight text-black"
           >
             The Collection
@@ -374,9 +404,8 @@ export default function Home() {
           <div className="flex overflow-x-auto snap-x snap-mandatory justify-center no-scrollbar">
             {/* Single Product Showcase */}
             <motion.div
-              initial={{ opacity: 0, y: 36, clipPath: "inset(18% 0 0 0)" }}
-              whileInView={{ opacity: 1, y: 0, clipPath: "inset(0% 0 0 0)" }}
-              transition={{ duration: 0.8, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+              variants={reveal}
+              transition={transition}
               className="flex flex-col group cursor-pointer w-full max-w-[500px]"
             >
               <Link href="/product/stepprs-massage-insoles" className="block w-full">
@@ -398,7 +427,7 @@ export default function Home() {
               </Link>
             </motion.div>
           </div>
-        </div>
+        </motion.div>
       </section>
     </Layout>
   );
