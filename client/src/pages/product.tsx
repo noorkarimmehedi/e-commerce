@@ -474,28 +474,23 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                   <div ref={reelsRef} className="w-full cursor-grab active:cursor-grabbing pb-4">
                     <div className="flex touch-pan-y items-center">
                       {[1, 2, 3].map((idx, reelIdx) => (
-                        <motion.div
-                          key={idx}
-                          initial={false}
-                          animate={shouldReduceMotion ? { opacity: 1, scale: 1, y: 0 } : {
-                            opacity: activeReel === reelIdx ? 1 : 0.68,
-                            scale: activeReel === reelIdx ? 1 : 0.92,
-                            y: activeReel === reelIdx ? 0 : 10,
-                          }}
-                          whileHover={shouldReduceMotion ? undefined : { opacity: 1, scale: activeReel === reelIdx ? 1.035 : 0.96, y: 0 }}
-                          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
-                          className="relative h-[340px] flex-[0_0_220px] mx-2 rounded-[8px] overflow-hidden bg-black shadow-lg group"
-                        >
-                          <video
+                        <div key={idx} className="relative h-[340px] flex-[0_0_220px] mx-2 rounded-[8px] overflow-hidden bg-black shadow-lg group">
+                          <motion.video
                             autoPlay
                             muted
                             loop
                             playsInline
                             preload="metadata"
+                            initial={false}
+                            animate={shouldReduceMotion ? { opacity: 1, scale: 1 } : {
+                              opacity: activeReel === reelIdx ? 1 : 0.9,
+                              scale: activeReel === reelIdx ? 1.03 : 1,
+                            }}
+                            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
                             className="w-full h-full object-cover brightness-95"
                           >
                             <source src={`/vid_0${idx}.mp4`} type="video/mp4" />
-                          </video>
+                          </motion.video>
 
                           <div className="absolute inset-x-2 bottom-2 p-1.5 bg-white/10 backdrop-blur-md border border-white/20 rounded-[8px] flex items-center justify-between shadow-lg opacity-80 transition-all duration-300 group-hover:opacity-100">
                             <div className="flex flex-col justify-center px-1.5 overflow-hidden">
@@ -513,7 +508,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                               Shop
                             </button>
                           </div>
-                        </motion.div>
+                        </div>
                       ))}
                     </div>
                   </div>
