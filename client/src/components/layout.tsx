@@ -220,12 +220,12 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Luxury Swiss Grid Footer */}
-      <footer className="border-t border-white/10 bg-neutral-950 text-white/70 pt-12 md:pt-24">
+      <footer className="border-t border-black/10 bg-white text-black/70 pt-12 md:pt-24">
         {/* Main Grid Content */}
         <div className="grid grid-cols-1 md:grid-cols-12 max-w-[1440px] mx-auto px-4 sm:px-8 md:px-16 gap-16 mb-8 md:mb-24">
           {/* Brand Col */}
           <div className="md:col-span-4 space-y-8">
-            <p className="text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] font-medium leading-[1.8] md:leading-[2.4] text-white/50 md:max-w-md md:text-balance leading-relaxed">
+            <p className="text-[10px] uppercase tracking-[0.2em] md:tracking-[0.4em] font-medium leading-[1.8] md:leading-[2.4] text-black/50 md:max-w-md md:text-balance leading-relaxed">
               Defining the future of luxury couture through Swiss modernist principles and master craftsmanship.
             </p>
             <div className="flex gap-6">
@@ -238,10 +238,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Navigation Column */}
           <div className="md:col-span-2 space-y-6">
             <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold block">Information</span>
-            <ul className="space-y-4 text-[10px] uppercase tracking-widest font-medium text-white/60">
-              <li><a href="#" className="hover:text-white transition-colors block">Shipping Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors block">Terms and Conditions</a></li>
-              <li><a href="#" className="hover:text-white transition-colors block">Exchange and Return Policy</a></li>
+            <ul className="space-y-4 text-[10px] uppercase tracking-widest font-medium text-black/60">
+              <li><a href="#" className="hover:text-black transition-colors block">Shipping Policy</a></li>
+              <li><a href="#" className="hover:text-black transition-colors block">Terms and Conditions</a></li>
+              <li><a href="#" className="hover:text-black transition-colors block">Exchange and Return Policy</a></li>
             </ul>
           </div>
 
@@ -250,11 +250,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           {/* Newsletter Column */}
           <div className="md:col-span-4 space-y-6">
             <span className="text-[10px] uppercase tracking-[0.5em] font-bold text-brand-gold block">Newsletter</span>
-            <div className="flex border-b border-white/10 pb-4">
+            <div className="flex border-b border-black/10 pb-4">
               <input
                 type="email"
                 placeholder="JOIN THE ATELIER"
-                className="bg-transparent border-none outline-none flex-grow text-[9px] uppercase tracking-[0.4em] font-medium placeholder:text-white/20"
+                className="bg-transparent border-none outline-none flex-grow text-[9px] uppercase tracking-[0.4em] font-medium placeholder:text-black/20"
               />
               <button className="text-[9px] uppercase tracking-[0.4em] font-bold hover:text-brand-gold transition-colors">Join</button>
             </div>
@@ -262,19 +262,19 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         {/* Massive Logo Section */}
-          <div className="border-t border-white/10 px-3 pt-10 pb-5 md:px-0 md:pt-12 md:pb-2 overflow-hidden relative group cursor-default">
-            <h2 className="text-[18vw] md:text-[25vw] font-sans font-extrabold normal-case tracking-tighter leading-none md:leading-[0.7] text-center text-white/15 select-none transition-all duration-1000 md:group-hover:text-brand-gold/30 md:group-hover:tracking-normal">
+          <div className="border-t border-black/10 px-3 pt-10 pb-5 md:px-0 md:pt-12 md:pb-2 overflow-hidden relative group cursor-default">
+            <h2 className="text-[18vw] md:text-[25vw] font-sans font-extrabold normal-case tracking-tighter leading-none md:leading-[0.7] text-center text-black/20 select-none transition-all duration-1000 md:group-hover:text-brand-gold/40 md:group-hover:tracking-normal">
             House of Dhaka
           </h2>
         </div>
 
         {/* Bottom Bar */}
-        <div className="bg-transparent border-t border-white/10 px-4 sm:px-8 md:px-16 py-8">
+        <div className="bg-transparent border-t border-black/10 px-4 sm:px-8 md:px-16 py-8">
           <div className="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-[9px] uppercase tracking-[0.4em] text-white/40 text-center md:text-left">
-              Website by <a href="https://api.whatsapp.com/send/?phone=8801733670129" className="text-white font-bold">Arc Lab Technology</a> / © 2026 House of Dhaka
+            <div className="text-[9px] uppercase tracking-[0.4em] text-black/40 text-center md:text-left">
+              Website by <a href="https://api.whatsapp.com/send/?phone=8801733670129" className="text-black font-bold">Arc Lab Technology</a> / © 2026 House of Dhaka
             </div>
-            <div className="flex gap-8 text-[9px] uppercase tracking-[0.4em] text-white/40">
+            <div className="flex gap-8 text-[9px] uppercase tracking-[0.4em] text-black/40">
               <div className="flex items-center gap-2"><Globe className="w-3 h-3" /> Dhaka</div>
               <div className="hidden md:flex items-center gap-2 font-modern">{time} BST</div>
             </div>
