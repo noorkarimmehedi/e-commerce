@@ -79,6 +79,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   const [availabilityBlocked, setAvailabilityBlocked] = useState(false);
   const [openFeature, setOpenFeature] = useState<string | null>(null);
   const [activeImage, setActiveImage] = useState(0);
+  const [activeReel, setActiveReel] = useState(0);
   const [cachedProduct, setCachedProduct] = useState<StorefrontProduct | null>(null);
   const shouldReduceMotion = useReducedMotion();
   const [galleryRef, galleryApi] = useEmblaCarousel({
@@ -87,7 +88,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
     loop: false,
     skipSnaps: false,
   });
-  const [reelsRef] = useEmblaCarousel({
+  const [reelsRef, reelsApi] = useEmblaCarousel({
     align: "center",
     loop: true,
   });
@@ -172,6 +173,21 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
       galleryApi.off("reInit", syncActiveImage);
     };
   }, [galleryApi, displayGallery.length]);
+
+  useEffect(() => {
+    if (!reelsApi) return;
+
+    const syncActiveReel = () => setActiveReel(reelsApi.selectedScrollSnap());
+
+    syncActiveReel();
+    reelsApi.on("select", syncActiveReel);
+    reelsApi.on("reInit", syncActiveReel);
+
+    return () => {
+      reelsApi.off("select", syncActiveReel);
+      reelsApi.off("reInit", syncActiveReel);
+    };
+  }, [reelsApi]);
 
   const goToImage = (idx: number) => {
     galleryApi?.scrollTo(idx);
@@ -457,8 +473,19 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                 <div className="pt-8 space-y-4 border-t border-black/5 mt-8 -mx-4 md:mx-0 overflow-hidden">
                   <div ref={reelsRef} className="w-full cursor-grab active:cursor-grabbing pb-4">
                     <div className="flex touch-pan-y items-center">
-                      {[1, 2, 3].map((idx) => (
-                        <div key={idx} className="relative h-[340px] flex-[0_0_220px] mx-2 rounded-[8px] overflow-hidden bg-black shadow-lg group">
+                      {[1, 2, 3].map((idx, reelIdx) => (
+                        <motion.div
+                          key={idx}
+                          initial={false}
+                          animate={shouldReduceMotion ? { opacity: 1, scale: 1, y: 0 } : {
+                            opacity: activeReel === reelIdx ? 1 : 0.68,
+                            scale: activeReel === reelIdx ? 1 : 0.92,
+                            y: activeReel === reelIdx ? 0 : 10,
+                          }}
+                          whileHover={shouldReduceMotion ? undefined : { opacity: 1, scale: activeReel === reelIdx ? 1.035 : 0.96, y: 0 }}
+                          transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                          className="relative h-[340px] flex-[0_0_220px] mx-2 rounded-[8px] overflow-hidden bg-black shadow-lg group"
+                        >
                           <video
                             autoPlay
                             muted
@@ -486,7 +513,7 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
                               Shop
                             </button>
                           </div>
-                        </div>
+                        </motion.div>
                       ))}
                     </div>
                   </div>
