@@ -8,22 +8,22 @@ import { Link } from "wouter";
 const latestDropProducts = [
   {
     title: "Linen Baggy Trouser - Clean White",
-    price: "Tk 799.00",
+    price: "৳ 799.00",
     image: "/new1.webp",
   },
   {
     title: "Linen Baggy Trouser - Earthy Olive",
-    price: "Tk 799.00",
+    price: "৳ 799.00",
     image: "/new2.webp",
   },
   {
     title: "Linen Baggy Trouser - Black",
-    price: "Tk 799.00",
+    price: "৳ 799.00",
     image: "/new3.webp",
   },
   {
     title: "Linen Baggy Trouser - Cocoa Brown",
-    price: "Tk 799.00",
+    price: "৳ 799.00",
     image: "/new4.webp",
   },
 ];
@@ -32,28 +32,28 @@ const whatsNewProducts = [
   {
     id: 201,
     title: "Black Blazer Dress",
-    price: "Tk 1,690.00",
+    price: "৳ 1,690.00",
     sizeLabel: "Default",
     image: "/new1.webp",
   },
   {
     id: 202,
     title: "Black High Leggings",
-    price: "Tk 990.00",
+    price: "৳ 990.00",
     sizeLabel: "Default",
     image: "/new2.webp",
   },
   {
     id: 203,
     title: "Clean White Trouser",
-    price: "Tk 799.00",
+    price: "৳ 799.00",
     sizeLabel: "Default",
     image: "/new3.webp",
   },
   {
     id: 204,
     title: "Cocoa Brown Trouser",
-    price: "Tk 799.00",
+    price: "৳ 799.00",
     sizeLabel: "Default",
     image: "/new4.webp",
   },
@@ -63,7 +63,7 @@ const justArrivedProducts = [
   {
     id: 101,
     title: "Black Blazer Dress",
-    price: "Tk 1,690.00",
+    price: "৳ 1,690.00",
     sizeLabel: "Default",
     sizes: 5,
     image: "/new1.webp",
@@ -71,7 +71,7 @@ const justArrivedProducts = [
   {
     id: 102,
     title: "Black High Leggings",
-    price: "Tk 990.00",
+    price: "৳ 990.00",
     sizeLabel: "Default",
     sizes: 4,
     image: "/new2.webp",
@@ -79,7 +79,7 @@ const justArrivedProducts = [
   {
     id: 103,
     title: "Clean White Trouser",
-    price: "Tk 799.00",
+    price: "৳ 799.00",
     sizeLabel: "Default",
     sizes: 5,
     image: "/new3.webp",
@@ -87,7 +87,7 @@ const justArrivedProducts = [
   {
     id: 104,
     title: "Cocoa Brown Trouser",
-    price: "Tk 799.00",
+    price: "৳ 799.00",
     sizeLabel: "Default",
     sizes: 3,
     image: "/new4.webp",
@@ -99,7 +99,7 @@ const specialProducts = [
     id: 301,
     title: "Top 10",
     count: "10",
-    price: "Tk 1,290.00",
+    price: "৳ 1,290.00",
     sizeLabel: "Default",
     image: "/new4.webp",
   },
@@ -107,7 +107,7 @@ const specialProducts = [
     id: 302,
     title: "Accessories",
     count: "12",
-    price: "Tk 890.00",
+    price: "৳ 890.00",
     sizeLabel: "Default",
     image: "/pexels-ekrulila-26316180_1.jpg",
   },
@@ -115,7 +115,7 @@ const specialProducts = [
     id: 303,
     title: "Bottoms",
     count: "08",
-    price: "Tk 1,190.00",
+    price: "৳ 1,190.00",
     sizeLabel: "Default",
     image: "/new3.webp",
   },
@@ -439,7 +439,7 @@ export default function Home() {
                       className="h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-105"
                     />
                   </div>
-                  <div className="space-y-2 px-3 pb-4 pt-3 md:px-4 md:pb-5">
+                  <div className="space-y-2 pl-0 pr-3 pb-4 pt-3 md:pl-0 md:pr-4 md:pb-5">
                     <h3 className="line-clamp-2 min-h-[2.4em] text-sm font-bold uppercase leading-tight tracking-[0.06em] md:min-h-[2.35em] md:text-base md:tracking-[0.08em]">
                       {product.title}
                     </h3>
