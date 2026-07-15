@@ -17,6 +17,7 @@ function Router() {
   const scrollPositions = useRef(new Map<string, number>());
   const currentLocation = useRef(location);
   const isHistoryNavigation = useRef(false);
+  const isInitialLoad = useRef(true);
 
   const restoreScrollPosition = (top: number) => {
     const restoreScroll = () => window.scrollTo({ top, left: 0, behavior: "auto" });
@@ -85,6 +86,14 @@ function Router() {
   }, []);
 
   useEffect(() => {
+    // On a full page load (refresh), the browser has already restored the
+    // scroll position — forcing it to 0 here causes a visible flick to the hero.
+    if (isInitialLoad.current) {
+      isInitialLoad.current = false;
+      currentLocation.current = location;
+      return;
+    }
+
     const savedY = scrollPositions.current.get(location);
     const targetY = isHistoryNavigation.current && savedY !== undefined ? savedY : 0;
     isHistoryNavigation.current = false;
