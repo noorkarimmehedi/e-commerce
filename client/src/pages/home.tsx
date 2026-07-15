@@ -306,7 +306,7 @@ export default function Home() {
                 Bold by<br />
                 <TypingEffect
                   texts={['design']}
-                  className="font-display italic tracking-[0.55em] text-[1.15em]"
+                  className="font-display italic tracking-[0.55em] text-[1.15em] ml-1"
                 />
               </motion.h1>
               <motion.div variants={reveal}>
