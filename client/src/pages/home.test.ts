@@ -5,8 +5,8 @@ import { test } from "node:test";
 const homeSource = readFileSync(new URL("./home.tsx", import.meta.url), "utf8");
 
 test("renders a Just arrived section after Latest Drop", () => {
-  const latestDropIndex = homeSource.indexOf("Latest Drop");
-  const justArrivedIndex = homeSource.indexOf("Just arrived");
+  const latestDropIndex = homeSource.indexOf("Latest <span");
+  const justArrivedIndex = homeSource.indexOf("Just <span");
 
   assert.notEqual(latestDropIndex, -1);
   assert.notEqual(justArrivedIndex, -1);
@@ -42,7 +42,7 @@ test("renders a What's New section after the hero", () => {
 
 test("styles Latest Drop header like the Just arrived header", () => {
   const latestDropContainer = /Latest Drop Section[\s\S]*?<motion\.div[^>]*className="mx-auto max-w-\[1500px\] px-4 md:px-8 xl:px-12"/.test(homeSource);
-  const latestDropHeading = /className="text-\[clamp\(2rem,5vw,2\.6rem\)\] font-bold leading-none tracking-\[-0\.04em\] text-black"[\s\S]*?>\s*Latest Drop/.test(homeSource);
+  const latestDropHeading = /className="text-\[clamp\(2rem,5vw,2\.6rem\)\] font-bold leading-none tracking-\[-0\.04em\] text-black"[\s\S]*?>\s*Latest\s*<span[\s\S]*?Drop/.test(homeSource);
   const discoverMoreLink = /className="mt-1\.5 shrink-0 border-b-2 border-black pb-1 text-\[11px\] font-medium uppercase tracking-\[0\.2em\] text-black transition-opacity hover:opacity-60 md:mt-2 md:text-base md:tracking-\[0\.24em\]"[\s\S]*?>\s*Discover More/.test(homeSource);
 
   assert.equal(latestDropContainer, true);

@@ -303,7 +303,7 @@ export default function Home() {
                 className="max-w-[760px] text-[clamp(2.6rem,11vw,4rem)] font-bold leading-[0.9] tracking-[-0.06em] md:text-[clamp(4rem,5vw,7rem)] md:leading-[0.88] md:tracking-[-0.08em]"
               >
                 Bold by<br />
-                <span className="font-display italic tracking-[0.55em]">design</span>
+                <span className="font-display italic tracking-[0.55em] text-[1.15em]">design</span>
               </motion.h1>
               <motion.div variants={reveal}>
                 <Link
@@ -408,7 +408,7 @@ export default function Home() {
             <motion.h2
               className="text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] text-black"
             >
-              Latest Drop
+              Latest <span className="font-display italic text-[1.15em]">Drop</span>
             </motion.h2>
 
             <Link
@@ -469,7 +469,7 @@ export default function Home() {
             <motion.h2
               className="text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] text-black"
             >
-              Just arrived
+              Just <span className="font-display italic text-[1.15em]">arrived</span>
             </motion.h2>
 
             <Link
@@ -633,7 +633,7 @@ export default function Home() {
             className="mb-7 flex items-start justify-between gap-6 pr-4 md:mb-12 md:pr-0"
           >
             <motion.h2 className="text-[clamp(2rem,5vw,2.6rem)] font-bold leading-none tracking-[-0.04em] text-black">
-              Our <span className="font-display italic">special</span> collections
+              Our <span className="font-display italic text-[1.15em]">special</span> collections
             </motion.h2>
             <Link
               href="/product/stepprs-massage-insoles"
