@@ -307,8 +307,6 @@ export default function Home() {
                 <TypingEffect
                   texts={['design']}
                   className="font-display italic tracking-[0.55em] text-[1.15em]"
-                  rotationInterval={4000}
-                  typingSpeed={200}
                 />
               </motion.h1>
               <motion.div variants={reveal}>
