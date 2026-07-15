@@ -159,6 +159,23 @@ export default function ProductPage({ params }: { params?: { id: string } }) {
   }, [slug]);
 
   useEffect(() => {
+    const imageUrl = displayImage;
+    if (!imageUrl || imageUrl.startsWith("/")) return;
+
+    const link = document.createElement("link");
+    link.rel = "preload";
+    link.as = "image";
+    link.href = imageUrl;
+    document.head.appendChild(link);
+
+    return () => {
+      if (document.head.contains(link)) {
+        document.head.removeChild(link);
+      }
+    };
+  }, [displayImage]);
+
+  useEffect(() => {
     if (!isFetched) return;
 
     if (merchantProduct && isProductOrderable(merchantProduct)) {
