@@ -87,7 +87,7 @@ test("renders a full-bleed editorial hero", () => {
   assert.match(homeSource, /md:text-\[clamp\(4rem,5vw,7rem\)\]/);
   assert.match(homeSource, /md:px-12 md:py-5 md:text-base/);
   assert.match(homeSource, /SS26 STATEMENT PIECES/);
-  assert.match(homeSource, /Bold by<br \/>\n\s+<span/);
+  assert.match(homeSource, /Bold by<br \/>\n\s+<TypingEffect/);
   assert.match(homeSource, /DISCOVER MORE/);
   assert.doesNotMatch(homeSource, /Shop now/);
   assert.doesNotMatch(homeSource, /Discover New Arrival/);
