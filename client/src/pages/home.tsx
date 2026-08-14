@@ -9,21 +9,25 @@ import { TypingEffect } from "@/components/ui/typing-effect";
 const latestDropProducts = [
   {
     title: "Linen Baggy Trouser - Clean White",
+    slug: "linen-baggy-trouser-clean-white",
     price: "৳ 799.00",
     image: "/new1.webp",
   },
   {
     title: "Linen Baggy Trouser - Earthy Olive",
+    slug: "linen-baggy-trouser-earthy-olive",
     price: "৳ 799.00",
     image: "/new2.webp",
   },
   {
     title: "Linen Baggy Trouser - Black",
+    slug: "linen-baggy-trouser-black",
     price: "৳ 799.00",
     image: "/new3.webp",
   },
   {
     title: "Linen Baggy Trouser - Cocoa Brown",
+    slug: "linen-baggy-trouser-cocoa-brown",
     price: "৳ 799.00",
     image: "/new4.webp",
   },
@@ -33,6 +37,7 @@ const whatsNewProducts = [
   {
     id: 201,
     title: "Black Blazer Dress",
+    slug: "black-blazer-dress",
     price: "৳ 1,690.00",
     sizeLabel: "Default",
     image: "/new1.webp",
@@ -40,6 +45,7 @@ const whatsNewProducts = [
   {
     id: 202,
     title: "Black High Leggings",
+    slug: "black-high-leggings",
     price: "৳ 990.00",
     sizeLabel: "Default",
     image: "/new2.webp",
@@ -47,6 +53,7 @@ const whatsNewProducts = [
   {
     id: 203,
     title: "Clean White Trouser",
+    slug: "clean-white-trouser",
     price: "৳ 799.00",
     sizeLabel: "Default",
     image: "/new3.webp",
@@ -54,6 +61,7 @@ const whatsNewProducts = [
   {
     id: 204,
     title: "Cocoa Brown Trouser",
+    slug: "cocoa-brown-trouser",
     price: "৳ 799.00",
     sizeLabel: "Default",
     image: "/new4.webp",
@@ -64,6 +72,7 @@ const justArrivedProducts = [
   {
     id: 101,
     title: "Black Blazer Dress",
+    slug: "black-blazer-dress",
     price: "৳ 1,690.00",
     sizeLabel: "Default",
     sizes: 5,
@@ -72,6 +81,7 @@ const justArrivedProducts = [
   {
     id: 102,
     title: "Black High Leggings",
+    slug: "black-high-leggings",
     price: "৳ 990.00",
     sizeLabel: "Default",
     sizes: 4,
@@ -80,6 +90,7 @@ const justArrivedProducts = [
   {
     id: 103,
     title: "Clean White Trouser",
+    slug: "clean-white-trouser",
     price: "৳ 799.00",
     sizeLabel: "Default",
     sizes: 5,
@@ -88,6 +99,7 @@ const justArrivedProducts = [
   {
     id: 104,
     title: "Cocoa Brown Trouser",
+    slug: "cocoa-brown-trouser",
     price: "৳ 799.00",
     sizeLabel: "Default",
     sizes: 3,
@@ -99,6 +111,7 @@ const specialProducts = [
   {
     id: 301,
     title: "Top 10",
+    slug: "stepprs-massage-insoles",
     count: "10",
     price: "৳ 1,290.00",
     sizeLabel: "Default",
@@ -107,6 +120,7 @@ const specialProducts = [
   {
     id: 302,
     title: "Accessories",
+    slug: "stepprs-massage-insoles",
     count: "12",
     price: "৳ 890.00",
     sizeLabel: "Default",
@@ -115,6 +129,7 @@ const specialProducts = [
   {
     id: 303,
     title: "Bottoms",
+    slug: "stepprs-massage-insoles",
     count: "08",
     price: "৳ 1,190.00",
     sizeLabel: "Default",
@@ -362,7 +377,7 @@ export default function Home() {
                 className="group min-w-[78vw] snap-start snap-always md:min-w-0"
               >
                 <div className="relative aspect-[3/4] overflow-hidden bg-[#ededed]">
-                  <Link href="/product/stepprs-massage-insoles" className="block h-full">
+                  <Link href={`/product/${product.slug}`} className="block h-full">
                     <img
                       src={product.image}
                       alt={product.title}
@@ -383,7 +398,7 @@ export default function Home() {
                   </button>
                 </div>
 
-                <Link href="/product/stepprs-massage-insoles" className="block pb-2 pt-5 text-black md:pt-7">
+                <Link href={`/product/${product.slug}`} className="block pb-2 pt-5 text-black md:pt-7">
                   <h3 className="text-lg font-medium uppercase leading-tight tracking-[0.08em] md:min-h-[2.4em] md:text-2xl">
                     {product.title}
                   </h3>
@@ -434,7 +449,7 @@ export default function Home() {
                 transition={transition}
                 className="group bg-[#f6f6f6]"
               >
-                <Link href="/product/stepprs-massage-insoles" className="block h-full">
+                <Link href={`/product/${product.slug}`} className="block h-full">
                   <div className="aspect-[3/4] overflow-hidden bg-[#e5e5e5]">
                     <img
                       src={product.image}
@@ -498,7 +513,7 @@ export default function Home() {
               >
                 <div className="h-full">
                   <div className="relative aspect-[3/4] overflow-hidden bg-[#eeeeee]">
-                    <Link href="/product/stepprs-massage-insoles" className="block h-full">
+                    <Link href={`/product/${product.slug}`} className="block h-full">
                     <img
                       src={product.image}
                       alt={product.title}
@@ -516,7 +531,7 @@ export default function Home() {
                     </button>
                   </div>
 
-                  <Link href="/product/stepprs-massage-insoles" className="block px-0 pb-2 pt-5 text-black md:pt-7">
+                  <Link href={`/product/${product.slug}`} className="block px-0 pb-2 pt-5 text-black md:pt-7">
                     <h3 className="text-base font-bold uppercase leading-tight tracking-[0.06em] md:min-h-[2.35em] md:text-xl md:tracking-[0.08em]">
                       {product.title}
                     </h3>
